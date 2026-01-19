@@ -1,0 +1,60 @@
+package com.codequest.backend.auth.service;
+
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import com.codequest.backend.auth.dto.AuthResponseDto;
+import com.codequest.backend.auth.dto.LoginRequestDto;
+import com.codequest.backend.auth.dto.RegisterRequestDto;
+import com.codequest.backend.auth.model.Role;
+import com.codequest.backend.auth.model.User;
+import com.codequest.backend.auth.repository.UserRepository;
+import com.codequest.backend.auth.security.JwtService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
+
+    public AuthResponseDto register(RegisterRequestDto request) {
+
+        if(userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email is already in use with another account");
+        }
+
+        if(userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username is already taken");
+        }
+
+        User user = User.builder()
+        .email(request.getEmail())
+        .username(request.getUsername())
+        .password(passwordEncoder.encode(request.getPassword()))
+        .role(Role.USER)
+        .build();
+
+        userRepository.save(user);
+
+        return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail());
+        
+    }
+
+    public AuthResponseDto login(LoginRequestDto request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid email"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail());
+        
+    }
+}
