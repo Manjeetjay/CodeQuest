@@ -1,6 +1,5 @@
 package com.codequest.backend.auth.security;
 
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -27,8 +26,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException, java.io.IOException {
+            FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
 
         String authHeader = request.getHeader("Authorization");
         String path = request.getServletPath();
@@ -48,11 +46,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             User user = userRepository.findByEmail(email).orElse(null);
-            
 
             if (user != null && jwtService.isTokenValid(token, user)) {
-                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
+                        user.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
@@ -61,4 +58,3 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

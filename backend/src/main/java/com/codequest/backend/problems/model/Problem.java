@@ -21,17 +21,16 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "problems")
-@Getter @Setter @Builder
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Problem {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long problemNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -39,7 +38,7 @@ public class Problem {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true) 
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Testcase> testCases = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -49,5 +48,5 @@ public class Problem {
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Template> templates = new ArrayList<>();
-    
+
 }

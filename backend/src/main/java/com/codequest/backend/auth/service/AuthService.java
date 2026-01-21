@@ -1,6 +1,5 @@
 package com.codequest.backend.auth.service;
 
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.codequest.backend.auth.dto.AuthResponseDto;
@@ -21,28 +20,28 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-
     public AuthResponseDto register(RegisterRequestDto request) {
 
-        if(userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email is already in use with another account");
         }
 
-        if(userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username is already taken");
         }
 
         User user = User.builder()
-        .email(request.getEmail())
-        .username(request.getUsername())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.USER)
-        .build();
+                .email(request.getEmail())
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
 
         userRepository.save(user);
 
-        return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail());
-        
+        return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail(),
+                user.getRole().toString());
+
     }
 
     public AuthResponseDto login(LoginRequestDto request) {
@@ -54,7 +53,8 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail());
-        
+        return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail(),
+                user.getRole().toString());
+
     }
 }
