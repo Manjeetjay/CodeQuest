@@ -1,1 +1,27 @@
 @import 'tailwindcss';
+
+@layer base {
+    :root {
+        --color-easy: #00b8a3;
+        --color-medium: #ffc01e;
+        --color-hard: #ef4743;
+    }
+
+    body {
+        @apply bg-black text-white;
+    }
+}
+
+@layer utilities {
+    .difficulty-easy {
+        @apply text-[#00b8a3];
+    }
+
+    .difficulty-medium {
+        @apply text-[#ffc01e];
+    }
+
+    .difficulty-hard {
+        @apply text-[#ef4743];
+    }
+}

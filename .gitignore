@@ -1,3 +1,8 @@
+# Environment variables
+.env
+backend/.env
+frontend/.env
+
 .vscode
 backend/target/
 backend/.mvn/wrapper/maven-wrapper.jar
@@ -59,3 +64,6 @@ frontend/*.sln
 frontend/*.sw?
 
 frontend/node_modules
+
+DEPLOYMENT.md
+ENV_SETUP.md

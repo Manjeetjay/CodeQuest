@@ -1,27 +1,47 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "./auth/authContext";
-import Login from "./auth/Login";
-import { useAuth } from "./hooks/useAuth";
-import Register from "./auth/Register";
-import LandingPage from "./common/LandingPage"
-import Problems from "./common/Problems";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
-};
+// Pages
+import Landing from "./pages/static/Landing";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import About from "./pages/static/About";
+import ContactUs from "./pages/static/ContactUs";
+import CommunityGuidelines from "./pages/static/CommunityGuidelines";
+import Problems from "./pages/Problems";
+import ProblemSolving from "./pages/ProblemSolving";
 
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          {/* Public Routes */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/problems" element={
-            <PrivateRoute><Problems /></PrivateRoute>
-          } />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/guidelines" element={<CommunityGuidelines />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/problems"
+            element={
+              <ProtectedRoute>
+                <Problems />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/problem/:id"
+            element={
+              <ProtectedRoute>
+                <ProblemSolving />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

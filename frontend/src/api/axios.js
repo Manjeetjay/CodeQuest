@@ -1,15 +1,40 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://localhost:8080",
+const axiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api",
+    timeout: 10000,
+    headers: {
+        "Content-Type": "application/json",
+    },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// Request Iterceptor
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const auth = JSON.parse(localStorage.getItem("auth"));
 
-export default api;
+        if (auth?.token && auth?.type) {
+            config.headers.Authorization = `${auth.type} ${auth.token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+// Response Interceptor
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        const status = error?.response?.status;
+
+        if (status === 401 || status === 403) {
+            localStorage.removeItem("auth");
+            window.location.href = "/login";
+        }
+
+        return Promise.reject(error);
+    }
+);
+
+export default axiosInstance;
