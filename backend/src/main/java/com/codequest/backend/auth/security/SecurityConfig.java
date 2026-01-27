@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${FRONTEND_URL}")
+    @Value("${frontend.url}")
     private String frontendUrl;
 
     private final JwtAuthFilter jwtAuthFilter;
