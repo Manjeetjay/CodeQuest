@@ -45,6 +45,9 @@ public class Problem {
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Testcase> testCases = new ArrayList<>();
 
+    @Column(nullable = false)
+    private String wrapperCode;
+
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 

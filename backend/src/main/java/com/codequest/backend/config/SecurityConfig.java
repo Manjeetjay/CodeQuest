@@ -1,4 +1,4 @@
-package com.codequest.backend.auth.security;
+package com.codequest.backend.config;
 
 import java.util.List;
 
@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.codequest.backend.auth.security.JwtAuthFilter;
 
 import lombok.RequiredArgsConstructor;
 

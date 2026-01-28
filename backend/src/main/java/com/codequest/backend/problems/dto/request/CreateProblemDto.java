@@ -27,6 +27,9 @@ public class CreateProblemDto {
 
     private List<String> tags;
 
+    @NotNull(message = "Wrapper code is required")
+    private String wrapperCode;
+
     @NotNull(message = "Test cases are required")
     @Size(min = 1, message = "At least one test case is required")
     private List<Testcase> testCases;

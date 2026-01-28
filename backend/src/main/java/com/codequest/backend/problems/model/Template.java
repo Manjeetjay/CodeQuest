@@ -31,7 +31,7 @@ public class Template {
     private Long id;
 
     @Column(nullable = false)
-    private String language;
+    private int languageId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String template;

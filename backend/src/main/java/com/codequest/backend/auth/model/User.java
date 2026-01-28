@@ -58,11 +58,12 @@ public class User implements UserDetails {
     private Instant createdAt;
 
     @UpdateTimestamp
-    private Instant updatedAt = Instant.now();
+    private Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
+        updatedAt = Instant.now();
     }
 
     @Override

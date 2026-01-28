@@ -41,6 +41,7 @@ public class ProblemService {
         Problem problem = Problem.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
+                .wrapperCode(request.getWrapperCode())
                 .difficulty(request.getDifficulty())
                 .tags(request.getTags())
                 .testCases(request.getTestCases())
@@ -155,7 +156,7 @@ public class ProblemService {
     private TemplateResponseDto mapToTemplateResponse(Template template) {
         return TemplateResponseDto.builder()
                 .id(template.getId())
-                .language(template.getLanguage())
+                .languageId(template.getLanguageId())
                 .template(template.getTemplate())
                 .build();
     }

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TemplateResponseDto {
     private Long id;
-    private String language;
+    private int languageId;
     private String template;
 }

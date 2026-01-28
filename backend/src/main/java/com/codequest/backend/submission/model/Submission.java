@@ -1,16 +1,24 @@
 package com.codequest.backend.submission.model;
 
-import java.time.Instant;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +29,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Submission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +39,9 @@ public class Submission {
     private Long problemId;
 
     @Column(nullable = false)
-    private String language;
+    private int languageId;
 
+    @Lob
     @Column(nullable = false)
     private String code;
 
@@ -42,11 +52,33 @@ public class Submission {
     private SubmissionStatus status;
 
     @Column(nullable = false)
-    private String error;
+    private List<String> judgeTokens;
+
+    @ElementCollection
+    @CollectionTable(name = "test_results", joinColumns = @JoinColumn(name = "submission_id"))
+    @Builder.Default
+    private List<TestResult> results = new ArrayList<>();
+
+    @Builder.Default
+    private Integer passedTests = 0;
+
+    @Builder.Default
+    private Integer totalTests = 0;
 
     @Column(nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private Instant updatedAt = Instant.now();
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
