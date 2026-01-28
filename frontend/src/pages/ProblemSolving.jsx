@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, data } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import Navbar from "../components/Navbar";
 import { getProblemById } from "../api/api";
+import { Token } from "monaco-editor";
 
 export default function ProblemSolving() {
     const { id } = useParams();
@@ -80,6 +81,22 @@ export default function ProblemSolving() {
     };
 
     const sampleTestCases = problem?.testCases?.filter(tc => tc.sample) || [];
+
+    const handleSubmit = () => {
+        // convert into json
+        const submission = {
+            problemId: problem.id,
+            language_id: selectedLanguage,
+            // encode the code in base64
+            source_code: btoa(code),
+            email: localStorage.getItem("email"),
+        };
+
+        console.log(submission);
+        // send this data back to backend
+
+
+    };
 
     if (loading) {
         return (
@@ -260,10 +277,10 @@ export default function ProblemSolving() {
                     {/* Action Buttons */}
                     <div className="p-4 border-t border-zinc-800 bg-zinc-900">
                         <div className="flex items-center justify-end gap-3">
-                            <button className="px-6 py-2.5 bg-zinc-800 text-white rounded hover:bg-zinc-700 transition-colors font-medium border border-zinc-700">
+                            {/* <button className="px-6 py-2.5 bg-zinc-800 text-white rounded hover:bg-zinc-700 transition-colors font-medium border border-zinc-700">
                                 Run Tests
-                            </button>
-                            <button className="px-6 py-2.5 bg-white text-black rounded hover:bg-gray-200 transition-colors font-medium">
+                            </button> */}
+                            <button className="px-6 py-2.5 bg-white text-black rounded hover:bg-gray-200 transition-colors font-medium" onClick={handleSubmit}>
                                 Submit
                             </button>
                         </div>

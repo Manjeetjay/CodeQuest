@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }) => {
             };
             setAuth(authData);
             localStorage.setItem("auth", JSON.stringify(authData));
+            localStorage.setItem("email", response.email);
             return { success: true };
         } catch (error) {
             console.error("Login failed:", error);
