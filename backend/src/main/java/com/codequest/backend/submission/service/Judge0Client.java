@@ -27,7 +27,7 @@ public class Judge0Client {
 
     @SuppressWarnings("unchecked")
     public Mono<List<Map<String, Object>>> getSubmissionResults(List<String> tokens) {
-        String tokenParam = String.join("%", tokens);
+        String tokenParam = String.join(",", tokens);
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/submissions/batch")

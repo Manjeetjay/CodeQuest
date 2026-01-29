@@ -39,6 +39,8 @@ public class SubmissionService {
         // Apply wrapper code to user's code
         String fullCode = problem.getWrapperCode() + "\n" + request.getCode();
 
+        log.info("Full code being sent to Judge0:\n{}", fullCode);
+
         List<Map<String, Object>> judgeSubmissions = testCases.stream()
                 .map(tc -> {
                     Map<String, Object> m = new HashMap<>();
@@ -146,6 +148,24 @@ public class SubmissionService {
                 submissionRepository.save(sub);
             });
         }
+    }
+
+    public SubmissionDto getSubmissionById(Long id) {
+        Submission submission = submissionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        SubmissionDto dto = new SubmissionDto();
+        dto.setId(submission.getId());
+        dto.setCode(submission.getCode());
+        dto.setEmail(submission.getEmail());
+        dto.setLanguageId(submission.getLanguageId());
+        dto.setProblemId(submission.getProblemId());
+        dto.setStatus(submission.getStatus());
+        dto.setPassedTests(submission.getPassedTests());
+        dto.setTotalTests(submission.getTotalTests());
+        dto.setResults(submission.getResults());
+
+        return dto;
     }
 
 }
