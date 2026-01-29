@@ -41,8 +41,7 @@ public class Submission {
     @Column(nullable = false)
     private int languageId;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String code;
 
     @Column(nullable = false)

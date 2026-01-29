@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -165,6 +166,38 @@ public class SubmissionService {
         dto.setTotalTests(submission.getTotalTests());
         dto.setResults(submission.getResults());
 
+        return dto;
+    }
+
+    public List<SubmissionDto> getMySubmissions(String email) {
+        List<Submission> submissions = submissionRepository.findByEmail(email);
+        return submissions.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<SubmissionDto> getMySubmissionsForProblem(Long problemId, String email) {
+        List<Submission> submissions = submissionRepository
+                .findByProblemIdAndEmailOrderByCreatedAtDesc(problemId, email);
+        return submissions.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    private SubmissionDto toDto(Submission submission) {
+        SubmissionDto dto = new SubmissionDto();
+        dto.setId(submission.getId());
+        dto.setCode(submission.getCode());
+        dto.setEmail(submission.getEmail());
+        dto.setLanguageId(submission.getLanguageId());
+        dto.setProblemId(submission.getProblemId());
+        dto.setStatus(submission.getStatus());
+        dto.setPassedTests(submission.getPassedTests());
+        dto.setTotalTests(submission.getTotalTests());
+        dto.setResults(submission.getResults());
+        if (submission.getCreatedAt() != null) {
+            dto.setCreatedAt(submission.getCreatedAt().toInstant(java.time.ZoneOffset.UTC));
+        }
         return dto;
     }
 

@@ -1,5 +1,7 @@
 package com.codequest.backend.submission.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,18 @@ public class SubmissionController {
     @GetMapping("/{id}")
     public ResponseEntity<SubmissionDto> getSubmission(@PathVariable Long id) {
         return ResponseEntity.ok(submissionService.getSubmissionById(id));
+    }
+
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<SubmissionDto>> getMySubmissions(@PathVariable String email) {
+        return ResponseEntity.ok(submissionService.getMySubmissions(email));
+    }
+
+    @GetMapping("/problem/{problemId}/user/{email}")
+    public ResponseEntity<List<SubmissionDto>> getMySubmissionsForProblem(
+            @PathVariable Long problemId,
+            @PathVariable String email) {
+        return ResponseEntity.ok(submissionService.getMySubmissionsForProblem(problemId, email));
     }
 
 }
