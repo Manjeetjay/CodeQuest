@@ -1,6 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useEffect } from 'react';
 
 export default function NotFound() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // If user is authenticated, redirect to problems page instead of showing 404
+        if (user) {
+            navigate('/problems', { replace: true });
+        }
+    }, [user, navigate]);
+
+    // For non-authenticated users, show 404 and redirect to home
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
             <div className="text-center">
