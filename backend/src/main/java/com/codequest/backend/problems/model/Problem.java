@@ -43,7 +43,8 @@ public class Problem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = jakarta.persistence.FetchType.EAGER)
+    @Builder.Default
     private List<Testcase> testCases = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -54,6 +55,7 @@ public class Problem {
 
     private List<String> tags;
 
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = jakarta.persistence.FetchType.EAGER)
+    @Builder.Default
     private List<Template> templates = new ArrayList<>();
 }

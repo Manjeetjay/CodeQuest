@@ -53,7 +53,7 @@ public class Submission {
     @Column(nullable = false)
     private List<String> judgeTokens;
 
-    @ElementCollection
+    @ElementCollection(fetch = jakarta.persistence.FetchType.EAGER)
     @CollectionTable(name = "test_results", joinColumns = @JoinColumn(name = "submission_id"))
     @Builder.Default
     private List<TestResult> results = new ArrayList<>();
