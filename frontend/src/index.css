@@ -24,4 +24,16 @@
     .difficulty-hard {
         @apply text-[#ef4743];
     }
+
+    .card-rounded {
+        @apply rounded-xl;
+    }
+
+    .btn-rounded {
+        @apply rounded-lg;
+    }
+
+    .smooth-transition {
+        @apply transition-all duration-200;
+    }
 }

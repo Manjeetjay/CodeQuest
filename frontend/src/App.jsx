@@ -9,8 +9,10 @@ import Register from "./pages/auth/Register";
 import About from "./pages/static/About";
 import ContactUs from "./pages/static/ContactUs";
 import CommunityGuidelines from "./pages/static/CommunityGuidelines";
-import Problems from "./pages/Problems";
-import ProblemSolving from "./pages/ProblemSolving";
+import Problems from "./pages/problem/Problems";
+import ProblemSolving from "./pages/problem/ProblemSolving";
+import SubmissionResult from "./pages/problem/SubmissionResult";
+import NotFound from "./pages/static/NotFound";
 
 export default function App() {
   return (
@@ -42,6 +44,17 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/submission/:id"
+            element={
+              <ProtectedRoute>
+                <SubmissionResult />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 404 Not Found - must be last */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
