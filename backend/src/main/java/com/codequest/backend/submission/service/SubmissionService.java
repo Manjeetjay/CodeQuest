@@ -195,9 +195,7 @@ public class SubmissionService {
         dto.setPassedTests(submission.getPassedTests());
         dto.setTotalTests(submission.getTotalTests());
         dto.setResults(submission.getResults());
-        if (submission.getCreatedAt() != null) {
-            dto.setCreatedAt(submission.getCreatedAt().toInstant(java.time.ZoneOffset.UTC));
-        }
+        dto.setCreatedAt(submission.getCreatedAt());
         return dto;
     }
 

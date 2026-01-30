@@ -1,6 +1,6 @@
 package com.codequest.backend.submission.dto;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.codequest.backend.submission.model.SubmissionStatus;
@@ -19,5 +19,5 @@ public class SubmissionDto {
     private List<TestResult> results;
     private Integer passedTests;
     private Integer totalTests;
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 }
