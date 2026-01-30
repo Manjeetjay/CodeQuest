@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: codequest-backend
+    env: java
+    region: oregon
+    plan: starter
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/backend-*.jar
+    envVars:
+      # Spring Profile
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      
+      # Neon Database Configuration
+      # Add these values from your Render dashboard (keep them secret!)
+      - key: DB_URL
+        sync: false  # This is a secret, configure it in Render dashboard
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      
+      # JPA/Hibernate Configuration
+      - key: JPA_HIBERNATE_DDL_AUTO
+        value: validate  # Use 'validate' in production
+      - key: JPA_SHOW_SQL
+        value: false  # Disable SQL logging in production
+      
+      # JWT Configuration
+      # IMPORTANT: Generate a new secure secret for production!
+      - key: JWT_SECRET
+        generateValue: true  # Render will auto-generate a secure value
+        sync: false
+      - key: JWT_EXPIRATION
+        value: 86400000  # 24 hours in milliseconds
+      
+      # Frontend Configuration
+      # Update this with your actual production frontend URL
+      - key: FRONTEND_URL
+        value: https://your-frontend-app.onrender.com
+      
+      # Judge0 Configuration
+      # Add these values from your Render dashboard
+      - key: JUDGE0_URL
+        value: https://judge0-ce.p.rapidapi.com
+      - key: JUDGE0_API_KEY
+        sync: false  # This is a secret
+      - key: JUDGE0_HOST
+        value: judge0-ce.p.rapidapi.com

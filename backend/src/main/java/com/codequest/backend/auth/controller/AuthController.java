@@ -21,16 +21,25 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /*
+     * Registration Endpoint :
+     * This endpoint takes users {email, username, password} and registers the user.
+     * Also returns a token with all the other details.
+     */
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register(@RequestBody RegisterRequestDto request) {
         AuthResponseDto response = authService.register(request);
         return ResponseEntity.ok(response);
     }
 
+    /*
+     * Login Endpoint :
+     * This endpoint takes details like {email, password} and login users.
+     * Also returns the token and details like register request.
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto request) {
         AuthResponseDto response = authService.login(request);
         return ResponseEntity.ok(response);
     }
-    
 }

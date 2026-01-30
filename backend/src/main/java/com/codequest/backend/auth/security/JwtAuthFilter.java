@@ -22,6 +22,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
+    /*
+     * Internal Filter :
+     * This filter is used to authenticate the user.
+     * It checks if the token is valid and if the user is authenticated.
+     * Run once for every request -> checks if the user is authenticated.
+     */
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -30,6 +37,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
         String path = request.getServletPath();
+
+        // System.out.println("Auth Header : " + authHeader + ", path : " + path);
+        // Auth Header : Bearer
+        // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlhdCI6MTc2OTc5NjUwNCwiZXhwIjoxNzY5ODgyOTA0fQ.EhxqaN7iEG8XGQU4vAz-Ooln13c12-c_eZAT4dmfY5M,
+        // path : /api/admin/problem
 
         if (path.startsWith("/api/auth")) {
             filterChain.doFilter(request, response);
