@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.jspecify.annotations.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.codequest.backend.problems.model.Problem;
 import com.codequest.backend.problems.model.Testcase;
 import com.codequest.backend.problems.repository.ProblemRepository;
@@ -30,6 +28,7 @@ public class SubmissionService {
     private final Judge0Client judge0Client;
     private final ProblemRepository problemRepository;
 
+    @Transactional
     public SubmissionDto createSubmission(SubmissionDto request) {
 
         Problem problem = problemRepository.getById(request.getProblemId());
@@ -89,6 +88,7 @@ public class SubmissionService {
     }
 
     @Async
+    @Transactional
     public void fetchAndUpdateResults(Long submissionId, List<String> tokens) {
         try {
             // Wait for Judge0 to process submissions
@@ -151,6 +151,7 @@ public class SubmissionService {
         }
     }
 
+    @Transactional(readOnly = true)
     public SubmissionDto getSubmissionById(Long id) {
         Submission submission = submissionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Submission not found"));
@@ -169,6 +170,7 @@ public class SubmissionService {
         return dto;
     }
 
+    @Transactional(readOnly = true)
     public List<SubmissionDto> getMySubmissions(String email) {
         List<Submission> submissions = submissionRepository.findByEmail(email);
         return submissions.stream()
@@ -176,6 +178,7 @@ public class SubmissionService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<SubmissionDto> getMySubmissionsForProblem(Long problemId, String email) {
         List<Submission> submissions = submissionRepository
                 .findByProblemIdAndEmailOrderByCreatedAtDesc(problemId, email);

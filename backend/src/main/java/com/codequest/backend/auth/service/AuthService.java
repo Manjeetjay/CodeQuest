@@ -2,6 +2,7 @@ package com.codequest.backend.auth.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.codequest.backend.auth.dto.AuthResponseDto;
 import com.codequest.backend.auth.dto.LoginRequestDto;
 import com.codequest.backend.auth.dto.RegisterRequestDto;
@@ -20,6 +21,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    @Transactional
     public AuthResponseDto register(RegisterRequestDto request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -44,6 +46,7 @@ public class AuthService {
 
     }
 
+    @Transactional(readOnly = true)
     public AuthResponseDto login(LoginRequestDto request) {
 
         User user = userRepository.findByEmail(request.getEmail())

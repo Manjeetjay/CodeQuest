@@ -32,6 +32,7 @@ public class ProblemService {
 
     private final ProblemRepository problemRepository;
 
+    @Transactional
     public ResponseEntity<String> createProblem(CreateProblemDto request) {
         log.info("Creating problem with title: {}", request.getTitle());
 
@@ -66,6 +67,7 @@ public class ProblemService {
         return ResponseEntity.ok(response);
     }
 
+    @Transactional(readOnly = true)
     public ResponseEntity<List<ProblemListResponseDto>> getAllProblems() {
         log.info("Fetching all problems");
 
@@ -77,6 +79,7 @@ public class ProblemService {
         return ResponseEntity.ok(response);
     }
 
+    @Transactional(readOnly = true)
     public ResponseEntity<Page<ProblemListResponseDto>> getAllProblemsPaginated(Pageable pageable) {
         log.info("Fetching problems with pagination - page: {}, size: {}",
                 pageable.getPageNumber(), pageable.getPageSize());
@@ -87,6 +90,7 @@ public class ProblemService {
         return ResponseEntity.ok(response);
     }
 
+    @Transactional
     public void deleteProblem(Long id) {
         log.info("Deleting problem with id: {}", id);
 
@@ -96,6 +100,7 @@ public class ProblemService {
         log.info("Problem deleted successfully with id: {}", id);
     }
 
+    @Transactional
     public ResponseEntity<String> updateProblem(Long id, UpdateProblemDto request) {
         log.info("Updating problem with id: {}", id);
 

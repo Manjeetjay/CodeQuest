@@ -29,6 +29,7 @@ export default function Problems() {
         }
     };
 
+    // if All is selected sort by id else sort by title
     const filteredProblems = problems
         .filter((problem) => {
             const matchesDifficulty =
@@ -44,7 +45,7 @@ export default function Problems() {
             return matchesDifficulty && matchesSearch;
         })
         .sort((a, b) => {
-            if (filter !== "ALL") return 0;
+            if (filter !== "ALL") return a.id - b.id;
             return a.title.localeCompare(b.title, undefined, {
                 sensitivity: "base",
             });
