@@ -52,6 +52,15 @@ export const AuthProvider = ({ children }) => {
     const register = async (username, email, password) => {
         try {
             const response = await apiRegister({ username, email, password });
+
+            // If response is null, it means email verification is required
+            if (!response) {
+                // Store email for display on confirmation page
+                localStorage.setItem("registrationEmail", email);
+                return { success: true, requiresVerification: true };
+            }
+
+            // Otherwise, user is automatically verified (old flow, kept for backwards compatibility)
             const authData = {
                 token: response.token,
                 type: response.type,
@@ -62,7 +71,7 @@ export const AuthProvider = ({ children }) => {
             setAuth(authData);
             localStorage.setItem("auth", JSON.stringify(authData));
             localStorage.setItem("email", response.email);
-            return { success: true };
+            return { success: true, requiresVerification: false };
         } catch (error) {
             console.error("Registration failed:", error);
             return { success: false, error: error.message || "Registration failed" };

@@ -2,13 +2,11 @@ package com.codequest.backend.problems.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.codequest.backend.problems.dto.request.CreateProblemDto;
 import com.codequest.backend.problems.dto.request.UpdateProblemDto;
 import com.codequest.backend.problems.dto.response.ProblemDetailResponseDto;
@@ -21,7 +19,6 @@ import com.codequest.backend.problems.model.Problem;
 import com.codequest.backend.problems.model.Template;
 import com.codequest.backend.problems.model.Testcase;
 import com.codequest.backend.problems.repository.ProblemRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

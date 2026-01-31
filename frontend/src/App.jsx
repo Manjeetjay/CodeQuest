@@ -6,6 +6,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Landing from "./pages/static/Landing";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import VerifyEmail from "./pages/auth/VerifyEmail";
+import EmailSent from "./pages/auth/EmailSent";
 import About from "./pages/static/About";
 import ContactUs from "./pages/static/ContactUs";
 import CommunityGuidelines from "./pages/static/CommunityGuidelines";
@@ -23,6 +25,8 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/email-sent" element={<EmailSent />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/guidelines" element={<CommunityGuidelines />} />

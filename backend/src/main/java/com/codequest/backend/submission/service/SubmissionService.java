@@ -1,12 +1,18 @@
 package com.codequest.backend.submission.service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.codequest.backend.problems.model.Problem;
 import com.codequest.backend.problems.model.Testcase;
 import com.codequest.backend.problems.repository.ProblemRepository;
@@ -18,6 +24,7 @@ import com.codequest.backend.submission.repository.SubmissionRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.util.retry.Retry;
 
 @Service
 @RequiredArgsConstructor
@@ -52,9 +59,21 @@ public class SubmissionService {
                 })
                 .toList();
 
-        List<Map<String, String>> tokens = judge0Client
-                .createBatchSubmission(judgeSubmissions)
-                .block();
+        List<Map<String, String>> tokens;
+        try {
+            tokens = judge0Client
+                    .createBatchSubmission(judgeSubmissions)
+                    .timeout(Duration.ofSeconds(15))
+                    .retryWhen(
+                            Retry.backoff(1, Duration.ofSeconds(2))
+                                    .filter(ex -> ex instanceof WebClientRequestException))
+                    .block();
+        } catch (WebClientRequestException ex) {
+            log.error("Judge0 network failure", ex);
+            throw new ResponseStatusException(
+                    HttpStatus.SERVICE_UNAVAILABLE,
+                    "Code execution service is temporarily unavailable. Please try again.");
+        }
 
         List<String> tokenList = tokens.stream()
                 .map(t -> t.get("token"))

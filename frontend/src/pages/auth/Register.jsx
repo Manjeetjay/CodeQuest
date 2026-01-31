@@ -56,7 +56,13 @@ export default function Register() {
         const result = await register(formData.username, formData.email, formData.password);
 
         if (result.success) {
-            navigate("/problems");
+            if (result.requiresVerification) {
+                // Navigate to email sent confirmation page
+                navigate("/email-sent");
+            } else {
+                // If no verification required, go directly to problems (backwards compatibility)
+                navigate("/problems");
+            }
         } else {
             setError(result.error || "Registration failed. Please try again.");
         }
