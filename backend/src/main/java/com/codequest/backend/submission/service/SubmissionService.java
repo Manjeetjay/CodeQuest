@@ -39,13 +39,13 @@ public class SubmissionService {
         // Apply wrapper code to user's code
         String fullCode = problem.getWrapperCode() + "\n" + request.getCode();
 
-        log.info("Full code being sent to Judge0:\n{}", fullCode);
+        // log.info("Full code being sent to Judge0:\n{}", fullCode);
 
         List<Map<String, Object>> judgeSubmissions = testCases.stream()
                 .map(tc -> {
                     Map<String, Object> m = new HashMap<>();
                     m.put("language_id", languageId);
-                    m.put("source_code", fullCode); // Using wrapper code + user code
+                    m.put("source_code", fullCode);
                     m.put("stdin", tc.getInput() == null ? "" : tc.getInput());
                     m.put("expected_output", tc.getOutput());
                     return m;

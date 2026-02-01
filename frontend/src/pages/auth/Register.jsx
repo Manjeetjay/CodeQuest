@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
@@ -6,7 +6,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
     const navigate = useNavigate();
-    const { register } = useAuth();
+    const { register, isAuthenticated } = useAuth();
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -18,6 +18,13 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "", color: "" });
+
+    // Redirect if already logged in
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/problems', { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     // Password strength checker
     const checkPasswordStrength = (password) => {
@@ -177,8 +184,8 @@ export default function Register() {
                                         <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
                                             <div
                                                 className={`h-full transition-all ${passwordStrength.score <= 2 ? 'bg-red-500 w-1/3' :
-                                                        passwordStrength.score <= 3 ? 'bg-yellow-500 w-2/3' :
-                                                            'bg-green-500 w-full'
+                                                    passwordStrength.score <= 3 ? 'bg-yellow-500 w-2/3' :
+                                                        'bg-green-500 w-full'
                                                     }`}
                                             />
                                         </div>

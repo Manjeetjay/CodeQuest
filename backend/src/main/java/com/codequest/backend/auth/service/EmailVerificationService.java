@@ -49,6 +49,19 @@ public class EmailVerificationService {
 
             validateEmailResponse(response);
 
+            // if the api is not available or the limit is exausted then we should allow the
+            // email
+            if (response.getStatus().equals("api_error") || response.getStatus().equals("limit_exceeded")) {
+                // check if the email looks right
+                if (email.contains("@") && (email.contains(".com") || email.contains(".in"))) {
+                    log.warn("Email verification service is not available. Allowing email: {}", email);
+                    return;
+                }
+                throw new InvalidEmailException(
+                        "Email verification service is currently unavailable. Please try again later.",
+                        "api_error");
+            }
+
             log.info("Email verification successful for: {}", email);
         } catch (Exception e) {
             if (e instanceof InvalidEmailException) {

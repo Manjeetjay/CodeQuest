@@ -43,7 +43,5 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: false,
-    // SPA fallback - ensures all routes serve index.html for client-side routing
-    historyApiFallback: true,
   },
 })
