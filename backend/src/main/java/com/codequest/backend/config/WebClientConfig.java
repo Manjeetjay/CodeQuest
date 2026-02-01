@@ -21,4 +21,17 @@ public class WebClientConfig {
                 .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
+
+    @Bean
+    public WebClient emailVerificationWebClient(
+            @Value("${email-verification.url}") String url,
+            @Value("${email-verification.api-key}") String apiKey,
+            @Value("${email-verification.host}") String host) {
+        return WebClient.builder()
+                .baseUrl(url)
+                .defaultHeader("x-rapidapi-key", apiKey)
+                .defaultHeader("x-rapidapi-host", host)
+                .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
 }

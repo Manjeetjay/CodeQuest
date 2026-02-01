@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import com.codequest.backend.auth.exception.InvalidEmailException;
 import com.codequest.backend.problems.dto.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,22 @@ public class GlobalExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error("Bad Request")
+                .message(ex.getMessage())
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEmailException(
+            InvalidEmailException ex, WebRequest request) {
+        log.error("Invalid email: {} (reason: {})", ex.getMessage(), ex.getReason());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Invalid Email")
                 .message(ex.getMessage())
                 .path(request.getDescription(false).replace("uri=", ""))
                 .build();

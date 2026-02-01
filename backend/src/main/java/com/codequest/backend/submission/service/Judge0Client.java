@@ -3,18 +3,21 @@ package com.codequest.backend.submission.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @Component
-@RequiredArgsConstructor
 public class Judge0Client {
 
     private final WebClient webClient;
+
+    public Judge0Client(@Qualifier("judge0WebClient") WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     public Mono<List<Map<String, String>>> createBatchSubmission(List<Map<String, Object>> submissions) {
         return webClient.post()
