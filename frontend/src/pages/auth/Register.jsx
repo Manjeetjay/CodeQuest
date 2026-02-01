@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -14,12 +15,38 @@ export default function Register() {
     });
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "", color: "" });
+
+    // Password strength checker
+    const checkPasswordStrength = (password) => {
+        if (!password) return { score: 0, text: "", color: "" };
+
+        let score = 0;
+        if (password.length >= 8) score++;
+        if (password.length >= 12) score++;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+        if (/\d/.test(password)) score++;
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
+
+        if (score <= 2) return { score, text: "Weak", color: "text-red-500" };
+        if (score <= 3) return { score, text: "Medium", color: "text-yellow-500" };
+        return { score, text: "Strong", color: "text-green-500" };
+    };
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [name]: value,
         });
+
+        // Update password strength when password changes
+        if (name === "password") {
+            setPasswordStrength(checkPasswordStrength(value));
+        }
+
         setError("");
     };
 
@@ -125,32 +152,67 @@ export default function Register() {
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
                                     Password
                                 </label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    className="w-full px-4 py-3 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
-                                    placeholder="••••••••"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        name="password"
+                                        className="w-full px-4 py-3 pr-12 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
+                                        placeholder="••••••••"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        aria-label="Toggle password visibility"
+                                    >
+                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    </button>
+                                </div>
+                                {formData.password && (
+                                    <div className="mt-2 flex items-center gap-2">
+                                        <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                                            <div
+                                                className={`h-full transition-all ${passwordStrength.score <= 2 ? 'bg-red-500 w-1/3' :
+                                                        passwordStrength.score <= 3 ? 'bg-yellow-500 w-2/3' :
+                                                            'bg-green-500 w-full'
+                                                    }`}
+                                            />
+                                        </div>
+                                        <span className={`text-sm font-medium ${passwordStrength.color}`}>
+                                            {passwordStrength.text}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
 
                             <div>
                                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
                                     Confirm Password
                                 </label>
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    className="w-full px-4 py-3 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
-                                    placeholder="••••••••"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        className="w-full px-4 py-3 pr-12 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
+                                        placeholder="••••••••"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        aria-label="Toggle confirm password visibility"
+                                    >
+                                        {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    </button>
+                                </div>
                             </div>
 
                             <button
