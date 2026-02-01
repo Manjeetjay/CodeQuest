@@ -5,7 +5,9 @@ export const login = async (payload) => {
         const res = await axiosInstance.post("/api/auth/login", payload);
         return res.data;
     } catch (err) {
-        throw err.response?.data || "Login failed";
+        // Backend returns ErrorResponse with format: { timestamp, status, error, message, path }
+        const errorMessage = err.response?.data?.message || err.response?.data || "Login failed";
+        throw new Error(errorMessage);
     }
 };
 
@@ -14,7 +16,10 @@ export const register = async (payload) => {
         const res = await axiosInstance.post("/api/auth/register", payload);
         return res.data;
     } catch (err) {
-        throw err.response?.data || "Registration failed";
+        // Backend returns ErrorResponse with format: { timestamp, status, error, message, path }
+        // Extract the user-friendly message for email verification and other errors
+        const errorMessage = err.response?.data?.message || err.response?.data || "Registration failed";
+        throw new Error(errorMessage);
     }
 };
 

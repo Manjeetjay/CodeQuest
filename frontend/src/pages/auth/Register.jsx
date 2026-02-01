@@ -41,6 +41,14 @@ export default function Register() {
             return;
         }
 
+        // Basic email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setError("Please enter a valid email address");
+            setLoading(false);
+            return;
+        }
+
         if (formData.password.length < 6) {
             setError("Password must be at least 6 characters long");
             setLoading(false);
