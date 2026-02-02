@@ -1,7 +1,7 @@
 import TestCaseCard from "./TestCaseCard";
 
 export default function TestCaseResults({ submission, loading }) {
-    const isProcessing = submission.status === "PENDING" || submission.status === "PROCESSING";
+    const isProcessing = submission?.status === "PENDING" || submission?.status === "PROCESSING";
 
     if (isProcessing) {
         return (
@@ -25,25 +25,25 @@ export default function TestCaseResults({ submission, loading }) {
                 <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
                     <div className="text-gray-400 text-sm mb-1">Status</div>
                     <div className="text-2xl font-bold text-white">
-                        {submission.status?.replace(/_/g, " ")}
+                        {submission?.status?.replace(/_/g, " ") || "Unknown"}
                     </div>
                 </div>
                 <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
                     <div className="text-gray-400 text-sm mb-1">Test Cases</div>
                     <div className="text-2xl font-bold text-white">
-                        {submission.passedTests || 0} / {submission.totalTests || 0}
+                        {submission?.passedTests ?? 0} / {submission?.totalTests ?? 0}
                     </div>
                 </div>
                 <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
                     <div className="text-gray-400 text-sm mb-1">Language</div>
                     <div className="text-2xl font-bold text-white">
-                        {getLanguageName(submission.languageId)}
+                        {submission?.languageId ? getLanguageName(submission.languageId) : "Unknown"}
                     </div>
                 </div>
             </div>
 
             {/* Test Results */}
-            {submission.results && submission.results.length > 0 && (
+            {submission?.results && submission.results.length > 0 && (
                 <div className="mb-8">
                     <h2 className="text-2xl font-bold text-white mb-4">Test Results</h2>
                     <div className="space-y-4">
