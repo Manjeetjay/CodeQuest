@@ -79,6 +79,7 @@ export default function Login() {
                                     placeholder="you@example.com"
                                     value={formData.email}
                                     onChange={handleChange}
+                                    autoComplete="email"
                                     required
                                 />
                             </div>
@@ -95,6 +96,7 @@ export default function Login() {
                                     placeholder="••••••••"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    autoComplete="current-password"
                                     required
                                 />
                             </div>

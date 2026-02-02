@@ -135,6 +135,7 @@ export default function Register() {
                                     placeholder="johndoe"
                                     value={formData.username}
                                     onChange={handleChange}
+                                    autoComplete="username"
                                     required
                                 />
                             </div>
@@ -151,6 +152,7 @@ export default function Register() {
                                     placeholder="you@example.com"
                                     value={formData.email}
                                     onChange={handleChange}
+                                    autoComplete="email"
                                     required
                                 />
                             </div>
@@ -168,6 +170,7 @@ export default function Register() {
                                         placeholder="••••••••"
                                         value={formData.password}
                                         onChange={handleChange}
+                                        autoComplete="new-password"
                                         required
                                     />
                                     <button
@@ -209,6 +212,7 @@ export default function Register() {
                                         placeholder="••••••••"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
+                                        autoComplete="new-password"
                                         required
                                     />
                                     <button

@@ -1,4 +1,5 @@
 import TestCaseCard from "./TestCaseCard";
+import { getLanguageName } from "../../utils/helpers";
 
 export default function TestCaseResults({ submission, loading }) {
     const isProcessing = submission?.status === "PENDING" || submission?.status === "PROCESSING";
@@ -15,8 +16,6 @@ export default function TestCaseResults({ submission, loading }) {
             </div>
         );
     }
-
-    const { getLanguageName } = require("../../utils/helpers");
 
     return (
         <>
@@ -42,7 +41,7 @@ export default function TestCaseResults({ submission, loading }) {
                 </div>
             </div>
 
-            {/* Test Results */}
+            {/* only those testcase which are sample */}
             {submission?.results && submission.results.length > 0 && (
                 <div className="mb-8">
                     <h2 className="text-2xl font-bold text-white mb-4">Test Results</h2>

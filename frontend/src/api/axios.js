@@ -1,24 +1,10 @@
 import axios from "axios";
 import { logger } from "../utils/logger";
 
-// Validate API base URL configuration
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-if (!apiBaseUrl) {
-    logger.error(
-        "VITE_API_BASE_URL is not configured! API calls will fail.",
-        null,
-        { env: import.meta.env.MODE }
-    );
-} else {
-    logger.info("API Configuration loaded", {
-        baseUrl: apiBaseUrl,
-        environment: import.meta.env.MODE,
-    });
-}
 
 const axiosInstance = axios.create({
-    baseURL: apiBaseUrl,
+    baseURL: "http://localhost:8080",
     timeout: 10000,
     headers: {
         "Content-Type": "application/json",
