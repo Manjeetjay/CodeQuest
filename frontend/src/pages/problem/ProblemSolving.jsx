@@ -11,6 +11,7 @@ import SubmissionsList from "../../components/problem/SubmissionsList";
 import CodeEditor from "../../components/editor/CodeEditor";
 import { getProblemById, createSubmission, getMySubmissionsForProblem } from "../../api/api";
 import { getLanguageId, getLanguageName } from "../../utils/helpers";
+import { getCache, setCache, clearCache } from "../../utils/cache";
 
 export default function ProblemSolving() {
     const { id } = useParams();
@@ -36,7 +37,20 @@ export default function ProblemSolving() {
     const fetchProblem = async () => {
         try {
             setLoading(true);
-            const data = await getProblemById(id);
+            const cacheKey = `problem_${id}`;
+
+            // Check cache first
+            const cached = getCache(cacheKey);
+            let data;
+
+            if (cached) {
+                data = cached;
+            } else {
+                // Fetch from API
+                data = await getProblemById(id);
+                // Store in cache (30 minutes)
+                setCache(cacheKey, data, 30 * 60 * 1000);
+            }
 
             setProblem(data);
 
@@ -69,8 +83,19 @@ export default function ProblemSolving() {
             setLoadingSubmissions(true);
             const email = localStorage.getItem("email");
             if (email) {
-                const submissions = await getMySubmissionsForProblem(id, email);
-                setMySubmissions(submissions);
+                const cacheKey = `problem_${id}_submissions`;
+
+                // Check cache first
+                const cached = getCache(cacheKey);
+                if (cached) {
+                    setMySubmissions(cached);
+                } else {
+                    // Fetch from API
+                    const submissions = await getMySubmissionsForProblem(id, email);
+                    setMySubmissions(submissions);
+                    // Store in cache (10 minutes)
+                    setCache(cacheKey, submissions, 10 * 60 * 1000);
+                }
             }
         } catch (err) {
             console.error("Failed to fetch submissions:", err);
@@ -125,6 +150,10 @@ export default function ProblemSolving() {
             console.log(submission);
 
             const result = await createSubmission(submission);
+
+            // Clear submissions cache to force fresh fetch
+            clearCache(`problem_${id}_submissions`);
+
             navigate(`/submission/${result.id}`);
         } catch (err) {
             console.error("Submission failed:", err);

@@ -7,6 +7,7 @@ import SubmissionHeader from "../../components/submission/SubmissionHeader";
 import TestCaseResults from "../../components/submission/TestCaseResults";
 import CodeDisplay from "../../components/submission/CodeDisplay";
 import { getSubmission } from "../../api/api";
+import { getCache, setCache } from "../../utils/cache";
 
 export default function SubmissionResult() {
     const { id } = useParams();
@@ -30,9 +31,28 @@ export default function SubmissionResult() {
     const fetchSubmission = async () => {
         try {
             setLoading(true);
+            const cacheKey = `submission_${id}`;
+
+            // Check cache only if we don't have a submission or it's not processing
+            if (!submission || (submission.status !== "PENDING" && submission.status !== "PROCESSING")) {
+                const cached = getCache(cacheKey);
+                if (cached && cached.status !== "PENDING" && cached.status !== "PROCESSING") {
+                    setSubmission(cached);
+                    setLoading(false);
+                    setError("");
+                    return;
+                }
+            }
+
+            // Fetch from API
             const data = await getSubmission(id);
             setSubmission(data);
             setError("");
+
+            // Only cache completed submissions (not pending/processing)
+            if (data.status !== "PENDING" && data.status !== "PROCESSING") {
+                setCache(cacheKey, data, 5 * 60 * 1000); // 5 minutes
+            }
         } catch (err) {
             console.error("Failed to fetch submission:", err);
             setError("Failed to load submission. Please try again later.");

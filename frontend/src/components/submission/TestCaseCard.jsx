@@ -37,9 +37,30 @@ export default function TestCaseCard({ result, index }) {
                 </span>
             </div>
 
+            {/* Input */}
+            {result.input && (
+                <div className="mb-3">
+                    <div className="text-sm text-gray-400 mb-1 font-medium">Input:</div>
+                    <div className="bg-black p-3 rounded-lg font-mono text-sm text-gray-300 whitespace-pre-wrap border border-zinc-700">
+                        {result.input}
+                    </div>
+                </div>
+            )}
+
+            {/* Expected Output */}
+            {result.expectedOutput && (
+                <div className="mb-3">
+                    <div className="text-sm text-gray-400 mb-1 font-medium">Expected Output:</div>
+                    <div className="bg-black p-3 rounded-lg font-mono text-sm text-blue-400 whitespace-pre-wrap border border-blue-500/30">
+                        {result.expectedOutput}
+                    </div>
+                </div>
+            )}
+
+            {/* Actual Output (Your Output) */}
             {result.stdout && (
                 <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1">Output:</div>
+                    <div className="text-sm text-gray-400 mb-1 font-medium">Your Output:</div>
                     <div
                         className={`bg-black p-3 rounded-lg font-mono text-sm whitespace-pre-wrap border ${result.passed
                                 ? "text-green-400 border-green-500/30"
@@ -51,24 +72,27 @@ export default function TestCaseCard({ result, index }) {
                 </div>
             )}
 
+            {/* Error Output */}
             {result.stderr && (
                 <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1">Error Output:</div>
+                    <div className="text-sm text-gray-400 mb-1 font-medium">Error Output:</div>
                     <div className="bg-red-500/10 p-3 rounded-lg font-mono text-sm text-red-400 whitespace-pre-wrap border border-red-500/30">
                         {result.stderr}
                     </div>
                 </div>
             )}
 
+            {/* Compilation Output */}
             {result.compileOutput && (
                 <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1">Compilation Output:</div>
+                    <div className="text-sm text-gray-400 mb-1 font-medium">Compilation Output:</div>
                     <div className="bg-purple-500/10 p-3 rounded-lg font-mono text-sm text-purple-400 whitespace-pre-wrap border border-purple-500/30">
                         {result.compileOutput}
                     </div>
                 </div>
             )}
 
+            {/* Performance Stats */}
             {(result.time !== null || result.memory !== null) && (
                 <div className="flex gap-4 mt-3 pt-3 border-t border-zinc-800">
                     {result.time !== null && (
