@@ -92,11 +92,10 @@ export default function Register() {
 
         const result = await register(formData.username, formData.email, formData.password);
 
-        if (result.success) {
-            navigate("/problems");
-        } else {
+        if (!result.success) {
             setError(result.error || "Registration failed. Please try again.");
         }
+        // On success, the useEffect watching isAuthenticated will navigate to /problems
 
         setLoading(false);
     };

@@ -53,11 +53,15 @@ axiosInstance.interceptors.response.use(
             error
         );
 
-        // Handle authentication errors
+        // Handle authentication errors — only redirect if not already on an auth page
         if (status === 401 || status === 403) {
-            logger.warn("Authentication failed - redirecting to login", { status });
-            localStorage.removeItem("auth");
-            window.location.href = "/login";
+            const currentPath = window.location.pathname;
+            const isAuthPage = currentPath === "/login" || currentPath === "/register";
+            if (!isAuthPage) {
+                logger.warn("Authentication failed - redirecting to login", { status });
+                localStorage.removeItem("auth");
+                window.location.href = "/login";
+            }
         }
 
         return Promise.reject(error);
