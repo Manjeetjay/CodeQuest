@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
-import { Eye, EyeOff } from "lucide-react";
+import { Code2, ArrowRight, Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -16,8 +16,8 @@ export default function Register() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "", color: "" });
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [strength, setStrength] = useState({ level: 0, label: "", color: "" });
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -25,32 +25,23 @@ export default function Register() {
         }
     }, [isAuthenticated, navigate]);
 
-    const checkPasswordStrength = (password) => {
-        if (!password) return { score: 0, text: "", color: "" };
-
-        let score = 0;
-        if (password.length >= 8) score++;
-        if (password.length >= 12) score++;
-        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
-        if (/\d/.test(password)) score++;
-        if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
-
-        if (score <= 2) return { score, text: "Weak", color: "text-red-400" };
-        if (score <= 3) return { score, text: "Medium", color: "text-yellow-400" };
-        return { score, text: "Strong", color: "text-emerald-300" };
+    const checkStrength = (pw) => {
+        if (!pw) return { level: 0, label: "", color: "" };
+        let s = 0;
+        if (pw.length >= 8) s++;
+        if (pw.length >= 12) s++;
+        if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) s++;
+        if (/\d/.test(pw)) s++;
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(pw)) s++;
+        if (s <= 2) return { level: s, label: "Weak", color: "bg-red-500" };
+        if (s <= 3) return { level: s, label: "Medium", color: "bg-yellow-500" };
+        return { level: s, label: "Strong", color: "bg-emerald-500" };
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-
-        if (name === "password") {
-            setPasswordStrength(checkPasswordStrength(value));
-        }
-
+        setFormData({ ...formData, [name]: value });
+        if (name === "password") setStrength(checkStrength(value));
         setError("");
     };
 
@@ -64,26 +55,21 @@ export default function Register() {
             setLoading(false);
             return;
         }
-
         if (formData.username.length < 3) {
-            setError("Username must be at least 3 characters long.");
+            setError("Username must be at least 3 characters.");
             setLoading(false);
             return;
         }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             setError("Please enter a valid email address.");
             setLoading(false);
             return;
         }
-
         if (formData.password.length < 6) {
-            setError("Password must be at least 6 characters long.");
+            setError("Password must be at least 6 characters.");
             setLoading(false);
             return;
         }
-
         if (formData.password !== formData.confirmPassword) {
             setError("Passwords do not match.");
             setLoading(false);
@@ -91,41 +77,51 @@ export default function Register() {
         }
 
         const result = await register(formData.username, formData.email, formData.password);
-
         if (!result.success) {
             setError(result.error || "Registration failed. Please try again.");
         }
-        // On success, the useEffect watching isAuthenticated will navigate to /problems
-
         setLoading(false);
     };
+
+    const inputClass =
+        "w-full rounded-lg border border-white/[0.08] bg-[#0b0f14] px-3.5 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500/40 transition-colors";
 
     return (
         <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />
 
-            <div className="container mx-auto px-6 py-20 flex items-center justify-center">
-                <div className="w-full max-w-md">
-                    <div className="glass-card rounded-2xl p-8">
-                        <h1 className="text-3xl font-semibold text-white text-center">Create account</h1>
-                        <p className="text-slate-300 text-center mt-2">Start solving problems today.</p>
+            <div className="container mx-auto px-6 py-16 flex items-center justify-center">
+                <div className="w-full max-w-sm">
+                    {/* Logo mark */}
+                    <div className="flex items-center justify-center gap-2 mb-8">
+                        <Code2 className="h-5 w-5 text-emerald-400" />
+                        <span className="text-sm font-semibold tracking-tight text-white">CodeQuest</span>
+                    </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+                    {/* Card */}
+                    <div className="border border-white/[0.06] rounded-xl bg-[#111318] p-8">
+                        <h1 className="text-lg font-semibold text-white text-center">Create account</h1>
+                        <p className="text-xs text-slate-500 text-center mt-1">
+                            Start solving problems today
+                        </p>
+
+                        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                             {error && (
-                                <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                                <div className="rounded-lg border border-red-500/20 bg-red-500/[0.06] px-4 py-2.5 text-xs text-red-300">
                                     {error}
                                 </div>
                             )}
 
+                            {/* Username */}
                             <div>
-                                <label htmlFor="username" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                <label htmlFor="username" className="block text-[11px] font-medium uppercase tracking-widest text-slate-500 mb-2">
                                     Username
                                 </label>
                                 <input
                                     type="text"
                                     id="username"
                                     name="username"
-                                    className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
+                                    className={inputClass}
                                     placeholder="johndoe"
                                     value={formData.username}
                                     onChange={handleChange}
@@ -134,15 +130,16 @@ export default function Register() {
                                 />
                             </div>
 
+                            {/* Email */}
                             <div>
-                                <label htmlFor="email" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                <label htmlFor="email" className="block text-[11px] font-medium uppercase tracking-widest text-slate-500 mb-2">
                                     Email
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
-                                    className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
+                                    className={inputClass}
                                     placeholder="you@example.com"
                                     value={formData.email}
                                     onChange={handleChange}
@@ -151,8 +148,9 @@ export default function Register() {
                                 />
                             </div>
 
+                            {/* Password */}
                             <div>
-                                <label htmlFor="password" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                <label htmlFor="password" className="block text-[11px] font-medium uppercase tracking-widest text-slate-500 mb-2">
                                     Password
                                 </label>
                                 <div className="relative">
@@ -160,8 +158,8 @@ export default function Register() {
                                         type={showPassword ? "text" : "password"}
                                         id="password"
                                         name="password"
-                                        className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 pr-12 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
-                                        placeholder="password"
+                                        className={`${inputClass} pr-10`}
+                                        placeholder="••••••••"
                                         value={formData.password}
                                         onChange={handleChange}
                                         autoComplete="new-password"
@@ -170,42 +168,37 @@ export default function Register() {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-                                        aria-label="Toggle password visibility"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors"
+                                        aria-label="Toggle password"
                                     >
-                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
                                 {formData.password && (
                                     <div className="mt-2 flex items-center gap-2">
-                                        <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                                        <div className="flex-1 h-0.5 bg-white/[0.06] rounded-full overflow-hidden">
                                             <div
-                                                className={`h-full transition-all ${passwordStrength.score <= 2
-                                                    ? "bg-red-500 w-1/3"
-                                                    : passwordStrength.score <= 3
-                                                        ? "bg-yellow-400 w-2/3"
-                                                        : "bg-emerald-300 w-full"
-                                                    }`}
+                                                className={`h-full transition-all ${strength.color}`}
+                                                style={{ width: `${Math.min((strength.level / 5) * 100, 100)}%` }}
                                             />
                                         </div>
-                                        <span className={`text-xs font-medium ${passwordStrength.color}`}>
-                                            {passwordStrength.text}
-                                        </span>
+                                        <span className="text-[10px] font-medium text-slate-500">{strength.label}</span>
                                     </div>
                                 )}
                             </div>
 
+                            {/* Confirm Password */}
                             <div>
-                                <label htmlFor="confirmPassword" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                <label htmlFor="confirmPassword" className="block text-[11px] font-medium uppercase tracking-widest text-slate-500 mb-2">
                                     Confirm password
                                 </label>
                                 <div className="relative">
                                     <input
-                                        type={showConfirmPassword ? "text" : "password"}
+                                        type={showConfirm ? "text" : "password"}
                                         id="confirmPassword"
                                         name="confirmPassword"
-                                        className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 pr-12 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
-                                        placeholder="password"
+                                        className={`${inputClass} pr-10`}
+                                        placeholder="••••••••"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
                                         autoComplete="new-password"
@@ -213,31 +206,33 @@ export default function Register() {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-                                        aria-label="Toggle confirm password visibility"
+                                        onClick={() => setShowConfirm(!showConfirm)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors"
+                                        aria-label="Toggle confirm password"
                                     >
-                                        {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                        {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="btn-primary w-full"
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-400 transition-colors disabled:opacity-50"
                                 disabled={loading}
                             >
-                                {loading ? "Creating account..." : "Register"}
+                                {loading ? "Creating account…" : "Register"}
+                                {!loading && <ArrowRight className="h-3.5 w-3.5" />}
                             </button>
                         </form>
-
-                        <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-slate-400">
-                            Already have an account?{" "}
-                            <Link to="/login" className="text-white font-semibold hover:text-emerald-200">
-                                Login here
-                            </Link>
-                        </div>
                     </div>
+
+                    {/* Footer link */}
+                    <p className="mt-6 text-center text-xs text-slate-600">
+                        Already have an account?{" "}
+                        <Link to="/login" className="text-slate-400 hover:text-white transition-colors">
+                            Login
+                        </Link>
+                    </p>
                 </div>
             </div>
         </div>
