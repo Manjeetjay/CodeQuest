@@ -176,4 +176,11 @@ public class ProblemService {
                 .sample(testcase.isSample())
                 .build();
     }
+
+    public ResponseEntity<String> bulkUploadProblems(List<CreateProblemDto> problems) {
+        for(CreateProblemDto problem : problems){
+            createProblem(problem);
+        }
+        return ResponseEntity.ok("Problems uploaded successfully");
+    }
 }

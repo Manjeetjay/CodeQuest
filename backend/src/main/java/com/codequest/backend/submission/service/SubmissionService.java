@@ -101,10 +101,15 @@ public class SubmissionService {
             Submission submission = submissionRepository.findById(submissionId)
                     .orElseThrow(() -> new RuntimeException("Submission not found"));
 
+            // Fetch problem to get test case sample flags
+            Problem problem = problemRepository.getById(submission.getProblemId());
+            List<Testcase> testCases = problem.getTestCases();
+
             List<TestResult> testResults = new ArrayList<>();
             int passedCount = 0;
 
-            for (Map<String, Object> result : results) {
+            for (int i = 0; i < results.size(); i++) {
+                Map<String, Object> result = results.get(i);
                 @SuppressWarnings("unchecked")
                 Map<String, Object> status = (Map<String, Object>) result.get("status");
                 Integer statusId = (Integer) status.get("id");
@@ -116,6 +121,9 @@ public class SubmissionService {
                     passedCount++;
                 }
 
+                // Determine if this test case is a sample
+                boolean isSample = i < testCases.size() && testCases.get(i).isSample();
+
                 TestResult testResult = TestResult.builder()
                         .statusId(statusId)
                         .statusDescription(statusDesc)
@@ -125,6 +133,7 @@ public class SubmissionService {
                         .stderr((String) result.get("stderr"))
                         .compileOutput((String) result.get("compile_output"))
                         .passed(passed)
+                        .sample(isSample)
                         .build();
 
                 testResults.add(testResult);

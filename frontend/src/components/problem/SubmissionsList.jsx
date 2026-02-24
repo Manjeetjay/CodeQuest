@@ -1,69 +1,77 @@
 import { getLanguageName, formatDate } from "../../utils/helpers";
+import { Eye, Code2 } from "lucide-react";
 
 export default function SubmissionsList({ submissions, loading, onViewResults, onLoadCode }) {
     if (loading) {
-        return <div className="text-center py-8 text-gray-400">Loading submissions...</div>;
+        return <div className="text-center py-8 text-slate-500 text-xs">Loading submissions...</div>;
     }
 
     if (!submissions || submissions.length === 0) {
         return (
-            <div className="text-center py-8 text-gray-500">
-                No submissions yet. Submit your solution to see it here!
+            <div className="text-center py-8 text-slate-500 text-sm">
+                No submissions yet.
             </div>
         );
     }
 
     return (
-        <div className="space-y-4">
-            {submissions.map((submission) => (
-                <div
-                    key={submission.id}
-                    className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-colors"
-                >
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                            <span className="text-white font-semibold">#{submission.id}</span>
-                            <span
-                                className={`px-3 py-1 rounded-lg text-sm font-medium ${submission.status === "COMPLETED"
-                                        ? "bg-green-500/20 text-green-400"
-                                        : submission.status === "FAILED"
-                                            ? "bg-red-500/20 text-red-400"
-                                            : "bg-yellow-500/20 text-yellow-400"
-                                    }`}
-                            >
-                                {submission.status}
+        <div className="space-y-2">
+            {submissions.map((submission) => {
+                const isAccepted = submission.status === "COMPLETED";
+                return (
+                    <div
+                        key={submission.id}
+                        className="rounded-lg border border-white/[0.06] bg-[#161b22]/60 p-3 hover:border-white/10 transition-colors"
+                    >
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span
+                                    className={`w-2 h-2 rounded-full ${isAccepted
+                                            ? "bg-emerald-400"
+                                            : submission.status === "FAILED"
+                                                ? "bg-red-400"
+                                                : "bg-yellow-400"
+                                        }`}
+                                />
+                                <span className="text-xs font-semibold text-white">
+                                    #{submission.id}
+                                </span>
+                                <span
+                                    className={`text-[11px] font-medium ${isAccepted ? "text-emerald-400" : "text-red-400"
+                                        }`}
+                                >
+                                    {submission.status?.replace(/_/g, " ")}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <button
+                                    onClick={() => onViewResults(submission.id)}
+                                    className="p-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                                    title="View results"
+                                >
+                                    <Eye className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                    onClick={() => onLoadCode(submission)}
+                                    className="p-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-emerald-400 transition-colors"
+                                    title="Load code into editor"
+                                >
+                                    <Code2 className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
+                        </div>
+                        <div className="flex gap-3 mt-1.5 text-[10px] text-slate-500">
+                            <span>{getLanguageName(submission.languageId)}</span>
+                            <span>
+                                {submission.passedTests || 0}/{submission.totalTests || 0} passed
                             </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => onViewResults(submission.id)}
-                                className="px-4 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors font-medium text-sm border border-zinc-700"
-                            >
-                                View Results
-                            </button>
-                            <button
-                                onClick={() => onLoadCode(submission)}
-                                className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm"
-                            >
-                                Load Code
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                        <span>{getLanguageName(submission.languageId)}</span>
-                        <span>•</span>
-                        <span>
-                            {submission.passedTests || 0}/{submission.totalTests || 0} tests passed
-                        </span>
-                        {submission.createdAt && (
-                            <>
-                                <span>•</span>
+                            {submission.createdAt && (
                                 <span>{formatDate(submission.createdAt)}</span>
-                            </>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 }

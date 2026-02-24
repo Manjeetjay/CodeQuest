@@ -13,10 +13,9 @@ export default function Login() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Redirect if already logged in
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/problems', { replace: true });
+            navigate("/problems", { replace: true });
         }
     }, [isAuthenticated, navigate]);
 
@@ -34,7 +33,7 @@ export default function Login() {
         setLoading(true);
 
         if (!formData.email || !formData.password) {
-            setError("Please fill in all fields");
+            setError("Please fill in all fields.");
             setLoading(false);
             return;
         }
@@ -51,31 +50,33 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />
 
-            <div className="container mx-auto px-4 py-20 flex items-center justify-center">
+            <div className="container mx-auto px-6 py-20 flex items-center justify-center">
                 <div className="w-full max-w-md">
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8">
-                        <h1 className="text-3xl font-bold text-white text-center mb-2">Welcome Back</h1>
-                        <p className="text-gray-400 text-center mb-8">Log in to continue your coding journey</p>
+                    <div className="glass-card rounded-2xl p-8">
+                        <h1 className="text-3xl font-semibold text-white text-center">Welcome back</h1>
+                        <p className="text-slate-300 text-center mt-2">
+                            Log in to continue your coding journey.
+                        </p>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                             {error && (
-                                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
+                                <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
                                     {error}
                                 </div>
                             )}
 
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                                    Email Address
+                                <label htmlFor="email" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                    Email
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
-                                    className="w-full px-4 py-3 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
+                                    className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
                                     placeholder="you@example.com"
                                     value={formData.email}
                                     onChange={handleChange}
@@ -85,15 +86,15 @@ export default function Login() {
                             </div>
 
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                                <label htmlFor="password" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
                                     Password
                                 </label>
                                 <input
                                     type="password"
                                     id="password"
                                     name="password"
-                                    className="w-full px-4 py-3 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
-                                    placeholder="••••••••"
+                                    className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
+                                    placeholder="password"
                                     value={formData.password}
                                     onChange={handleChange}
                                     autoComplete="current-password"
@@ -103,20 +104,18 @@ export default function Login() {
 
                             <button
                                 type="submit"
-                                className="w-full px-4 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="btn-primary w-full"
                                 disabled={loading}
                             >
                                 {loading ? "Logging in..." : "Login"}
                             </button>
                         </form>
 
-                        <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
-                            <p className="text-gray-400">
-                                Don't have an account?{" "}
-                                <Link to="/register" className="text-white font-semibold hover:underline">
-                                    Register here
-                                </Link>
-                            </p>
+                        <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-slate-400">
+                            No account yet?{" "}
+                            <Link to="/register" className="text-white font-semibold hover:text-emerald-200">
+                                Register here
+                            </Link>
                         </div>
                     </div>
                 </div>

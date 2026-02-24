@@ -19,14 +19,12 @@ export default function Register() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: "", color: "" });
 
-    // Redirect if already logged in
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/problems', { replace: true });
+            navigate("/problems", { replace: true });
         }
     }, [isAuthenticated, navigate]);
 
-    // Password strength checker
     const checkPasswordStrength = (password) => {
         if (!password) return { score: 0, text: "", color: "" };
 
@@ -37,9 +35,9 @@ export default function Register() {
         if (/\d/.test(password)) score++;
         if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
 
-        if (score <= 2) return { score, text: "Weak", color: "text-red-500" };
-        if (score <= 3) return { score, text: "Medium", color: "text-yellow-500" };
-        return { score, text: "Strong", color: "text-green-500" };
+        if (score <= 2) return { score, text: "Weak", color: "text-red-400" };
+        if (score <= 3) return { score, text: "Medium", color: "text-yellow-400" };
+        return { score, text: "Strong", color: "text-emerald-300" };
     };
 
     const handleChange = (e) => {
@@ -49,7 +47,6 @@ export default function Register() {
             [name]: value,
         });
 
-        // Update password strength when password changes
         if (name === "password") {
             setPasswordStrength(checkPasswordStrength(value));
         }
@@ -62,35 +59,33 @@ export default function Register() {
         setError("");
         setLoading(true);
 
-        // Validation
         if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
-            setError("Please fill in all fields");
+            setError("Please fill in all fields.");
             setLoading(false);
             return;
         }
 
         if (formData.username.length < 3) {
-            setError("Username must be at least 3 characters long");
+            setError("Username must be at least 3 characters long.");
             setLoading(false);
             return;
         }
 
-        // Basic email format validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
-            setError("Please enter a valid email address");
+            setError("Please enter a valid email address.");
             setLoading(false);
             return;
         }
 
         if (formData.password.length < 6) {
-            setError("Password must be at least 6 characters long");
+            setError("Password must be at least 6 characters long.");
             setLoading(false);
             return;
         }
 
         if (formData.password !== formData.confirmPassword) {
-            setError("Passwords do not match");
+            setError("Passwords do not match.");
             setLoading(false);
             return;
         }
@@ -107,31 +102,31 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />
 
-            <div className="container mx-auto px-4 py-20 flex items-center justify-center">
+            <div className="container mx-auto px-6 py-20 flex items-center justify-center">
                 <div className="w-full max-w-md">
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8">
-                        <h1 className="text-3xl font-bold text-white text-center mb-2">Create Account</h1>
-                        <p className="text-gray-400 text-center mb-8">Start solving problems today</p>
+                    <div className="glass-card rounded-2xl p-8">
+                        <h1 className="text-3xl font-semibold text-white text-center">Create account</h1>
+                        <p className="text-slate-300 text-center mt-2">Start solving problems today.</p>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
                             {error && (
-                                <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
+                                <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
                                     {error}
                                 </div>
                             )}
 
                             <div>
-                                <label htmlFor="username" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                                <label htmlFor="username" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
                                     Username
                                 </label>
                                 <input
                                     type="text"
                                     id="username"
                                     name="username"
-                                    className="w-full px-4 py-3 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
+                                    className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
                                     placeholder="johndoe"
                                     value={formData.username}
                                     onChange={handleChange}
@@ -141,14 +136,14 @@ export default function Register() {
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                                    Email Address
+                                <label htmlFor="email" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                    Email
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
-                                    className="w-full px-4 py-3 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
+                                    className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
                                     placeholder="you@example.com"
                                     value={formData.email}
                                     onChange={handleChange}
@@ -158,7 +153,7 @@ export default function Register() {
                             </div>
 
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                                <label htmlFor="password" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
                                     Password
                                 </label>
                                 <div className="relative">
@@ -166,8 +161,8 @@ export default function Register() {
                                         type={showPassword ? "text" : "password"}
                                         id="password"
                                         name="password"
-                                        className="w-full px-4 py-3 pr-12 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
-                                        placeholder="••••••••"
+                                        className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 pr-12 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
+                                        placeholder="password"
                                         value={formData.password}
                                         onChange={handleChange}
                                         autoComplete="new-password"
@@ -176,7 +171,7 @@ export default function Register() {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
                                         aria-label="Toggle password visibility"
                                     >
                                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -184,15 +179,17 @@ export default function Register() {
                                 </div>
                                 {formData.password && (
                                     <div className="mt-2 flex items-center gap-2">
-                                        <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                                        <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
                                             <div
-                                                className={`h-full transition-all ${passwordStrength.score <= 2 ? 'bg-red-500 w-1/3' :
-                                                    passwordStrength.score <= 3 ? 'bg-yellow-500 w-2/3' :
-                                                        'bg-green-500 w-full'
+                                                className={`h-full transition-all ${passwordStrength.score <= 2
+                                                    ? "bg-red-500 w-1/3"
+                                                    : passwordStrength.score <= 3
+                                                        ? "bg-yellow-400 w-2/3"
+                                                        : "bg-emerald-300 w-full"
                                                     }`}
                                             />
                                         </div>
-                                        <span className={`text-sm font-medium ${passwordStrength.color}`}>
+                                        <span className={`text-xs font-medium ${passwordStrength.color}`}>
                                             {passwordStrength.text}
                                         </span>
                                     </div>
@@ -200,16 +197,16 @@ export default function Register() {
                             </div>
 
                             <div>
-                                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                                    Confirm Password
+                                <label htmlFor="confirmPassword" className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                                    Confirm password
                                 </label>
                                 <div className="relative">
                                     <input
                                         type={showConfirmPassword ? "text" : "password"}
                                         id="confirmPassword"
                                         name="confirmPassword"
-                                        className="w-full px-4 py-3 pr-12 bg-black border border-zinc-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-zinc-500"
-                                        placeholder="••••••••"
+                                        className="mt-2 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 pr-12 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
+                                        placeholder="password"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
                                         autoComplete="new-password"
@@ -218,7 +215,7 @@ export default function Register() {
                                     <button
                                         type="button"
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
                                         aria-label="Toggle confirm password visibility"
                                     >
                                         {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -228,20 +225,18 @@ export default function Register() {
 
                             <button
                                 type="submit"
-                                className="w-full px-4 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="btn-primary w-full"
                                 disabled={loading}
                             >
                                 {loading ? "Creating account..." : "Register"}
                             </button>
                         </form>
 
-                        <div className="mt-8 pt-6 border-t border-zinc-800 text-center">
-                            <p className="text-gray-400">
-                                Already have an account?{" "}
-                                <Link to="/login" className="text-white font-semibold hover:underline">
-                                    Login here
-                                </Link>
-                            </p>
+                        <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-slate-400">
+                            Already have an account?{" "}
+                            <Link to="/login" className="text-white font-semibold hover:text-emerald-200">
+                                Login here
+                            </Link>
                         </div>
                     </div>
                 </div>

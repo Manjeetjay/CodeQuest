@@ -103,7 +103,7 @@ export default function SubmissionResult() {
 
     if (loading && !submission) {
         return (
-            <div className="min-h-screen bg-black">
+            <div className="min-h-screen bg-[#0b0f14] text-slate-100">
                 <Navbar />
                 <LoadingSpinner message="Loading submission..." />
             </div>
@@ -112,7 +112,7 @@ export default function SubmissionResult() {
 
     if (error || !submission) {
         return (
-            <div className="min-h-screen bg-black">
+            <div className="min-h-screen bg-[#0b0f14] text-slate-100">
                 <Navbar />
                 <ErrorMessage
                     message={error || "Submission not found"}
@@ -139,7 +139,7 @@ export default function SubmissionResult() {
             hasLanguageId: submission.languageId !== undefined,
         });
         return (
-            <div className="min-h-screen bg-black">
+            <div className="min-h-screen bg-[#0b0f14] text-slate-100">
                 <Navbar />
                 <ErrorMessage
                     message="Submission data is incomplete. Please try again."
@@ -151,10 +151,10 @@ export default function SubmissionResult() {
     }
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />
 
-            <div className="container mx-auto px-4 py-8 max-w-6xl">
+            <div className="container mx-auto px-6 py-12 max-w-5xl">
                 <SubmissionHeader
                     submission={submission}
                     onBack={() => navigate(`/problem/${submission.problemId}`)}
@@ -168,13 +168,13 @@ export default function SubmissionResult() {
                 <div className="flex gap-4 justify-center">
                     <button
                         onClick={() => navigate(`/problem/${submission.problemId}`)}
-                        className="px-8 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                        className="btn-primary"
                     >
                         Try Again
                     </button>
                     <button
                         onClick={() => navigate("/problems")}
-                        className="px-8 py-3 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors font-medium border border-zinc-700"
+                        className="btn-outline"
                     >
                         All Problems
                     </button>

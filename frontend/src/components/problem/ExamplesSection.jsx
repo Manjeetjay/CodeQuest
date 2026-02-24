@@ -1,29 +1,35 @@
 export default function ExamplesSection({ testCases }) {
     if (!testCases || testCases.length === 0) {
         return (
-            <div className="text-gray-500 text-center py-8">
-                No sample test cases available
+            <div className="text-slate-500 text-center py-8 text-sm">
+                No sample test cases available.
             </div>
         );
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4">
             {testCases.map((testCase, index) => (
-                <div key={testCase.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-                    <div className="font-semibold text-white mb-3">Example {index + 1}</div>
-                    <div className="space-y-3">
+                <div key={testCase.id}>
+                    <h4 className="text-xs font-semibold text-white mb-2">
+                        Example {index + 1}:
+                    </h4>
+                    <div className="rounded-lg bg-[#1a1a2e]/60 border border-white/[0.06] p-3.5 space-y-2.5">
                         <div>
-                            <div className="text-sm text-gray-400 mb-1">Input:</div>
-                            <div className="bg-black p-3 rounded font-mono text-sm text-white whitespace-pre-wrap">
+                            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                                Input
+                            </span>
+                            <pre className="mt-1 font-code text-xs text-sky-300 whitespace-pre-wrap">
                                 {testCase.input}
-                            </div>
+                            </pre>
                         </div>
                         <div>
-                            <div className="text-sm text-gray-400 mb-1">Output:</div>
-                            <div className="bg-black p-3 rounded font-mono text-sm text-white whitespace-pre-wrap">
+                            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                                Output
+                            </span>
+                            <pre className="mt-1 font-code text-xs text-emerald-300 whitespace-pre-wrap">
                                 {testCase.output}
-                            </div>
+                            </pre>
                         </div>
                     </div>
                 </div>

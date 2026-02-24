@@ -3,7 +3,7 @@ export default function SearchBar({ value, onChange }) {
         <div className="flex-1">
             <input
                 type="text"
-                className="w-full px-4 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-zinc-500"
+                className="w-full px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-300/60"
                 placeholder="Search problems..."
                 value={value}
                 onChange={(e) => onChange(e.target.value)}

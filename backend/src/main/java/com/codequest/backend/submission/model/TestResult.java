@@ -35,4 +35,6 @@ public class TestResult {
     private String compileOutput;
 
     private Boolean passed;
+
+    private Boolean sample;
 }

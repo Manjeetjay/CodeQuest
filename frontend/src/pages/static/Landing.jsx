@@ -1,175 +1,191 @@
 import { Link } from "react-router-dom";
+import {
+    ArrowRight,
+    Code2,
+    Filter,
+    History,
+    Search,
+    ShieldCheck,
+    Sparkles,
+    TestTube2,
+    Terminal,
+    Zap,
+    UserPlus,
+    Target,
+    CheckCircle2,
+} from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
 
+const featureCards = [
+    { title: "Smart Search", desc: "Filter by difficulty, search by title.", icon: Search },
+    { title: "Multi-Language", desc: "Code templates in the editor.", icon: Code2 },
+    { title: "Live Feedback", desc: "Per-test pass/fail details.", icon: TestTube2 },
+    { title: "History", desc: "Reload past submissions.", icon: History },
+    { title: "Structured Practice", desc: "Easy → Medium → Hard tracks.", icon: Filter },
+    { title: "Fair Play", desc: "Consistent, honest standards.", icon: ShieldCheck },
+];
+
+const codeLines = [
+    { text: "class Solution {", color: "text-purple-400" },
+    { text: "  public int[] solve(int[] nums) {", color: "text-sky-300" },
+    { text: "    Map<Integer, Integer> map = new HashMap<>();", color: "text-slate-300" },
+    { text: "    for (int i = 0; i < nums.length; i++) {", color: "text-slate-300" },
+    { text: "      if (map.containsKey(target - nums[i]))", color: "text-emerald-300" },
+    { text: '        return new int[]{map.get(target-nums[i]), i};', color: "text-emerald-300" },
+    { text: "      map.put(nums[i], i);", color: "text-slate-400" },
+    { text: "    }", color: "text-slate-400" },
+    { text: "  }", color: "text-sky-300" },
+    { text: "}", color: "text-purple-400" },
+];
+
 export default function Landing() {
+    const { isAuthenticated } = useAuth();
+    const primaryHref = isAuthenticated ? "/problems" : "/register";
+    const primaryLabel = isAuthenticated ? "Open Problems" : "Start Free";
+    const secondaryHref = isAuthenticated ? "/about" : "/login";
+    const secondaryLabel = isAuthenticated ? "How it works" : "Sign in";
+
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />
 
-            {/* Hero Section */}
-            <main className="container mx-auto px-4">
-                <div className="max-w-5xl mx-auto text-center py-32">
-                    <div className="mb-8">
-                        <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
-                            Code Conquest
-                        </h1>
-                        <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
-                        <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                            A problem-solving and competitive coding platform built for developers
-                            who want to sharpen their skills through real challenges
-                        </p>
-                    </div>
-
-                    <div className="flex gap-4 justify-center flex-wrap mt-12">
-                        <Link to="/register">
-                            <button className="px-10 py-4 bg-white text-black rounded font-semibold text-lg hover:bg-gray-200 transition-all transform hover:scale-105">
-                                Start Solving
-                            </button>
-                        </Link>
-                        <Link to="/about">
-                            <button className="px-10 py-4 bg-transparent text-white border-2 border-white rounded font-semibold text-lg hover:bg-white hover:text-black transition-all">
-                                Learn More
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Stats Section */}
-                <div className="max-w-4xl mx-auto mb-32">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-1 bg-zinc-800">
-                        <div className="bg-black p-8 text-center border-r border-zinc-800">
-                            <div className="text-5xl font-bold text-white mb-3">500+</div>
-                            <div className="text-sm text-gray-400 uppercase tracking-widest">Curated Problems</div>
-                        </div>
-                        <div className="bg-black p-8 text-center border-r border-zinc-800">
-                            <div className="text-5xl font-bold text-white mb-3">10K+</div>
-                            <div className="text-sm text-gray-400 uppercase tracking-widest">Active Coders</div>
-                        </div>
-                        <div className="bg-black p-8 text-center">
-                            <div className="text-5xl font-bold text-white mb-3">100%</div>
-                            <div className="text-sm text-gray-400 uppercase tracking-widest">Free Access</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Features Grid */}
-                <div className="max-w-6xl mx-auto pb-32">
-                    <h2 className="text-3xl font-bold text-white text-center mb-16 uppercase tracking-wide">
-                        What You Can Do
-                    </h2>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {/* Feature 1 */}
-                        <div className="group bg-zinc-900 border border-zinc-800 p-8 hover:border-white transition-all">
-                            <div className="mb-6">
-                                <div className="w-12 h-12 border-2 border-white flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
+            <main>
+                {/* Hero */}
+                <section className="border-b border-white/[0.06]">
+                    <div className="container mx-auto px-6 pt-20 pb-16">
+                        <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">
+                            <div className="space-y-6">
+                                <div className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-slate-400">
+                                    <Sparkles className="h-3 w-3 text-emerald-400" />
+                                    Practice with purpose
+                                </div>
+                                <h1 className="text-5xl md:text-6xl font-semibold leading-[1.08] tracking-tight">
+                                    Code. Submit.{" "}
+                                    <span className="text-emerald-400">Improve.</span>
+                                </h1>
+                                <p className="max-w-md text-base text-slate-400 leading-relaxed">
+                                    A focused workspace for solving coding challenges with real-time feedback.
+                                </p>
+                                <div className="flex flex-wrap items-center gap-3 pt-2">
+                                    <Link
+                                        to={primaryHref}
+                                        className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-400"
+                                    >
+                                        {primaryLabel}
+                                        <ArrowRight className="h-4 w-4" />
+                                    </Link>
+                                    <Link
+                                        to={secondaryHref}
+                                        className="inline-flex items-center gap-2 rounded-md border border-white/[0.12] px-5 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-white/[0.04]"
+                                    >
+                                        {secondaryLabel}
+                                    </Link>
                                 </div>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Solve Problems</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Curated coding problems across difficulty levels to build strong fundamentals
-                            </p>
-                        </div>
 
-                        {/* Feature 2 */}
-                        <div className="group bg-zinc-900 border border-zinc-800 p-8 hover:border-white transition-all">
-                            <div className="mb-6">
-                                <div className="w-12 h-12 border-2 border-white flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
+                            {/* Code terminal */}
+                            <div className="rounded-lg border border-white/[0.08] bg-[#0d1117] overflow-hidden">
+                                <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/[0.06] bg-[#161b22]">
+                                    <div className="flex gap-1.5">
+                                        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                                        <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                                        <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                                    </div>
+                                    <span className="ml-2 text-[10px] text-slate-500 font-code">Solution.java</span>
+                                </div>
+                                <div className="p-4 font-code text-xs leading-relaxed">
+                                    {codeLines.map((line, i) => (
+                                        <div key={i} className="flex">
+                                            <span className="w-6 text-right mr-4 text-slate-600 select-none">{i + 1}</span>
+                                            <span className={line.color}>{line.text}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="px-4 py-2.5 border-t border-white/[0.06] bg-[#161b22] flex items-center gap-2">
+                                    <Terminal className="w-3 h-3 text-emerald-400" />
+                                    <span className="text-[10px] text-emerald-400 font-code">✓ All test cases passed</span>
                                 </div>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Compete</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Participate in contests and challenges to test your skills against others
-                            </p>
-                        </div>
-
-                        {/* Feature 3 */}
-                        <div className="group bg-zinc-900 border border-zinc-800 p-8 hover:border-white transition-all">
-                            <div className="mb-6">
-                                <div className="w-12 h-12 border-2 border-white flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Track Progress</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Monitor your journey with detailed analytics and performance metrics
-                            </p>
-                        </div>
-
-                        {/* Feature 4 */}
-                        <div className="group bg-zinc-900 border border-zinc-800 p-8 hover:border-white transition-all">
-                            <div className="mb-6">
-                                <div className="w-12 h-12 border-2 border-white flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Learn Consistently</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Build habits through consistent practice and structured learning paths
-                            </p>
-                        </div>
-
-                        {/* Feature 5 */}
-                        <div className="group bg-zinc-900 border border-zinc-800 p-8 hover:border-white transition-all">
-                            <div className="mb-6">
-                                <div className="w-12 h-12 border-2 border-white flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Fair Platform</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Compete ethically with transparent scoring and fair evaluation systems
-                            </p>
-                        </div>
-
-                        {/* Feature 6 */}
-                        <div className="group bg-zinc-900 border border-zinc-800 p-8 hover:border-white transition-all">
-                            <div className="mb-6">
-                                <div className="w-12 h-12 border-2 border-white flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Join Community</h3>
-                            <p className="text-gray-400 leading-relaxed">
-                                Connect with learners and developers in a respectful coding community
-                            </p>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                {/* Features */}
+                <section className="border-b border-white/[0.06]">
+                    <div className="container mx-auto px-6 py-16">
+                        <h2 className="text-2xl font-semibold text-white mb-1">Everything you need</h2>
+                        <p className="text-sm text-slate-500 mb-8">Discover, code, submit, review — all in one loop.</p>
+                        <div className="grid gap-px md:grid-cols-2 xl:grid-cols-3 bg-white/[0.04] border border-white/[0.06] rounded-lg overflow-hidden">
+                            {featureCards.map((f) => {
+                                const Icon = f.icon;
+                                return (
+                                    <div key={f.title} className="bg-[#0b0f14] p-5 flex items-start gap-4">
+                                        <div className="shrink-0 mt-0.5 text-slate-500">
+                                            <Icon className="h-4 w-4" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-medium text-white">{f.title}</h3>
+                                            <p className="mt-0.5 text-xs text-slate-500">{f.desc}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Workflow */}
+                <section className="border-b border-white/[0.06]">
+                    <div className="container mx-auto px-6 py-16">
+                        <h2 className="text-2xl font-semibold text-white mb-8">How it works</h2>
+                        <div className="grid gap-px md:grid-cols-4 bg-white/[0.04] border border-white/[0.06] rounded-lg overflow-hidden">
+                            {[
+                                { num: "01", label: "Sign up", icon: UserPlus },
+                                { num: "02", label: "Pick a problem", icon: Target },
+                                { num: "03", label: "Code & submit", icon: Zap },
+                                { num: "04", label: "Review results", icon: CheckCircle2 },
+                            ].map((step) => {
+                                const StepIcon = step.icon;
+                                return (
+                                    <div key={step.num} className="bg-[#0b0f14] p-6 text-center">
+                                        <StepIcon className="h-5 w-5 text-slate-500 mx-auto mb-3" />
+                                        <p className="text-[10px] text-slate-600 font-medium uppercase tracking-widest mb-1">{step.num}</p>
+                                        <p className="text-sm font-medium text-white">{step.label}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+
+                {/* CTA */}
+                <section>
+                    <div className="container mx-auto px-6 py-16">
+                        <div className="rounded-lg border border-white/[0.08] bg-[#0f141c] p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <h3 className="text-xl font-semibold text-white">Ready to start?</h3>
+                                <p className="mt-1 text-sm text-slate-500">Solve one problem at a time. Build real momentum.</p>
+                            </div>
+                            <Link
+                                to={primaryHref}
+                                className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-400"
+                            >
+                                {primaryLabel}
+                                <ArrowRight className="h-4 w-4" />
+                            </Link>
+                        </div>
+                    </div>
+                </section>
             </main>
 
-            {/* Footer */}
-            <footer className="border-t border-zinc-800 py-8">
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="text-gray-500 text-sm">
-                            © 2026 Code Conquest. Learning over shortcuts. Growth over rankings.
-                        </div>
-                        <div className="flex gap-8">
-                            <Link to="/about" className="text-gray-500 hover:text-white transition-colors text-sm">
-                                About
-                            </Link>
-                            <Link to="/contact" className="text-gray-500 hover:text-white transition-colors text-sm">
-                                Contact
-                            </Link>
-                            <Link to="/guidelines" className="text-gray-500 hover:text-white transition-colors text-sm">
-                                Guidelines
-                            </Link>
-                        </div>
+            <footer className="border-t border-white/[0.06] py-6">
+                <div className="container mx-auto px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
+                    <p className="text-xs text-slate-600">© 2026 CodeQuest</p>
+                    <div className="flex gap-6 text-xs text-slate-600">
+                        <Link to="/about" className="hover:text-slate-300 transition-colors">About</Link>
+                        <Link to="/guidelines" className="hover:text-slate-300 transition-colors">Guidelines</Link>
+                        <Link to="/contact" className="hover:text-slate-300 transition-colors">Contact</Link>
                     </div>
                 </div>
             </footer>

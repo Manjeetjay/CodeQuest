@@ -1,146 +1,170 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import ErrorMessage from "../../components/shared/ErrorMessage";
-import ProblemsHeader from "../../components/problems/ProblemsHeader";
-import SearchBar from "../../components/problems/SearchBar";
-import DifficultyFilter from "../../components/problems/DifficultyFilter";
-import ProblemsTable from "../../components/problems/ProblemsTable";
 import { getAllProblems } from "../../api/api";
-import { getCache, setCache } from "../../utils/cache";
+import { getDifficultyColor } from "../../utils/helpers";
+import { getCache, setCache, clearCache } from "../../utils/cache";
+import { Search, RefreshCw, ArrowRight } from "lucide-react";
+
+const difficultyBg = {
+    EASY: "bg-[#00b8a3]/10",
+    MEDIUM: "bg-[#ffc01e]/10",
+    HARD: "bg-[#ef4743]/10",
+};
 
 export default function Problems() {
     const navigate = useNavigate();
     const [problems, setProblems] = useState([]);
-    const [filter, setFilter] = useState("ALL");
-    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredProblems, setFilteredProblems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [refreshing, setRefreshing] = useState(false);
+    const [search, setSearch] = useState("");
+    const [difficulty, setDifficulty] = useState("ALL");
 
     useEffect(() => {
         fetchProblems();
     }, []);
 
-    const fetchProblems = async (forceRefresh = false) => {
+    useEffect(() => {
+        let filtered = problems;
+        if (search) {
+            filtered = filtered.filter(
+                (p) =>
+                    p.title.toLowerCase().includes(search.toLowerCase()) ||
+                    p.id.toString().includes(search)
+            );
+        }
+        if (difficulty !== "ALL") {
+            filtered = filtered.filter((p) => p.difficulty === difficulty);
+        }
+        setFilteredProblems(filtered);
+    }, [search, difficulty, problems]);
+
+    const fetchProblems = async (fromNetwork = false) => {
         try {
             setLoading(true);
+            const cacheKey = "all_problems";
+            const cached = !fromNetwork && getCache(cacheKey);
+            let data;
 
-            // Check cache first unless force refresh
-            if (!forceRefresh) {
-                const cached = getCache("problems_list");
-                if (cached) {
-                    setProblems(cached);
-                    setLoading(false);
-                    return;
-                }
+            if (cached) {
+                data = cached;
+            } else {
+                data = await getAllProblems();
+                setCache(cacheKey, data, 30 * 60 * 1000);
             }
 
-            // Fetch from API
-            const data = await getAllProblems();
             setProblems(data);
+            setFilteredProblems(data);
             setError("");
-
-            // Store in cache (1 hour expiration)
-            setCache("problems_list", data, 60 * 60 * 1000);
         } catch (err) {
             console.error("Failed to fetch problems:", err);
-            setError("Failed to load problems. Please try again later.");
+            setError("Failed to load problems.");
         } finally {
             setLoading(false);
-            setRefreshing(false);
         }
     };
 
-    const handleRefresh = async () => {
-        setRefreshing(true);
-        await fetchProblems(true);
+    const handleRefresh = () => {
+        clearCache("all_problems");
+        fetchProblems(true);
     };
 
-    // Filter problems based on difficulty and search term
-    const filteredProblems = problems
-        .filter((problem) => {
-            const matchesDifficulty = filter === "ALL" || problem.difficulty === filter;
+    if (loading) return (
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+            <Navbar />
+            <LoadingSpinner message="Loading problems..." />
+        </div>
+    );
 
-            const matchesSearch =
-                problem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (problem.tags &&
-                    problem.tags.some((tag) =>
-                        tag.toLowerCase().includes(searchTerm.toLowerCase())
-                    ));
-
-            return matchesDifficulty && matchesSearch;
-        })
-        .sort((a, b) => {
-            if (filter !== "ALL") return a.id - b.id;
-            return a.title.localeCompare(b.title, undefined, {
-                sensitivity: "base",
-            });
-        });
-
-    const handleProblemClick = (problemId) => {
-        navigate(`/problem/${problemId}`);
-    };
-
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-black">
-                <Navbar />
-                <LoadingSpinner message="Loading problems..." />
-            </div>
-        );
-    }
+    if (error) return (
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+            <Navbar />
+            <ErrorMessage message={error} onAction={handleRefresh} actionText="Retry" />
+        </div>
+    );
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />
 
-            <main className="container mx-auto px-4 py-8 max-w-7xl">
-                <div className="flex items-center justify-between mb-8">
+            <main className="container mx-auto max-w-5xl px-6 py-12">
+                <div className="flex items-end justify-between flex-wrap gap-4 mb-6">
                     <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">Problems</h1>
-                        <p className="text-gray-400">Master your skills with algorithmic challenges</p>
+                        <h1 className="text-2xl font-semibold text-white">Problems</h1>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                            {filteredProblems.length} of {problems.length} shown
+                        </p>
                     </div>
                     <button
                         onClick={handleRefresh}
-                        disabled={refreshing}
-                        className="px-4 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors font-medium border border-zinc-700 disabled:opacity-50 flex items-center gap-2"
-                        title="Refresh problems list"
+                        className="btn-outline btn-sm"
+                        title="Refresh"
                     >
-                        <svg
-                            className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                            />
-                        </svg>
-                        {refreshing ? "Refreshing..." : "Refresh"}
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Refresh
                     </button>
                 </div>
 
-                {/* Controls */}
-                <div className="mb-6 flex flex-col md:flex-row gap-4">
-                    <SearchBar value={searchTerm} onChange={setSearchTerm} />
-                    <DifficultyFilter activeFilter={filter} onFilterChange={setFilter} />
+                {/* Filters */}
+                <div className="flex flex-col sm:flex-row gap-2 mb-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
+                        <input
+                            type="text"
+                            placeholder="Search by title or ID..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full pl-9 pr-4 py-2 bg-[#161b22] border border-white/[0.06] rounded-lg text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400/50"
+                        />
+                    </div>
+                    <select
+                        value={difficulty}
+                        onChange={(e) => setDifficulty(e.target.value)}
+                        className="px-3 py-2 bg-[#161b22] border border-white/[0.06] rounded-lg text-xs text-white focus:outline-none focus:border-emerald-400/50 cursor-pointer"
+                        style={{ appearance: "auto", WebkitAppearance: "menulist", MozAppearance: "menulist" }}
+                    >
+                        <option value="ALL" className="bg-[#0d1117]">All Difficulty</option>
+                        <option value="EASY" className="bg-[#0d1117]">Easy</option>
+                        <option value="MEDIUM" className="bg-[#0d1117]">Medium</option>
+                        <option value="HARD" className="bg-[#0d1117]">Hard</option>
+                    </select>
                 </div>
 
-                {/* Error State */}
-                {error && (
-                    <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
-                        {error}
+                {/* Problem list */}
+                {filteredProblems.length === 0 ? (
+                    <div className="rounded-xl border border-white/[0.06] bg-[#0f141c]/50 p-12 text-center">
+                        <p className="text-slate-500 text-sm">No problems match your filter.</p>
                     </div>
-                )}
-
-                {/* Problems Table */}
-                {!error && (
-                    <ProblemsTable problems={filteredProblems} onProblemClick={handleProblemClick} />
+                ) : (
+                    <div className="space-y-1.5">
+                        {filteredProblems.map((problem) => (
+                            <Link
+                                key={problem.id}
+                                to={`/problem/${problem.id}`}
+                                className="group flex items-center justify-between rounded-lg border border-white/[0.04] bg-[#161b22]/50 px-4 py-3 hover:border-white/10 hover:bg-[#161b22] transition-all"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <span className="text-xs text-slate-500 font-code w-6">
+                                        {problem.id}
+                                    </span>
+                                    <span className="text-sm font-medium text-white group-hover:text-emerald-300 transition-colors">
+                                        {problem.title}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span
+                                        className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${difficultyBg[problem.difficulty] || ""} ${getDifficultyColor(problem.difficulty)}`}
+                                    >
+                                        {problem.difficulty}
+                                    </span>
+                                    <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-emerald-400 transition-colors" />
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 )}
             </main>
         </div>

@@ -14,33 +14,39 @@ export default function CodeEditor({
     submitting,
 }) {
     return (
-        <div className="w-full md:w-1/2 flex flex-col">
-            {/* Language Selector */}
-            <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-900">
-                <div className="flex items-center gap-3">
-                    <label className="text-sm text-gray-400 font-medium">Language:</label>
-                    <LanguageSelector
-                        value={language}
-                        templates={templates}
-                        onChange={onLanguageChange}
-                    />
+        <div className="w-full md:flex-1 flex flex-col bg-[#0d1117]">
+            {/* Top toolbar — LeetCode style */}
+            <div className="flex items-center justify-between px-3 py-2 border-b border-white/[0.06] bg-[#161b22]">
+                <div className="flex items-center gap-2">
+                    <svg className="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Code</span>
                 </div>
-                <div className="text-xs text-gray-500">Monaco Editor</div>
+                <LanguageSelector
+                    value={language}
+                    templates={templates}
+                    onChange={onLanguageChange}
+                />
             </div>
 
             {/* Monaco Editor */}
-            <div className="flex-1">
+            <div className="flex-1 min-h-0">
                 <Editor
                     height="100%"
                     language={getMonacoLanguage(language)}
                     value={code}
                     onChange={onCodeChange}
                     theme="vs-dark"
-                    options={DEFAULT_EDITOR_OPTIONS}
+                    options={{
+                        ...DEFAULT_EDITOR_OPTIONS,
+                        padding: { top: 12 },
+                    }}
                 />
             </div>
 
-            {/* Action Buttons */}
+            {/* Bottom action bar */}
             <EditorActions
                 onSubmit={onSubmit}
                 submitting={submitting}

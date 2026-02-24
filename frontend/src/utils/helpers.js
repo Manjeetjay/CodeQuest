@@ -4,7 +4,7 @@ import { DIFFICULTY_COLORS, LANGUAGE_IDS, MONACO_LANGUAGES } from "./constants";
  * Returns the Tailwind CSS class for a given difficulty level
  */
 export const getDifficultyColor = (difficulty) => {
-    return DIFFICULTY_COLORS[difficulty] || "text-gray-400";
+    return DIFFICULTY_COLORS[difficulty] || "text-slate-400";
 };
 
 /**

@@ -2,21 +2,24 @@ export default function ProblemTabs({ activeTab, onTabChange, examplesCount, sub
     const tabs = [
         { id: "description", label: "Description" },
         { id: "examples", label: `Examples (${examplesCount})` },
-        { id: "solutions", label: `My Solutions (${submissionsCount})` },
+        { id: "solutions", label: `Submissions (${submissionsCount})` },
     ];
 
     return (
-        <div className="flex gap-4 border-b border-zinc-800 mb-6">
+        <div className="flex gap-1 mb-5 border-b border-white/10 pb-0">
             {tabs.map((tab) => (
                 <button
                     key={tab.id}
-                    className={`px-4 py-2 font-medium transition-colors ${activeTab === tab.id
-                            ? "text-white border-b-2 border-white"
-                            : "text-gray-400 hover:text-white"
+                    className={`px-3 py-2 text-xs font-medium transition-colors relative ${activeTab === tab.id
+                            ? "text-white"
+                            : "text-slate-500 hover:text-slate-300"
                         }`}
                     onClick={() => onTabChange(tab.id)}
                 >
                     {tab.label}
+                    {activeTab === tab.id && (
+                        <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-emerald-400 rounded-full" />
+                    )}
                 </button>
             ))}
         </div>

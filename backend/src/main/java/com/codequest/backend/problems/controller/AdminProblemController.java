@@ -1,5 +1,7 @@
 package com.codequest.backend.problems.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,5 +73,9 @@ public class AdminProblemController {
         return problemService.updateProblem(id, request);
     }
 
-    // TODO: Template and Testcase management endpoints will be added here
+    @PostMapping("/bulk-upload")
+    public ResponseEntity<String> bulkUploadProblems(@RequestBody List<CreateProblemDto> problems) {
+        log.info("Admin bulk uploading problems: {}", problems.size());
+        return problemService.bulkUploadProblems(problems);
+    }
 }

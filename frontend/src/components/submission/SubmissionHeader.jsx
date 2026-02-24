@@ -1,50 +1,56 @@
+import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
+
 export default function SubmissionHeader({ submission, onBack }) {
+    const isAccepted = submission.status === "COMPLETED" || submission.status === "ACCEPTED";
+
     const getStatusBadge = (status) => {
-        const statusStyles = {
-            ACCEPTED: "bg-green-500/20 text-green-400 border-green-500/50",
-            WRONG_ANSWER: "bg-red-500/20 text-red-400 border-red-500/50",
-            TIME_LIMIT_EXCEEDED: "bg-yellow-500/20 text-yellow-400 border-yellow-500/50",
-            RUNTIME_ERROR: "bg-orange-500/20 text-orange-400 border-orange-500/50",
-            COMPILATION_ERROR: "bg-purple-500/20 text-purple-400 border-purple-500/50",
-            PENDING: "bg-blue-500/20 text-blue-400 border-blue-500/50",
-            PROCESSING: "bg-blue-500/20 text-blue-400 border-blue-500/50",
+        const styles = {
+            ACCEPTED: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+            COMPLETED: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+            WRONG_ANSWER: "bg-red-500/15 text-red-400 border-red-500/30",
+            FAILED: "bg-red-500/15 text-red-400 border-red-500/30",
+            TIME_LIMIT_EXCEEDED: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+            RUNTIME_ERROR: "bg-orange-500/15 text-orange-400 border-orange-500/30",
+            COMPILATION_ERROR: "bg-purple-500/15 text-purple-400 border-purple-500/30",
+            PENDING: "bg-sky-500/15 text-sky-400 border-sky-500/30",
+            PROCESSING: "bg-sky-500/15 text-sky-400 border-sky-500/30",
         };
 
         return (
             <span
-                className={`px-4 py-2 rounded-lg border font-medium text-sm ${statusStyles[status] || "bg-gray-500/20 text-gray-400 border-gray-500/50"
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md border text-xs font-semibold ${styles[status] || "bg-slate-500/15 text-slate-300 border-slate-500/30"
                     }`}
             >
+                {isAccepted ? (
+                    <CheckCircle2 className="w-3 h-3" />
+                ) : (
+                    <XCircle className="w-3 h-3" />
+                )}
                 {status?.replace(/_/g, " ")}
             </span>
         );
     };
 
     return (
-        <div className="mb-8">
+        <div className="mb-6">
             <button
                 onClick={onBack}
-                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-4"
+                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors mb-3"
             >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                    />
-                </svg>
+                <ArrowLeft className="w-3.5 h-3.5" />
                 Back to Problem
             </button>
 
-            <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center justify-between flex-wrap gap-3">
                 <div>
-                    <h1 className="text-3xl font-bold text-white mb-2">
+                    <h1 className="text-xl font-semibold text-white">
                         Submission #{submission.id}
                     </h1>
-                    <p className="text-gray-400">Problem #{submission.problemId}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                        Problem #{submission.problemId}
+                    </p>
                 </div>
-                <div className="flex items-center gap-4">{getStatusBadge(submission.status)}</div>
+                {getStatusBadge(submission.status)}
             </div>
         </div>
     );

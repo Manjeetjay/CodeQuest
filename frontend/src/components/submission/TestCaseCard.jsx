@@ -1,36 +1,27 @@
-export default function TestCaseCard({ result, index }) {
-    const getTestResultIcon = (passed) => {
-        if (passed === true) {
-            return (
-                <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                    />
-                </svg>
-            );
-        }
-        return (
-            <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                />
-            </svg>
-        );
-    };
+import { CheckCircle2, XCircle } from "lucide-react";
 
+export default function TestCaseCard({ result, index }) {
     return (
-        <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-colors">
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                    {getTestResultIcon(result.passed)}
-                    <span className="font-semibold text-white">Test Case {index + 1}</span>
+        <div
+            className={`rounded-lg border p-4 ${result.passed
+                    ? "border-emerald-400/15 bg-emerald-500/[0.03]"
+                    : "border-red-400/15 bg-red-500/[0.03]"
+                }`}
+        >
+            {/* Header */}
+            <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                    {result.passed ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                        <XCircle className="w-4 h-4 text-red-400" />
+                    )}
+                    <span className="text-xs font-semibold text-white">
+                        Case {index + 1}
+                    </span>
                 </div>
                 <span
-                    className={`text-sm font-medium ${result.passed ? "text-green-400" : "text-red-400"
+                    className={`text-[11px] font-medium ${result.passed ? "text-emerald-400" : "text-red-400"
                         }`}
                 >
                     {result.statusDescription || (result.passed ? "Accepted" : "Failed")}
@@ -39,71 +30,81 @@ export default function TestCaseCard({ result, index }) {
 
             {/* Input */}
             {result.input && (
-                <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1 font-medium">Input:</div>
-                    <div className="bg-black p-3 rounded-lg font-mono text-sm text-gray-300 whitespace-pre-wrap border border-zinc-700">
-                        {result.input}
+                <div className="mb-2.5">
+                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        Input
                     </div>
+                    <pre className="bg-black/30 p-2.5 rounded text-xs font-code text-slate-300 whitespace-pre-wrap border border-white/[0.04]">
+                        {result.input}
+                    </pre>
                 </div>
             )}
 
             {/* Expected Output */}
             {result.expectedOutput && (
-                <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1 font-medium">Expected Output:</div>
-                    <div className="bg-black p-3 rounded-lg font-mono text-sm text-blue-400 whitespace-pre-wrap border border-blue-500/30">
-                        {result.expectedOutput}
+                <div className="mb-2.5">
+                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        Expected
                     </div>
+                    <pre className="bg-black/30 p-2.5 rounded text-xs font-code text-sky-300 whitespace-pre-wrap border border-sky-500/10">
+                        {result.expectedOutput}
+                    </pre>
                 </div>
             )}
 
-            {/* Actual Output (Your Output) */}
+            {/* Your Output */}
             {result.stdout && (
-                <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1 font-medium">Your Output:</div>
-                    <div
-                        className={`bg-black p-3 rounded-lg font-mono text-sm whitespace-pre-wrap border ${result.passed
-                                ? "text-green-400 border-green-500/30"
-                                : "text-red-400 border-red-500/30"
+                <div className="mb-2.5">
+                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        Your Output
+                    </div>
+                    <pre
+                        className={`bg-black/30 p-2.5 rounded text-xs font-code whitespace-pre-wrap border ${result.passed
+                                ? "text-emerald-300 border-emerald-500/10"
+                                : "text-red-300 border-red-500/10"
                             }`}
                     >
                         {result.stdout}
-                    </div>
+                    </pre>
                 </div>
             )}
 
             {/* Error Output */}
             {result.stderr && (
-                <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1 font-medium">Error Output:</div>
-                    <div className="bg-red-500/10 p-3 rounded-lg font-mono text-sm text-red-400 whitespace-pre-wrap border border-red-500/30">
-                        {result.stderr}
+                <div className="mb-2.5">
+                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        Error
                     </div>
+                    <pre className="bg-red-500/5 p-2.5 rounded text-xs font-code text-red-300 whitespace-pre-wrap border border-red-500/10">
+                        {result.stderr}
+                    </pre>
                 </div>
             )}
 
             {/* Compilation Output */}
             {result.compileOutput && (
-                <div className="mb-3">
-                    <div className="text-sm text-gray-400 mb-1 font-medium">Compilation Output:</div>
-                    <div className="bg-purple-500/10 p-3 rounded-lg font-mono text-sm text-purple-400 whitespace-pre-wrap border border-purple-500/30">
-                        {result.compileOutput}
+                <div className="mb-2.5">
+                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                        Compile
                     </div>
+                    <pre className="bg-purple-500/5 p-2.5 rounded text-xs font-code text-purple-300 whitespace-pre-wrap border border-purple-500/10">
+                        {result.compileOutput}
+                    </pre>
                 </div>
             )}
 
-            {/* Performance Stats */}
+            {/* Performance */}
             {(result.time !== null || result.memory !== null) && (
-                <div className="flex gap-4 mt-3 pt-3 border-t border-zinc-800">
+                <div className="flex gap-4 mt-2 pt-2 border-t border-white/[0.04]">
                     {result.time !== null && (
-                        <div className="text-sm text-gray-400">
+                        <span className="text-[10px] text-slate-500">
                             <span className="font-medium">Time:</span> {result.time}s
-                        </div>
+                        </span>
                     )}
                     {result.memory !== null && (
-                        <div className="text-sm text-gray-400">
+                        <span className="text-[10px] text-slate-500">
                             <span className="font-medium">Memory:</span> {result.memory}KB
-                        </div>
+                        </span>
                     )}
                 </div>
             )}

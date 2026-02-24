@@ -31,39 +31,31 @@ export default function ProblemSolving() {
         fetchMySubmissions();
     }, [id]);
 
-    // LocalStorage keys for persistence
     const getStorageKey = (suffix) => `problem_${id}_${suffix}`;
 
     const fetchProblem = async () => {
         try {
             setLoading(true);
             const cacheKey = `problem_${id}`;
-
-            // Check cache first
             const cached = getCache(cacheKey);
             let data;
 
             if (cached) {
                 data = cached;
             } else {
-                // Fetch from API
                 data = await getProblemById(id);
-                // Store in cache (30 minutes)
                 setCache(cacheKey, data, 30 * 60 * 1000);
             }
 
             setProblem(data);
 
-            // Try to load from localStorage first
             const savedCode = localStorage.getItem(getStorageKey("code"));
             const savedLanguage = localStorage.getItem(getStorageKey("language"));
 
             if (savedCode && savedLanguage) {
-                // Restore from localStorage
                 setCode(savedCode);
                 setSelectedLanguage(savedLanguage);
             } else if (data.templates && data.templates.length > 0) {
-                // Set default language and template
                 const defaultTemplate = data.templates[0];
                 setSelectedLanguage(defaultTemplate.language);
                 setCode(defaultTemplate.template);
@@ -84,16 +76,12 @@ export default function ProblemSolving() {
             const email = localStorage.getItem("email");
             if (email) {
                 const cacheKey = `problem_${id}_submissions`;
-
-                // Check cache first
                 const cached = getCache(cacheKey);
                 if (cached) {
                     setMySubmissions(cached);
                 } else {
-                    // Fetch from API
                     const submissions = await getMySubmissionsForProblem(id, email);
                     setMySubmissions(submissions);
-                    // Store in cache (10 minutes)
                     setCache(cacheKey, submissions, 10 * 60 * 1000);
                 }
             }
@@ -124,7 +112,6 @@ export default function ProblemSolving() {
     const loadSubmissionIntoEditor = (submission) => {
         setCode(submission.code);
         localStorage.setItem(getStorageKey("code"), submission.code);
-
         const languageName = getLanguageName(submission.languageId);
         setSelectedLanguage(languageName);
         localStorage.setItem(getStorageKey("language"), languageName);
@@ -139,7 +126,6 @@ export default function ProblemSolving() {
 
         try {
             setSubmitting(true);
-
             const submission = {
                 problemId: parseInt(id),
                 languageId: getLanguageId(selectedLanguage),
@@ -147,13 +133,8 @@ export default function ProblemSolving() {
                 email: localStorage.getItem("email"),
             };
 
-            console.log(submission);
-
             const result = await createSubmission(submission);
-
-            // Clear submissions cache to force fresh fetch
             clearCache(`problem_${id}_submissions`);
-
             navigate(`/submission/${result.id}`);
         } catch (err) {
             console.error("Submission failed:", err);
@@ -171,7 +152,7 @@ export default function ProblemSolving() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-black">
+            <div className="h-screen flex flex-col bg-[#0b0f14] text-slate-100">
                 <Navbar />
                 <LoadingSpinner message="Loading problem..." />
             </div>
@@ -180,7 +161,7 @@ export default function ProblemSolving() {
 
     if (error || !problem) {
         return (
-            <div className="min-h-screen bg-black">
+            <div className="h-screen flex flex-col bg-[#0b0f14] text-slate-100">
                 <Navbar />
                 <ErrorMessage
                     message={error || "Problem not found"}
@@ -192,13 +173,13 @@ export default function ProblemSolving() {
     }
 
     return (
-        <div className="min-h-screen bg-black flex flex-col">
+        <div className="h-screen flex flex-col bg-[#0b0f14] text-slate-100 overflow-hidden">
             <Navbar />
 
-            <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-                {/* Left Panel - Problem Description */}
-                <div className="w-full md:w-1/2 border-r border-zinc-800 overflow-y-auto">
-                    <div className="p-6">
+            <div className="flex-1 flex flex-col md:flex-row min-h-0">
+                {/* Left Panel — Problem Description */}
+                <div className="w-full md:w-[45%] lg:w-[42%] border-r border-white/[0.06] overflow-y-auto">
+                    <div className="p-4 pb-8">
                         <ProblemHeader problem={problem} onBack={() => navigate("/problems")} />
 
                         <ProblemTabs
@@ -225,7 +206,7 @@ export default function ProblemSolving() {
                     </div>
                 </div>
 
-                {/* Right Panel - Code Editor */}
+                {/* Right Panel — Code Editor */}
                 <CodeEditor
                     code={code}
                     language={selectedLanguage}

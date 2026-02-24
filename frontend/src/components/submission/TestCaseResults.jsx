@@ -1,54 +1,129 @@
 import TestCaseCard from "./TestCaseCard";
 import { getLanguageName } from "../../utils/helpers";
+import { CheckCircle2, XCircle, Lock } from "lucide-react";
 
 export default function TestCaseResults({ submission, loading }) {
     const isProcessing = submission?.status === "PENDING" || submission?.status === "PROCESSING";
 
     if (isProcessing) {
         return (
-            <div className="mb-8 p-6 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+            <div className="mb-8 p-5 border border-sky-400/20 bg-sky-500/5 rounded-xl">
                 <div className="flex items-center gap-3">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-400"></div>
-                    <div className="text-blue-400 font-medium">
-                        Your submission is being processed. This page will update automatically...
-                    </div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-sky-400" />
+                    <span className="text-sky-200 text-sm font-medium">
+                        Processing your submission...
+                    </span>
                 </div>
             </div>
         );
     }
 
+    const allPassed = submission?.passedTests === submission?.totalTests;
+    const sampleResults = submission?.results?.filter((r) => r.sample) || [];
+    const hiddenResults = submission?.results?.filter((r) => !r.sample) || [];
+    const hiddenPassed = hiddenResults.filter((r) => r.passed).length;
+
     return (
         <>
-            {/* Statistics Card */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
-                    <div className="text-gray-400 text-sm mb-1">Status</div>
-                    <div className="text-2xl font-bold text-white">
-                        {submission?.status?.replace(/_/g, " ") || "Unknown"}
-                    </div>
-                </div>
-                <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
-                    <div className="text-gray-400 text-sm mb-1">Test Cases</div>
-                    <div className="text-2xl font-bold text-white">
-                        {submission?.passedTests ?? 0} / {submission?.totalTests ?? 0}
-                    </div>
-                </div>
-                <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
-                    <div className="text-gray-400 text-sm mb-1">Language</div>
-                    <div className="text-2xl font-bold text-white">
-                        {submission?.languageId ? getLanguageName(submission.languageId) : "Unknown"}
+            {/* Overall verdict banner */}
+            <div
+                className={`mb-6 p-5 rounded-xl border ${allPassed
+                        ? "border-emerald-400/20 bg-emerald-500/5"
+                        : "border-red-400/20 bg-red-500/5"
+                    }`}
+            >
+                <div className="flex items-center gap-3">
+                    {allPassed ? (
+                        <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    ) : (
+                        <XCircle className="w-6 h-6 text-red-400" />
+                    )}
+                    <div>
+                        <div
+                            className={`text-lg font-semibold ${allPassed ? "text-emerald-400" : "text-red-400"
+                                }`}
+                        >
+                            {allPassed ? "Accepted" : "Wrong Answer"}
+                        </div>
+                        <div className="text-xs text-slate-400 mt-0.5">
+                            {submission?.passedTests ?? 0} / {submission?.totalTests ?? 0} test
+                            cases passed
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* only those testcase which are sample */}
-            {submission?.results && submission.results.length > 0 && (
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-white mb-4">Test Results</h2>
-                    <div className="space-y-4">
-                        {submission.results.map((result, index) => (
+            {/* Stats row */}
+            <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
+                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">
+                        Status
+                    </div>
+                    <div className="text-sm font-semibold text-white">
+                        {submission?.status?.replace(/_/g, " ") || "Unknown"}
+                    </div>
+                </div>
+                <div className="rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
+                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">
+                        Tests
+                    </div>
+                    <div className="text-sm font-semibold text-white">
+                        {submission?.passedTests ?? 0} / {submission?.totalTests ?? 0}
+                    </div>
+                </div>
+                <div className="rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
+                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">
+                        Language
+                    </div>
+                    <div className="text-sm font-semibold text-white">
+                        {submission?.languageId
+                            ? getLanguageName(submission.languageId)
+                            : "Unknown"}
+                    </div>
+                </div>
+            </div>
+
+            {/* Sample test case details */}
+            {sampleResults.length > 0 && (
+                <div className="mb-6">
+                    <h2 className="text-sm font-semibold text-white mb-3">
+                        Sample Test Cases
+                    </h2>
+                    <div className="space-y-3">
+                        {sampleResults.map((result, index) => (
                             <TestCaseCard key={index} result={result} index={index} />
                         ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Hidden test cases summary */}
+            {hiddenResults.length > 0 && (
+                <div className="mb-6 rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Lock className="w-3.5 h-3.5 text-slate-500" />
+                        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Hidden Test Cases
+                        </h3>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="text-sm text-white font-medium">
+                            {hiddenPassed} / {hiddenResults.length} passed
+                        </div>
+                        <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                            <div
+                                className={`h-full rounded-full transition-all duration-500 ${hiddenPassed === hiddenResults.length
+                                        ? "bg-emerald-400"
+                                        : "bg-red-400"
+                                    }`}
+                                style={{
+                                    width: `${hiddenResults.length > 0
+                                            ? (hiddenPassed / hiddenResults.length) * 100
+                                            : 0
+                                        }%`,
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

@@ -4,15 +4,15 @@ export default function ProblemsTable({ problems, onProblemClick }) {
     return (
         <>
             {/* Stats */}
-            <div className="mb-4 text-gray-400">
+            <div className="mb-4 text-slate-400 text-sm">
                 Showing {problems.length} problem{problems.length !== 1 ? "s" : ""}
             </div>
 
             {/* Problems Table - LeetCode Style */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden">
+            <div className="glass-card rounded-2xl overflow-hidden">
                 <table className="w-full">
-                    <thead className="border-b border-zinc-800">
-                        <tr className="text-left text-sm text-gray-400">
+                    <thead className="border-b border-white/10">
+                        <tr className="text-left text-xs uppercase tracking-[0.2em] text-slate-400">
                             <th className="px-4 py-3 font-medium w-16">Status</th>
                             <th className="px-4 py-3 font-medium">Title</th>
                             <th className="px-4 py-3 font-medium w-32">Difficulty</th>
@@ -30,7 +30,7 @@ export default function ProblemsTable({ problems, onProblemClick }) {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="px-4 py-12 text-center text-gray-500">
+                                <td colSpan="4" className="px-4 py-12 text-center text-slate-500">
                                     No problems found matching your criteria.
                                 </td>
                             </tr>
