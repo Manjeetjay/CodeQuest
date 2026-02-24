@@ -6,6 +6,7 @@ import ErrorMessage from "../../components/shared/ErrorMessage";
 import { getAllProblems } from "../../api/api";
 import { getDifficultyColor } from "../../utils/helpers";
 import { getCache, setCache, clearCache } from "../../utils/cache";
+import { useAuth } from "../../context/AuthContext";
 import { Search, RefreshCw, ArrowRight } from "lucide-react";
 
 const difficultyBg = {
@@ -16,6 +17,7 @@ const difficultyBg = {
 
 export default function Problems() {
     const navigate = useNavigate();
+    const { isAuthenticated, loading: authLoading } = useAuth();
     const [problems, setProblems] = useState([]);
     const [filteredProblems, setFilteredProblems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -23,9 +25,14 @@ export default function Problems() {
     const [search, setSearch] = useState("");
     const [difficulty, setDifficulty] = useState("ALL");
 
+    // Only fetch problems after auth is fully loaded and user is authenticated
     useEffect(() => {
-        fetchProblems();
-    }, []);
+        if (!authLoading && isAuthenticated) {
+            fetchProblems();
+        } else if (!authLoading && !isAuthenticated) {
+            navigate("/login", { replace: true });
+        }
+    }, [authLoading, isAuthenticated]);
 
     useEffect(() => {
         let filtered = problems;

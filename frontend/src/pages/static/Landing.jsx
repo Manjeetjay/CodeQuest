@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
+import ServerStatus from "./ServerStatus";
 
 const featureCards = [
     { title: "Smart Search", desc: "Filter by difficulty, search by title.", icon: Search },
@@ -56,9 +57,9 @@ export default function Landing() {
                     <div className="container mx-auto px-6 pt-20 pb-16">
                         <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">
                             <div className="space-y-6">
-                                <div className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-slate-400">
-                                    <Sparkles className="h-3 w-3 text-emerald-400" />
-                                    Practice with purpose
+                                <div className="flex flex-wrap items-center gap-3">
+                                    {/* when someone hovers on it this should show the text "Server Status" */}
+                                    <ServerStatus />
                                 </div>
                                 <h1 className="text-5xl md:text-6xl font-semibold leading-[1.08] tracking-tight">
                                     Code. Submit.{" "}

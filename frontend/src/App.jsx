@@ -13,6 +13,7 @@ import Problems from "./pages/problem/Problems";
 import ProblemSolving from "./pages/problem/ProblemSolving";
 import SubmissionResult from "./pages/problem/SubmissionResult";
 import NotFound from "./pages/static/NotFound";
+import ServerStatus from "./pages/static/ServerStatus";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/guidelines" element={<CommunityGuidelines />} />
+          <Route path="/server-status" element={<ServerStatus />} />
 
           {/* Protected Routes */}
           <Route

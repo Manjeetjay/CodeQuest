@@ -1,11 +1,9 @@
 import axios from "axios";
 import { logger } from "../utils/logger";
 
-
-
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
-    timeout: 10000,
+    timeout: 15000,
     headers: {
         "Content-Type": "application/json",
     },
@@ -14,15 +12,19 @@ const axiosInstance = axios.create({
 // Request Interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-        const auth = JSON.parse(localStorage.getItem("auth"));
-
-        if (auth?.token && auth?.type) {
-            config.headers.Authorization = `${auth.type} ${auth.token}`;
+        try {
+            const raw = localStorage.getItem("auth");
+            if (raw) {
+                const auth = JSON.parse(raw);
+                if (auth?.token && auth?.type) {
+                    config.headers.Authorization = `${auth.type} ${auth.token}`;
+                }
+            }
+        } catch (e) {
+            // Corrupt localStorage entry — ignore
         }
 
-        // Log API request
         logger.apiRequest(config.method.toUpperCase(), config.url, config.data);
-
         return config;
     },
     (error) => {
@@ -34,7 +36,6 @@ axiosInstance.interceptors.request.use(
 // Response Interceptor
 axiosInstance.interceptors.response.use(
     (response) => {
-        // Log successful API response
         logger.apiResponse(
             response.config.method.toUpperCase(),
             response.config.url,
@@ -46,23 +47,33 @@ axiosInstance.interceptors.response.use(
     (error) => {
         const status = error?.response?.status;
 
-        // Log API error
         logger.apiError(
-            error.config?.method?.toUpperCase() || 'UNKNOWN',
-            error.config?.url || 'unknown',
+            error.config?.method?.toUpperCase() || "UNKNOWN",
+            error.config?.url || "unknown",
             error
         );
 
-        // Handle authentication errors — only redirect if not already on an auth page
-        if (status === 401 || status === 403) {
-            const currentPath = window.location.pathname;
-            const isAuthPage = currentPath === "/login" || currentPath === "/register";
-            if (!isAuthPage) {
-                logger.warn("Authentication failed - redirecting to login", { status });
-                localStorage.removeItem("auth");
-                window.location.href = "/login";
+        // Only force-logout on 401 from protected endpoints (not auth endpoints)
+        if (status === 401) {
+            const url = error.config?.url || "";
+            const isAuthEndpoint = url.includes("/api/auth/");
+
+            if (!isAuthEndpoint) {
+                // Check if token actually exists — if it does but got 401,
+                // the token is invalid/expired, so clear it
+                const hasAuth = !!localStorage.getItem("auth");
+                if (hasAuth) {
+                    logger.warn("Token rejected by server — clearing session", { status, url });
+                    localStorage.removeItem("auth");
+                    // Use soft redirect so React state stays consistent
+                    // Delay slightly to avoid clearing state mid-render
+                    setTimeout(() => {
+                        window.location.replace("/login");
+                    }, 100);
+                }
             }
         }
+        // Don't redirect on 403 — that's a permissions issue, not an auth issue
 
         return Promise.reject(error);
     }
