@@ -20,13 +20,10 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    // private final EmailVerificationService emailVerificationService;
 
     @Transactional
     public AuthResponseDto register(RegisterRequestDto request) {
 
-        // Verify email first before any database checks
-        // emailVerificationService.verifyEmail(request.getEmail());
 
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email is already in use with another account");
