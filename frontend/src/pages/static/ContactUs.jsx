@@ -137,7 +137,7 @@ export default function ContactUs() {
                 </section>
 
                 {/* Community */}
-                <section className="pb-24 md:pb-32 border-t border-white/[0.06] pt-24 md:pt-32">
+                {/* <section className="pb-24 md:pb-32 border-t border-white/[0.06] pt-24 md:pt-32">
                     <div className="mb-10">
                         <h2 className="text-2xl font-semibold text-white mb-3">Join the community</h2>
                         <p className="text-base text-slate-400 max-w-lg">
@@ -167,8 +167,8 @@ export default function ContactUs() {
                                 </a>
                             );
                         })}
-                    </div> */}
-                </section>
+                    </div>
+                </section> */}
 
                 {/* FAQ */}
                 <section className="pb-24 md:pb-32 border-t border-white/[0.06] pt-24 md:pt-32">

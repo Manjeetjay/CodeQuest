@@ -94,13 +94,17 @@ export const clearAllCache = () => {
 
         // Clear all except auth-related keys
         keys.forEach((key) => {
-            // Keep these keys
-            if (key === "token" || key === "email" || key.startsWith("problem_")) {
-                // Keep problem code/language localStorage (problem_X_code, problem_X_language)
-                if (key.includes("_code") || key.includes("_language")) {
-                    return;
-                }
+            // Keep auth keys
+            if (key === "auth" || key === "email") {
+                return; // skip removal
             }
+
+            // Keep problem code/language localStorage (problem_X_code, problem_X_language)
+            if (key.startsWith("problem_") && (key.includes("_code") || key.includes("_language"))) {
+                return; // skip removal
+            }
+
+            // Remove other keys
             localStorage.removeItem(key);
         });
 
@@ -141,7 +145,7 @@ export const getCacheStats = () => {
     try {
         const keys = Object.keys(localStorage);
         const cacheKeys = keys.filter(
-            (key) => key !== CACHE_VERSION_KEY && key !== "token" && key !== "email"
+            (key) => key !== CACHE_VERSION_KEY && key !== "auth" && key !== "email"
         );
 
         let totalSize = 0;
