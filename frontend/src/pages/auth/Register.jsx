@@ -3,10 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
 import { Code2, ArrowRight, Eye, EyeOff } from "lucide-react";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 export default function Register() {
     const navigate = useNavigate();
     const { register, isAuthenticated } = useAuth();
+    useDocumentHead({
+        title: "Create Account | CodeQuest",
+        description: "Sign up for CodeQuest – create your free account and start solving coding challenges today.",
+    });
     const [formData, setFormData] = useState({
         username: "",
         email: "",

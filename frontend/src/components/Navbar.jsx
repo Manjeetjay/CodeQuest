@@ -25,7 +25,7 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className="border-b border-white/[0.06] bg-[#0b0f14] sticky top-0 z-50">
+        <nav className="border-b border-white/[0.06] bg-[#0b0f14] sticky top-0 z-50" aria-label="Main navigation">
             <div className="container mx-auto px-6">
                 <div className="flex justify-between items-center h-14">
                     {/* Logo */}

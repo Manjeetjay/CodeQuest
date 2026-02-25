@@ -8,6 +8,7 @@ import {
     ShieldAlert,
 } from "lucide-react";
 import Navbar from "../../components/Navbar";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 const encouraged = [
     "Solve independently before reading help",
@@ -37,6 +38,10 @@ const faqs = [
 ];
 
 export default function CommunityGuidelines() {
+    useDocumentHead({
+        title: "Community Guidelines | CodeQuest",
+        description: "CodeQuest community rules. Learn what's encouraged, what's prohibited, and how enforcement works. Play fair and learn honestly.",
+    });
     return (
         <div className="min-h-screen bg-[#0b0f14] text-slate-100">
             <Navbar />

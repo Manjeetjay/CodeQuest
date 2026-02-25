@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 export default function NotFound() {
     const { isAuthenticated, loading } = useAuth();
+    useDocumentHead({ title: "Page Not Found | CodeQuest" });
     const navigate = useNavigate();
     const [countdown, setCountdown] = useState(3);
 

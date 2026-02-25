@@ -1,0 +1,12 @@
+# CodeQuest Robots.txt
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /problems
+Disallow: /problem/
+Disallow: /submission/
+Disallow: /server-status
+
+# Sitemap
+Sitemap: https://codequest-x99b.onrender.com/sitemap.xml

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BadgeHelp, Bug, Handshake, MessageCircle, ShieldAlert, MessagesSquare, Github, Megaphone } from "lucide-react";
 import Navbar from "../../components/Navbar";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 const channels = [
     {
@@ -38,6 +39,10 @@ const faqs = [
 
 export default function ContactUs() {
     const [activeId, setActiveId] = useState(channels[0].id);
+    useDocumentHead({
+        title: "Contact Us | CodeQuest",
+        description: "Get in touch with CodeQuest. Reach our product support, safety team, or partnership channels. Find quick answers to common questions.",
+    });
     const active = channels.find((c) => c.id === activeId) || channels[0];
     const Icon = active.icon;
 

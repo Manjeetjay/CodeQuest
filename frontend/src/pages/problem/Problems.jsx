@@ -8,6 +8,7 @@ import { getDifficultyColor } from "../../utils/helpers";
 import { getCache, setCache, clearCache } from "../../utils/cache";
 import { useAuth } from "../../context/AuthContext";
 import { Search, RefreshCw, ArrowRight } from "lucide-react";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 const difficultyBg = {
     EASY: "bg-[#00b8a3]/10",
@@ -18,6 +19,7 @@ const difficultyBg = {
 export default function Problems() {
     const navigate = useNavigate();
     const { isAuthenticated, loading: authLoading } = useAuth();
+    useDocumentHead({ title: "Problems | CodeQuest" });
     const [problems, setProblems] = useState([]);
     const [filteredProblems, setFilteredProblems] = useState([]);
     const [loading, setLoading] = useState(true);

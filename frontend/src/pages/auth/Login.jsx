@@ -3,10 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
 import { Code2, ArrowRight } from "lucide-react";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 export default function Login() {
     const navigate = useNavigate();
     const { login, isAuthenticated } = useAuth();
+    useDocumentHead({
+        title: "Login | CodeQuest",
+        description: "Log in to your CodeQuest account to access coding challenges and track your progress.",
+    });
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);

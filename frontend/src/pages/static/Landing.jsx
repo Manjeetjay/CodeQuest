@@ -17,6 +17,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
 import ServerStatus from "./ServerStatus";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 const featureCards = [
     { title: "Smart Search", desc: "Filter by difficulty, search by title.", icon: Search },
@@ -42,6 +43,10 @@ const codeLines = [
 
 export default function Landing() {
     const { isAuthenticated } = useAuth();
+    useDocumentHead({
+        title: "CodeQuest – Practice Coding Challenges & Improve Skills",
+        description: "A focused workspace for solving coding challenges with real-time feedback. Filter by difficulty, code in multiple languages, and track your progress.",
+    });
     const primaryHref = isAuthenticated ? "/problems" : "/register";
     const primaryLabel = isAuthenticated ? "Open Problems" : "Start Free";
     const secondaryHref = isAuthenticated ? "/about" : "/login";
@@ -180,7 +185,7 @@ export default function Landing() {
                 </section>
             </main>
 
-            <footer className="border-t border-white/[0.06] py-6">
+            <footer className="border-t border-white/[0.06] py-6" aria-label="Site footer">
                 <div className="container mx-auto px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
                     <p className="text-xs text-slate-600">© 2026 CodeQuest</p>
                     <div className="flex gap-6 text-xs text-slate-600">

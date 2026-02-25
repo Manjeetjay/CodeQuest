@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, BookCheck, BrainCircuit, Layers, ShieldCheck, Lock, Target, Zap, BarChart3, Crosshair, Ruler, Scale } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
+import useDocumentHead from "../../utils/useDocumentHead";
 
 const platformLayers = [
     { title: "Identity & Access", icon: ShieldCheck },
@@ -18,6 +19,10 @@ const principles = [
 
 export default function About() {
     const { isAuthenticated } = useAuth();
+    useDocumentHead({
+        title: "About | CodeQuest",
+        description: "Learn about CodeQuest – a repeatable coding practice system. Discover our architecture, workflow, and principles for becoming a better programmer.",
+    });
     const actionHref = isAuthenticated ? "/problems" : "/register";
     const actionLabel = isAuthenticated ? "Go to problems" : "Create account";
 
