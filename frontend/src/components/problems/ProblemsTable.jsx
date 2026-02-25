@@ -4,7 +4,7 @@ export default function ProblemsTable({ problems, onProblemClick }) {
     return (
         <>
             {/* Stats */}
-            <div className="mb-4 text-slate-400 text-sm">
+            <div className="mb-4 text-slate-400 text-md">
                 Showing {problems.length} problem{problems.length !== 1 ? "s" : ""}
             </div>
 

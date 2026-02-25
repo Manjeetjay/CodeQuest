@@ -31,7 +31,7 @@ export default function Navbar() {
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 text-white hover:text-white transition-colors">
                         <Code2 className="h-5 w-5 text-emerald-400" />
-                        <span className="text-sm font-semibold tracking-tight">CodeQuest</span>
+                        <span className="text-md font-semibold tracking-tight">CodeQuest</span>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -40,7 +40,7 @@ export default function Navbar() {
                             <Link
                                 key={link.to}
                                 to={link.to}
-                                className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-md hover:bg-white/[0.04] transition-colors"
+                                className="px-3 py-1.5 text-sm font-medium text-slate-400 hover:text-white rounded-md hover:bg-white/[0.04] transition-colors"
                             >
                                 {link.label}
                             </Link>

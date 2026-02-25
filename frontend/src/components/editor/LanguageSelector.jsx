@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+
 export default function LanguageSelector({ value, templates, onChange }) {
+
     if (!templates || templates.length === 0) {
         return (
             <span className="px-2 py-1 bg-white/5 border border-white/[0.08] rounded text-slate-200 text-xs">
@@ -7,22 +10,25 @@ export default function LanguageSelector({ value, templates, onChange }) {
         );
     }
 
-    // Default to first template if value is empty or doesn't match any template
-    const effectiveValue = value && templates.some(t => t.language === value)
-        ? value
-        : templates[0].language;
+    useEffect(() => {
+        const exists = templates.some(t => t.language === value);
+
+        if (!exists) {
+            onChange(templates[0].language);
+        }
+    }, [value, templates, onChange]);
 
     return (
         <select
-            value={effectiveValue}
+            value={value || templates[0].language}
             onChange={(e) => onChange(e.target.value)}
             className="min-w-[80px] px-2 py-1 border border-white/[0.08] rounded text-xs focus:outline-none focus:border-emerald-400/50 cursor-pointer"
             style={{
                 appearance: "auto",
                 WebkitAppearance: "menulist",
                 MozAppearance: "menulist",
-                backgroundColor: "#161b22",
-                color: "#ffffff",
+                backgroundColor: "#000000ff",
+                color: "#ffffffff",
             }}
         >
             {templates.map((template) => (

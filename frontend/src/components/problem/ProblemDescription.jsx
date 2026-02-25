@@ -5,7 +5,7 @@ export default function ProblemDescription({ description }) {
     const paragraphs = description.split(/\n\n+/);
 
     return (
-        <div className="text-sm text-slate-300 leading-relaxed space-y-3">
+        <div className="px-4 text-md text-slate-300 leading-relaxed space-y-3">
             {paragraphs.map((para, i) => {
                 // Check if it looks like a constraints block
                 const isConstraints = para.toLowerCase().startsWith("constraints");
@@ -13,7 +13,7 @@ export default function ProblemDescription({ description }) {
                     const lines = para.split("\n");
                     return (
                         <div key={i} className="mt-4">
-                            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-2">
+                            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-2">
                                 {lines[0]}
                             </h4>
                             <ul className="space-y-1 text-slate-400">

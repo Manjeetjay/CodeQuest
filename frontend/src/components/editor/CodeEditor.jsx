@@ -22,26 +22,27 @@ export default function CodeEditor({
                         <polyline points="16 18 22 12 16 6" />
                         <polyline points="8 6 2 12 8 18" />
                     </svg>
-                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Code</span>
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Currently We Support Java Only!!</span>
                 </div>
-                <LanguageSelector
+                {/* <LanguageSelector
                     value={language}
                     templates={templates}
                     onChange={onLanguageChange}
-                />
+                /> */}
             </div>
 
             {/* Monaco Editor */}
             <div className="flex-1 min-h-0">
                 <Editor
                     height="100%"
-                    language={getMonacoLanguage(language)}
+                    language="java"
                     value={code}
                     onChange={onCodeChange}
                     theme="vs-dark"
+                    wordBasedSuggestionsOnlySameLanguage={true}
                     options={{
                         ...DEFAULT_EDITOR_OPTIONS,
-                        padding: { top: 12 },
+                        padding: { top: 14 },
                     }}
                 />
             </div>
