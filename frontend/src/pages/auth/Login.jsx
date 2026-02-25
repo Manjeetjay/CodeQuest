@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
-import { Code2, ArrowRight } from "lucide-react";
+import { Code2, ArrowRight, Eye, EyeOff } from "lucide-react";
 import useDocumentHead from "../../utils/useDocumentHead";
 
 export default function Login() {
@@ -103,14 +103,7 @@ export default function Login() {
                                     autoComplete="current-password"
                                     required
                                 />
-                                <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors"
-                                        aria-label="Toggle password"
-                                    >
-                                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                                    </button>
+
                             </div>
 
                             <button
