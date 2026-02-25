@@ -103,7 +103,7 @@ export default function Problems() {
                 <div className="flex items-end justify-between flex-wrap gap-4 mb-6">
                     <div>
                         <h1 className="text-2xl font-semibold text-white">Problems</h1>
-                        <p className="text-xs text-slate-500 mt-0.5">
+                        <p className="text-sm text-slate-500 mt-0.5">
                             {filteredProblems.length} of {problems.length} shown
                         </p>
                     </div>
@@ -145,7 +145,7 @@ export default function Problems() {
                 {/* Problem list */}
                 {filteredProblems.length === 0 ? (
                     <div className="rounded-xl border border-white/[0.06] bg-[#0f141c]/50 p-12 text-center">
-                        <p className="text-slate-500 text-sm">No problems match your filter.</p>
+                        <p className="text-slate-500 text-md">No problems match your filter.</p>
                     </div>
                 ) : (
                     <div className="space-y-1.5">
@@ -156,16 +156,16 @@ export default function Problems() {
                                 className="group flex items-center justify-between rounded-lg border border-white/[0.04] bg-[#161b22]/50 px-4 py-3 hover:border-white/10 hover:bg-[#161b22] transition-all"
                             >
                                 <div className="flex items-center gap-3">
-                                    <span className="text-xs text-slate-500 font-code w-6">
+                                    <span className="text-sm text-slate-500 font-code w-6">
                                         {problem.id}
                                     </span>
-                                    <span className="text-sm font-medium text-white group-hover:text-emerald-300 transition-colors">
+                                    <span className="text-base font-medium text-white group-hover:text-emerald-300 transition-colors">
                                         {problem.title}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span
-                                        className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${difficultyBg[problem.difficulty] || ""} ${getDifficultyColor(problem.difficulty)}`}
+                                        className={`px-2 py-0.5 rounded-full text-[12px] font-semibold ${difficultyBg[problem.difficulty] || ""} ${getDifficultyColor(problem.difficulty)}`}
                                     >
                                         {problem.difficulty}
                                     </span>

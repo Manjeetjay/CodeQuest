@@ -178,7 +178,7 @@ export default function ProblemSolving() {
 
             <div className="flex-1 flex flex-col md:flex-row min-h-0">
                 {/* Left Panel — Problem Description */}
-                <div className="w-full md:w-[45%] lg:w-[42%] border-r border-white/[0.06] overflow-y-auto">
+                <div className="w-full md:w-[50%] lg:w-[50%] border-r border-white/[0.06] overflow-y-auto ps-6">
                     <div className="p-4 pb-8">
                         <ProblemHeader problem={problem} onBack={() => navigate("/problems")} />
 

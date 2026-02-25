@@ -12,26 +12,28 @@ export default function ProblemHeader({ problem, onBack }) {
         <div className="mb-4">
             <button
                 onClick={onBack}
-                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors mb-3"
+                className="inline-flex items-center gap-2 text-base text-slate-400 hover:text-white transition-colors mb-3"
             >
-                <ArrowLeft className="w-3.5 h-3.5" />
+                <ArrowLeft className="w-5 h-5" />
                 Problems
             </button>
 
-            <h1 className="text-xl font-semibold text-white leading-tight">
+            <h1 className="text-2xl font-semibold text-white leading-tight">
                 {problem.id}. {problem.title}
             </h1>
+            <hr className="my-2 border-white/[0.06]" />
 
             <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <span
-                    className={`px-2.5 py-0.5 text-xs font-semibold rounded-full border ${difficultyBg[problem.difficulty] || ""} ${getDifficultyColor(problem.difficulty)}`}
+                    className={`px-3 py-1 text-base font-semibold rounded-full border ${difficultyBg[problem.difficulty] || ""} ${getDifficultyColor(problem.difficulty)}`}
                 >
                     {problem.difficulty}
                 </span>
+                <br />
                 {problem.tags?.map((tag, i) => (
                     <span
                         key={i}
-                        className="px-2 py-0.5 text-[11px] bg-white/5 text-slate-400 rounded-full border border-white/10"
+                        className="px-3 py-1 text-sm bg-white/5 text-slate-400 rounded-full border border-white/10"
                     >
                         {tag}
                     </span>
