@@ -14,6 +14,7 @@ import ProblemSolving from "./pages/problem/ProblemSolving";
 import SubmissionResult from "./pages/problem/SubmissionResult";
 import NotFound from "./pages/static/NotFound";
 import ServerStatus from "./pages/static/ServerStatus";
+import Sitemap from "./pages/static/Sitemap";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/guidelines" element={<CommunityGuidelines />} />
           <Route path="/server-status" element={<ServerStatus />} />
+          <Route path="/sitemap" element={<Sitemap />} />
 
           {/* Protected Routes */}
           <Route
