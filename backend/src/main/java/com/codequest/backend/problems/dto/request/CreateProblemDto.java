@@ -18,6 +18,9 @@ public class CreateProblemDto {
     @Size(min = 3, max = 200, message = "Title must be between 3 and 200 characters")
     private String title;
 
+    @NotNull(message = "Problem number is required")
+    private int problemNumber;
+
     @NotBlank(message = "Description is required")
     @Size(min = 10, message = "Description must be at least 10 characters")
     private String description;

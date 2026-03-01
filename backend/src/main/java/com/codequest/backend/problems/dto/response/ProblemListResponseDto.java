@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProblemListResponseDto {
     private Long id;
+    private int problemNumber;
     private String title;
     private Difficulty difficulty;
     private List<String> tags;

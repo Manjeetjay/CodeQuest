@@ -42,6 +42,7 @@ public class ProblemService {
 
         Problem problem = Problem.builder()
                 .title(request.getTitle())
+                .problemNumber(request.getProblemNumber())
                 .description(request.getDescription())
                 .wrapperCode(request.getWrapperCode())
                 .difficulty(request.getDifficulty())
@@ -139,6 +140,7 @@ public class ProblemService {
         return ProblemListResponseDto.builder()
                 .id(problem.getId())
                 .title(problem.getTitle())
+                .problemNumber(problem.getProblemNumber())
                 .difficulty(problem.getDifficulty())
                 .tags(problem.getTags())
                 .build();
@@ -148,6 +150,7 @@ public class ProblemService {
         return ProblemDetailResponseDto.builder()
                 .id(problem.getId())
                 .title(problem.getTitle())
+                .problemNumber(problem.getProblemNumber())
                 .description(problem.getDescription())
                 .difficulty(problem.getDifficulty())
                 .tags(problem.getTags())

@@ -24,7 +24,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "problems", indexes = {
         @Index(name = "idx_difficulty", columnList = "difficulty"),
-        @Index(name = "idx_title", columnList = "title")
+        @Index(name = "idx_title", columnList = "title"),
+        @Index(name = "idx_problem_number", columnList = "problemNumber")
 })
 @Getter
 @Setter
@@ -36,6 +37,9 @@ public class Problem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private int problemNumber;
 
     @Column(nullable = false)
     private String title;

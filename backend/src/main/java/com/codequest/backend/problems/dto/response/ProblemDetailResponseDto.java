@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProblemDetailResponseDto {
     private Long id;
+    private int problemNumber;
     private String title;
     private String description;
     private Difficulty difficulty;
