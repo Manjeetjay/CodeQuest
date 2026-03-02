@@ -5,8 +5,8 @@ export default function SubmissionHeader({ submission, onBack }) {
 
     const getStatusBadge = (status) => {
         const styles = {
-            ACCEPTED: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-            COMPLETED: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+            ACCEPTED: "bg-tech-accent/15 text-tech-accent border-tech-accent/30",
+            COMPLETED: "bg-tech-accent/15 text-tech-accent border-tech-accent/30",
             WRONG_ANSWER: "bg-red-500/15 text-red-400 border-red-500/30",
             FAILED: "bg-red-500/15 text-red-400 border-red-500/30",
             TIME_LIMIT_EXCEEDED: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
@@ -18,7 +18,7 @@ export default function SubmissionHeader({ submission, onBack }) {
 
         return (
             <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md border text-xs font-semibold ${styles[status] || "bg-slate-500/15 text-slate-300 border-slate-500/30"
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md border text-xs font-semibold ${styles[status] || "bg-slate-500/15 text-tech-text border-slate-500/30"
                     }`}
             >
                 {isAccepted ? (
@@ -35,7 +35,7 @@ export default function SubmissionHeader({ submission, onBack }) {
         <div className="mb-6">
             <button
                 onClick={onBack}
-                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors mb-3"
+                className="inline-flex items-center gap-1.5 text-xs text-tech-muted hover:text-white transition-colors mb-3"
             >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to Problem
@@ -46,7 +46,7 @@ export default function SubmissionHeader({ submission, onBack }) {
                     <h1 className="text-xl font-semibold text-white">
                         Submission #{submission.id}
                     </h1>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-tech-muted mt-0.5">
                         Problem #{submission.problemId}
                     </p>
                 </div>

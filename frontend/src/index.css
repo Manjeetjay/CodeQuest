@@ -1,18 +1,45 @@
 @import 'tailwindcss';
 
+@theme {
+    --color-tech-bg: #000000;
+    --color-tech-panel: #050505;
+    --color-tech-panel-inner: #0a0a0a;
+    --color-tech-border: rgba(255, 255, 255, 0.05);
+    --color-tech-border-hover: rgba(255, 255, 255, 0.2);
+    /* DULCEDO ACCENT (Gold/Tan) */
+    --color-tech-accent: #7FFFD4;
+    --color-tech-accent-hover: #097969;
+
+    --color-tech-text: #ffffff;
+    /* slate-200 */
+    --color-tech-muted: #94a3b8;
+    /* slate-400 */
+
+    --spacing-section-y: 6rem;
+    /* 96px */
+    --spacing-section-y-md: 8rem;
+    /* 128px */
+    --spacing-card-p: 2rem;
+    /* 32px */
+
+    --radius-tech: 0px;
+    /* removed rounded corners for a sharp editorial look */
+}
+
 @layer base {
     :root {
         --color-easy: #00b8a3;
         --color-medium: #ffc01e;
         --color-hard: #ef4743;
-        --color-ink: #0b0f14;
-        --color-ink-2: #0f1720;
+        --color-ink: #000000;
+        --color-ink-2: #050505;
     }
 
     body {
-        @apply text-slate-100 antialiased;
+        @apply text-white antialiased;
         background-color: var(--color-ink);
-        font-family: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+        /* Adding a sophisticated serif stack for headings later, keeping sans-serif for body */
+        font-family: "Inter", "Space Grotesk", system-ui, sans-serif;
         scrollbar-width: none;
         /* Firefox */
         -ms-overflow-style: none;
@@ -72,11 +99,11 @@
     }
 
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 rounded-full bg-emerald-300 px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-emerald-300/30 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-emerald-300/50;
+        @apply inline-flex items-center justify-center gap-2 bg-white px-8 py-4 text-sm font-bold text-black uppercase tracking-[0.15em] transition-all duration-300 hover:bg-neutral-200 hover:scale-[1.02];
     }
 
     .btn-outline {
-        @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-slate-100 transition-all duration-200 hover:bg-white/10;
+        @apply inline-flex items-center justify-center gap-2 border border-white/20 px-8 py-4 text-sm font-bold text-white uppercase tracking-[0.15em] transition-all duration-300 hover:bg-white hover:text-black;
     }
 
     .btn-sm {
@@ -87,15 +114,31 @@
         font-family: "JetBrains Mono", "Cascadia Mono", "Segoe UI Mono", ui-monospace, monospace;
     }
 
-    .bg-grid-slate {
-        background-image: linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-        background-size: 48px 48px;
+    /* Advanced Editorial Typography */
+    .heading-editorial {
+        font-family: "Playfair Display", "Didot", serif;
+        @apply italic font-light tracking-wide;
+    }
+
+    .heading-display {
+        @apply font-black tracking-tighter uppercase;
+        line-height: 0.9;
+    }
+
+    /* Minimalist Grid Background */
+    .bg-grid-minimal {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 80px 80px;
         background-position: -1px -1px;
     }
 
     .animate-fade-up {
-        animation: fade-up 0.85s ease-out both;
+        animation: fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .animate-reveal {
+        animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .animate-delay-150 {
@@ -117,12 +160,25 @@
     .animate-float-slow {
         animation: float 6.5s ease-in-out infinite;
     }
+
+    .glass-panel {
+        @apply border border-white/10 bg-black/40 backdrop-blur-md;
+    }
+
+    .tech-panel {
+        @apply border border-white/[0.05] bg-[#050505] transition-all duration-500 relative overflow-hidden;
+    }
+
+    /* Removed glowing neon hover effects for luxury minimal approach */
+    .tech-panel:hover {
+        @apply border-white/[0.15] bg-[#0a0a0a];
+    }
 }
 
 @keyframes fade-up {
     0% {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(30px);
     }
 
     100% {
@@ -131,14 +187,16 @@
     }
 }
 
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
+@keyframes reveal {
+    0% {
+        clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    50% {
-        transform: translateY(-12px);
+    100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        opacity: 1;
+        transform: translateY(0);
     }
 }

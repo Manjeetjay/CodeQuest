@@ -17,12 +17,12 @@ export default class ErrorBoundary extends Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div className="min-h-screen flex items-center justify-center bg-[#0b0f14] text-slate-100">
+                <div className="min-h-screen flex items-center justify-center bg-tech-bg text-tech-text">
                     <div className="text-center max-w-md glass-card rounded-2xl p-8">
                         <h1 className="text-3xl font-semibold text-red-300 mb-4">
                             Oops! Something went wrong
                         </h1>
-                        <p className="text-slate-300 mb-6">
+                        <p className="text-tech-text mb-6">
                             We are sorry for the inconvenience. Please try refreshing the page.
                         </p>
                         <button

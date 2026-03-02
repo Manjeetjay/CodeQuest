@@ -1,196 +1,219 @@
 /**
- * Browser Cache Utility
- * Provides caching functionality using localStorage with automatic expiration
+ * Browser Cache Utility (Production Ready)
+ * L1 Memory Cache + L2 localStorage Cache with expiration
  */
 
 const CACHE_VERSION = "1.0";
-const CACHE_VERSION_KEY = "cache_version";
+const CACHE_VERSION_KEY = "cq_cache_version";
+const PREFIX = "cq_cache:";
 
-/**
- * Set data in cache with expiration time
- * @param {string} key - Cache key
- * @param {any} data - Data to cache (will be JSON stringified)
- * @param {number} expiresInMs - Expiration time in milliseconds
- */
-export const setCache = (key, data, expiresInMs) => {
-    try {
-        const cacheEntry = {
-            data,
-            timestamp: Date.now(),
-            expiresIn: expiresInMs,
-        };
-
-        localStorage.setItem(key, JSON.stringify(cacheEntry));
-
-        // Set cache version if not set
-        if (!localStorage.getItem(CACHE_VERSION_KEY)) {
-            localStorage.setItem(CACHE_VERSION_KEY, CACHE_VERSION);
+/* Safe Storage Wrapper */
+const safeStorage = {
+    get(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch {
+            return null;
         }
-    } catch (error) {
-        console.warn("Failed to set cache:", error);
-        // Silently fail - cache is optional
+    },
+    set(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch {}
+    },
+    remove(key) {
+        try {
+            localStorage.removeItem(key);
+        } catch {}
     }
 };
 
-/**
- * Get data from cache if not expired
- * @param {string} key - Cache key
- * @returns {any|null} Cached data or null if expired/not found
- */
-export const getCache = (key) => {
+/* Memory Cache (L1 Cache) */
+const memoryCache = new Map();
+
+/* Cache Time Presets */
+export const CACHE_TIME = {
+    SHORT: 5 * 60 * 1000,
+    MEDIUM: 30 * 60 * 1000,
+    LONG: 24 * 60 * 60 * 1000
+};
+
+/* Helpers */
+const buildKey = (key) => PREFIX + key;
+
+/* Version Initialization */
+export const ensureCacheVersion = () => {
+    const version = safeStorage.get(CACHE_VERSION_KEY);
+
+    if (version !== CACHE_VERSION) {
+        clearAllCache();
+        safeStorage.set(CACHE_VERSION_KEY, CACHE_VERSION);
+    }
+};
+
+/* Set Cache */
+export const setCache = (key, data, expiresInMs) => {
     try {
-        // Check version first
-        const version = localStorage.getItem(CACHE_VERSION_KEY);
-        if (version !== CACHE_VERSION) {
-            // Version mismatch, clear all cache
-            clearAllCache();
-            return null;
+        const fullKey = buildKey(key);
+
+        const cacheEntry = {
+            data,
+            timestamp: Date.now(),
+            expiresIn: expiresInMs
+        };
+
+        memoryCache.set(fullKey, data);
+        safeStorage.set(fullKey, JSON.stringify(cacheEntry));
+    } catch (error) {
+        console.warn("Failed to set cache:", error);
+    }
+};
+
+/* Get Cache */
+export const getCache = (key) => {
+    const fullKey = buildKey(key);
+
+    try {
+        /* L1 Memory Cache */
+        if (memoryCache.has(fullKey)) {
+            return memoryCache.get(fullKey);
         }
 
-        const cached = localStorage.getItem(key);
-        if (!cached) {
-            return null;
-        }
+        const cached = safeStorage.get(fullKey);
+        if (!cached) return null;
 
         const cacheEntry = JSON.parse(cached);
-        const now = Date.now();
-        const age = now - cacheEntry.timestamp;
 
-        // Check if expired
+        const age = Date.now() - cacheEntry.timestamp;
+
         if (age > cacheEntry.expiresIn) {
-            // Expired, remove it
-            localStorage.removeItem(key);
+            clearCache(key);
             return null;
         }
 
+        memoryCache.set(fullKey, cacheEntry.data);
         return cacheEntry.data;
     } catch (error) {
-        console.warn("Failed to get cache:", error);
-        // If parsing fails, clear this cache entry
         clearCache(key);
         return null;
     }
 };
 
-/**
- * Clear specific cache entry
- * @param {string} key - Cache key to clear
- */
+/* Clear Specific Cache */
 export const clearCache = (key) => {
+    const fullKey = buildKey(key);
+    memoryCache.delete(fullKey);
+    safeStorage.remove(fullKey);
+};
+
+/* Clear All Cache */
+export const clearAllCache = () => {
     try {
-        localStorage.removeItem(key);
+        Object.keys(localStorage).forEach((key) => {
+            if (!key.startsWith(PREFIX)) return;
+
+            safeStorage.remove(key);
+        });
+
+        memoryCache.clear();
     } catch (error) {
         console.warn("Failed to clear cache:", error);
     }
 };
 
-/**
- * Clear all cache entries
- */
-export const clearAllCache = () => {
-    try {
-        // Get all keys
-        const keys = Object.keys(localStorage);
+/* Clean Expired Cache (GC) */
+export const cleanExpiredCache = () => {
+    Object.keys(localStorage).forEach((key) => {
+        if (!key.startsWith(PREFIX)) return;
 
-        // Clear all except auth-related keys
-        keys.forEach((key) => {
-            // Keep auth keys
-            if (key === "auth" || key === "email") {
-                return; // skip removal
+        try {
+            const item = JSON.parse(safeStorage.get(key));
+            if (!item?.timestamp) return;
+
+            const age = Date.now() - item.timestamp;
+
+            if (age > item.expiresIn) {
+                safeStorage.remove(key);
+                memoryCache.delete(key);
             }
-
-            // Keep problem code/language localStorage (problem_X_code, problem_X_language)
-            if (key.startsWith("problem_") && (key.includes("_code") || key.includes("_language"))) {
-                return; // skip removal
-            }
-
-            // Remove other keys
-            localStorage.removeItem(key);
-        });
-
-        // Reset version
-        localStorage.setItem(CACHE_VERSION_KEY, CACHE_VERSION);
-    } catch (error) {
-        console.warn("Failed to clear all cache:", error);
-    }
+        } catch {}
+    });
 };
 
-/**
- * Check if a cache entry is expired
- * @param {string} key - Cache key
- * @returns {boolean} True if expired or not found
- */
+/* Cache Expired Check */
 export const isCacheExpired = (key) => {
     try {
-        const cached = localStorage.getItem(key);
-        if (!cached) {
-            return true;
-        }
+        const cached = safeStorage.get(buildKey(key));
+        if (!cached) return true;
 
-        const cacheEntry = JSON.parse(cached);
-        const now = Date.now();
-        const age = now - cacheEntry.timestamp;
-
-        return age > cacheEntry.expiresIn;
-    } catch (error) {
+        const entry = JSON.parse(cached);
+        return Date.now() - entry.timestamp > entry.expiresIn;
+    } catch {
         return true;
     }
 };
 
-/**
- * Get cache statistics
- * @returns {Object} Cache statistics
- */
+/* Time Until Expiration */
+export const getTimeUntilExpiration = (key) => {
+    try {
+        const cached = safeStorage.get(buildKey(key));
+        if (!cached) return null;
+
+        const entry = JSON.parse(cached);
+        const remaining =
+            entry.expiresIn - (Date.now() - entry.timestamp);
+
+        return remaining > 0 ? remaining : 0;
+    } catch {
+        return null;
+    }
+};
+
+/* Cache Statistics */
 export const getCacheStats = () => {
     try {
-        const keys = Object.keys(localStorage);
-        const cacheKeys = keys.filter(
-            (key) => key !== CACHE_VERSION_KEY && key !== "auth" && key !== "email"
-        );
-
         let totalSize = 0;
-        cacheKeys.forEach((key) => {
-            const item = localStorage.getItem(key);
+        let entries = 0;
+
+        Object.keys(localStorage).forEach((key) => {
+            if (!key.startsWith(PREFIX)) return;
+
+            const item = safeStorage.get(key);
             if (item) {
                 totalSize += new Blob([item]).size;
+                entries++;
             }
         });
 
         return {
-            entries: cacheKeys.length,
-            totalSize: totalSize,
+            entries,
+            totalSize,
             totalSizeKB: (totalSize / 1024).toFixed(2),
-            version: localStorage.getItem(CACHE_VERSION_KEY),
+            version: safeStorage.get(CACHE_VERSION_KEY)
         };
-    } catch (error) {
+    } catch {
         return {
             entries: 0,
             totalSize: 0,
             totalSizeKB: "0",
-            version: CACHE_VERSION,
+            version: CACHE_VERSION
         };
     }
 };
 
-/**
- * Get time until cache expires
- * @param {string} key - Cache key
- * @returns {number|null} Milliseconds until expiration, or null if not found
- */
-export const getTimeUntilExpiration = (key) => {
-    try {
-        const cached = localStorage.getItem(key);
-        if (!cached) {
-            return null;
-        }
+/* Stale-While-Revalidate Fetch */
+export const getCachedOrFetch = async (key, fetchFn, ttl) => {
+    const cached = getCache(key);
 
-        const cacheEntry = JSON.parse(cached);
-        const now = Date.now();
-        const age = now - cacheEntry.timestamp;
-        const remaining = cacheEntry.expiresIn - age;
-
-        return remaining > 0 ? remaining : 0;
-    } catch (error) {
-        return null;
+    if (cached) {
+        // background refresh
+        fetchFn()
+            .then((data) => setCache(key, data, ttl))
+            .catch(() => {});
+        return cached;
     }
+
+    const fresh = await fetchFn();
+    setCache(key, fresh, ttl);
+    return fresh;
 };

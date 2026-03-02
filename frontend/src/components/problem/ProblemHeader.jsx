@@ -12,16 +12,16 @@ export default function ProblemHeader({ problem, onBack }) {
         <div className="mb-4">
             <button
                 onClick={onBack}
-                className="inline-flex items-center gap-2 text-base text-slate-400 hover:text-white transition-colors mb-3"
+                className="inline-flex items-center gap-2 text-base text-tech-muted hover:text-white transition-colors mb-3"
             >
                 <ArrowLeft className="w-5 h-5" />
                 Problems
             </button>
 
             <h1 className="text-2xl font-semibold text-white leading-tight">
-                {problem.id}. {problem.title}
+                {problem.problemNumber}. {problem.title}
             </h1>
-            <hr className="my-2 border-white/[0.06]" />
+            <hr className="my-2 border-tech-border" />
 
             <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <span
@@ -33,7 +33,7 @@ export default function ProblemHeader({ problem, onBack }) {
                 {problem.tags?.map((tag, i) => (
                     <span
                         key={i}
-                        className="px-3 py-1 text-sm bg-white/5 text-slate-400 rounded-full border border-white/10"
+                        className="px-3 py-1 text-sm bg-white/[0.05] text-tech-muted rounded-full border border-tech-border"
                     >
                         {tag}
                     </span>

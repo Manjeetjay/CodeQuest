@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BadgeHelp, Bug, Handshake, MessageCircle, ShieldAlert, MessagesSquare, Github, Megaphone, ChevronDown, Mail, Clock } from "lucide-react";
+import { BadgeHelp, Bug, Handshake, MessageCircle, ShieldAlert, ChevronDown, Mail, Clock } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import useDocumentHead from "../../utils/useDocumentHead";
 
@@ -50,160 +50,148 @@ export default function ContactUs() {
     const Icon = active.icon;
 
     return (
-        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+        <div className="min-h-screen bg-tech-bg text-tech-text overflow-hidden relative font-sans">
             <Navbar />
 
-            <main className="container mx-auto max-w-6xl px-6">
+            {/* Subtle Background Grid */}
+            <div className="absolute inset-0 bg-grid-minimal pointer-events-none -z-10 [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-30"></div>
+
+            <main>
                 {/* Header */}
-                <header className="pt-24 pb-20 md:pt-32 md:pb-24 max-w-2xl">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-400 mb-5">
-                        <MessageCircle className="inline h-3 w-3 mr-1.5 -mt-px" />
-                        Contact
-                    </p>
-                    <h1 className="text-4xl md:text-5xl font-semibold text-white leading-tight mb-5">Get in touch.</h1>
-                    <p className="text-lg text-slate-400 leading-relaxed">
-                        Pick the right channel and include key details for a fast response.
-                        We read every message and respond within the listed SLA.
-                    </p>
-                </header>
+                <section className="relative border-b border-tech-border/30">
+                    <div className="container mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-32 md:pb-24">
+                        <div className="max-w-3xl animate-fade-up">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-tech-accent mb-5">
+                                <MessageCircle className="inline h-3 w-3 mr-1.5 -mt-px" />
+                                Contact
+                            </p>
+                            <h1 className="heading-display text-4xl md:text-6xl text-white mb-6">
+                                GET IN<br />
+                                <span className="text-tech-accent heading-editorial">touch.</span>
+                            </h1>
+                            <p className="text-lg text-tech-muted leading-relaxed font-light">
+                                Pick the right channel and include key details for a fast response.
+                                We read every message and respond within the listed SLA.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
                 {/* Channel selector */}
-                <section className="pb-16">
-                    <div className="grid gap-4 md:grid-cols-3 mb-8">
-                        {channels.map((ch) => {
-                            const ChIcon = ch.icon;
-                            const isActive = ch.id === activeId;
-                            return (
-                                <button
-                                    key={ch.id}
-                                    onClick={() => setActiveId(ch.id)}
-                                    className={`rounded-xl border p-6 text-left transition-all ${isActive
-                                            ? "border-emerald-400/30 bg-[#0f141c]"
-                                            : "border-white/[0.06] bg-[#0f141c] hover:border-white/[0.12] hover:bg-[#111820]"
-                                        }`}
-                                >
-                                    <div className={`mb-3 inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors ${isActive
-                                            ? "bg-emerald-400/[0.08] border-emerald-400/30"
-                                            : "bg-white/[0.04] border-white/[0.06]"
-                                        }`}>
-                                        <ChIcon className={`h-5 w-5 transition-colors ${isActive ? "text-emerald-400" : "text-slate-400"}`} />
-                                    </div>
-                                    <p className={`text-base font-medium mb-1 ${isActive ? "text-white" : "text-slate-300"}`}>{ch.label}</p>
-                                    <p className="text-sm text-slate-500">{ch.desc}</p>
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {/* Active channel detail */}
-                    <div className="grid gap-6 lg:grid-cols-2">
-                        <div className="rounded-xl border border-white/[0.06] bg-[#0f141c] p-8">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-3">
-                                    <Icon className="h-5 w-5 text-emerald-400" />
-                                    <h2 className="text-lg font-medium text-white">{active.label}</h2>
-                                </div>
-                                <div className="flex items-center gap-1.5 text-slate-500">
-                                    <Clock className="h-3.5 w-3.5" />
-                                    <span className="text-xs">{active.sla}</span>
-                                </div>
-                            </div>
-                            <a
-                                href={`mailto:${active.email}`}
-                                className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
-                            >
-                                <Mail className="h-4 w-4" />
-                                {active.email}
-                            </a>
+                <section className="relative border-b border-tech-border/30 bg-tech-panel">
+                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-section-y-md">
+                        <div className="grid gap-4 md:grid-cols-3 mb-10 animate-fade-up">
+                            {channels.map((ch, index) => {
+                                const ChIcon = ch.icon;
+                                const isActive = ch.id === activeId;
+                                return (
+                                    <button
+                                        key={ch.id}
+                                        onClick={() => setActiveId(ch.id)}
+                                        className={`border p-6 text-left transition-all animate-fade-up ${isActive
+                                            ? "border-tech-accent/30 bg-tech-bg"
+                                            : "border-tech-border/30 bg-tech-bg/50 hover:border-tech-border hover:bg-tech-bg"
+                                            }`}
+                                        style={{ animationDelay: `${index * 100}ms` }}
+                                    >
+                                        <div className={`mb-3 inline-flex items-center justify-center w-10 h-10 border transition-colors ${isActive
+                                            ? "bg-tech-accent/[0.08] border-tech-accent/30"
+                                            : "bg-white/[0.04] border-tech-border/30"
+                                            }`}>
+                                            <ChIcon className={`h-5 w-5 transition-colors ${isActive ? "text-tech-accent" : "text-tech-muted"}`} />
+                                        </div>
+                                        <p className={`text-base font-semibold mb-1 uppercase tracking-wider ${isActive ? "text-white" : "text-tech-text"}`}>{ch.label}</p>
+                                        <p className="text-sm text-tech-muted font-light">{ch.desc}</p>
+                                    </button>
+                                );
+                            })}
                         </div>
 
-                        <div className="rounded-xl border border-white/[0.06] bg-[#0f141c] p-8">
-                            <div className="flex items-center gap-2.5 mb-5">
-                                <Bug className="h-4 w-4 text-slate-500" />
-                                <h3 className="text-sm font-medium uppercase tracking-widest text-slate-500">Include in your message</h3>
+                        {/* Active channel detail */}
+                        <div className="grid gap-6 lg:grid-cols-2 animate-fade-up" style={{ animationDelay: "300ms" }}>
+                            <div className="border border-tech-border/30 bg-tech-bg p-8">
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <Icon className="h-5 w-5 text-tech-accent" />
+                                        <h2 className="text-lg font-semibold text-white uppercase tracking-wider">{active.label}</h2>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 text-tech-muted">
+                                        <Clock className="h-3.5 w-3.5" />
+                                        <span className="text-xs">{active.sla}</span>
+                                    </div>
+                                </div>
+                                <a
+                                    href={`mailto:${active.email}`}
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-tech-accent hover:text-tech-accent-hover transition-colors"
+                                >
+                                    <Mail className="h-4 w-4" />
+                                    {active.email}
+                                </a>
                             </div>
-                            <div className="flex flex-wrap gap-2">
-                                {active.checklist.map((item) => (
-                                    <span
-                                        key={item}
-                                        className="px-3.5 py-2 text-sm rounded-lg border border-white/[0.06] bg-white/[0.02] text-slate-300"
-                                    >
-                                        {item}
-                                    </span>
-                                ))}
+
+                            <div className="border border-tech-border/30 bg-tech-bg p-8">
+                                <div className="flex items-center gap-2.5 mb-5">
+                                    <Bug className="h-4 w-4 text-tech-muted" />
+                                    <h3 className="text-sm font-semibold uppercase tracking-[0.15em] text-tech-muted">Include in your message</h3>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {active.checklist.map((item) => (
+                                        <span
+                                            key={item}
+                                            className="px-3.5 py-2 text-sm border border-tech-border/30 bg-white/[0.02] text-tech-text"
+                                        >
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Community */}
-                {/* <section className="pb-24 md:pb-32 border-t border-white/[0.06] pt-24 md:pt-32">
-                    <div className="mb-10">
-                        <h2 className="text-2xl font-semibold text-white mb-3">Join the community</h2>
-                        <p className="text-base text-slate-400 max-w-lg">
-                            Connect with other developers, share ideas, and stay updated.
-                        </p>
-                    </div>
-                    {/* <div className="grid gap-6 md:grid-cols-3">
-                        {[
-                            { name: "Discord", desc: "Chat with other developers in real-time.", href: "https://discord.gg/codequest", icon: MessagesSquare },
-                            { name: "GitHub", desc: "Contribute, report issues, and follow updates.", href: "https://github.com/codequest", icon: Github },
-                            { name: "X / Twitter", desc: "Follow for announcements and tips.", href: "https://twitter.com/codequest", icon: Megaphone },
-                        ].map((link) => {
-                            const LinkIcon = link.icon;
-                            return (
-                                <a
-                                    key={link.name}
-                                    href={link.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group rounded-xl border border-white/[0.06] bg-[#0f141c] p-7 transition-all hover:border-white/[0.12] hover:bg-[#111820]"
-                                >
-                                    <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.06] group-hover:border-emerald-400/30 group-hover:bg-emerald-400/[0.06] transition-colors">
-                                        <LinkIcon className="h-5 w-5 text-slate-400 group-hover:text-emerald-400 transition-colors" />
-                                    </div>
-                                    <p className="text-base font-medium text-white mb-1">{link.name}</p>
-                                    <p className="text-sm text-slate-500">{link.desc}</p>
-                                </a>
-                            );
-                        })}
-                    </div>
-                </section> */}
-
                 {/* FAQ */}
-                <section className="pb-24 md:pb-32 border-t border-white/[0.06] pt-24 md:pt-32">
-                    <div className="mb-10">
-                        <h2 className="text-2xl font-semibold text-white mb-3">Quick answers</h2>
-                        <p className="text-base text-slate-400 max-w-lg">
-                            Common questions before you reach out.
-                        </p>
-                    </div>
-                    <div className="rounded-xl border border-white/[0.06] overflow-hidden divide-y divide-white/[0.06]">
-                        {faqs.map((faq) => (
-                            <details key={faq.q} className="group bg-[#0f141c]">
-                                <summary className="cursor-pointer list-none px-7 py-5 flex items-center justify-between text-base font-medium text-white hover:bg-[#111820] transition-colors">
-                                    {faq.q}
-                                    <ChevronDown className="h-4 w-4 text-slate-500 transition-transform group-open:rotate-180" />
-                                </summary>
-                                <p className="px-7 pb-5 text-sm text-slate-400 leading-relaxed">{faq.a}</p>
-                            </details>
-                        ))}
+                <section className="relative border-b border-tech-border/30 bg-tech-bg">
+                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-section-y-md">
+                        <div className="mb-12 animate-fade-up">
+                            <h2 className="heading-display text-3xl md:text-5xl text-white mb-4">
+                                QUICK<br />
+                                <span className="text-tech-accent heading-editorial">answers.</span>
+                            </h2>
+                            <p className="text-lg text-tech-muted max-w-lg font-light">
+                                Common questions before you reach out.
+                            </p>
+                        </div>
+                        <div className="border border-tech-border/30 overflow-hidden divide-y divide-tech-border/30 animate-fade-up" style={{ animationDelay: "150ms" }}>
+                            {faqs.map((faq) => (
+                                <details key={faq.q} className="group bg-tech-panel">
+                                    <summary className="cursor-pointer list-none px-7 py-5 flex items-center justify-between text-base font-medium text-white hover:bg-tech-panel-inner transition-colors">
+                                        {faq.q}
+                                        <ChevronDown className="h-4 w-4 text-tech-muted transition-transform group-open:rotate-180" />
+                                    </summary>
+                                    <p className="px-7 pb-5 text-sm text-tech-muted leading-relaxed font-light">{faq.a}</p>
+                                </details>
+                            ))}
+                        </div>
                     </div>
                 </section>
 
                 {/* CTA */}
-                <section className="pb-24 md:pb-32">
-                    <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#0f141c] to-[#0b1018] p-10 md:p-14 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                        <div>
-                            <h2 className="text-2xl font-semibold text-white mb-2">Need policy details?</h2>
-                            <p className="text-base text-slate-400">Review our community rules before reaching out.</p>
+                <section className="relative bg-tech-bg">
+                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-[100px]">
+                        <div className="animate-fade-up flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-t border-tech-border/30 pt-16">
+                            <div>
+                                <h2 className="heading-display text-3xl md:text-4xl text-white mb-2">
+                                    NEED POLICY <span className="text-tech-accent heading-editorial">details?</span>
+                                </h2>
+                                <p className="text-base text-tech-muted font-light">Review our community rules before reaching out.</p>
+                            </div>
+                            <Link
+                                to="/guidelines"
+                                className="btn-outline shrink-0"
+                            >
+                                Read guidelines
+                            </Link>
                         </div>
-                        <Link
-                            to="/guidelines"
-                            className="inline-flex items-center gap-2 rounded-lg border border-white/[0.12] px-7 py-3.5 text-sm font-medium text-slate-300 transition hover:bg-white/[0.04] hover:border-white/[0.2] shrink-0"
-                        >
-                            Read guidelines
-                        </Link>
                     </div>
                 </section>
             </main>

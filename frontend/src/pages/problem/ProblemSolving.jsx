@@ -9,9 +9,9 @@ import ProblemDescription from "../../components/problem/ProblemDescription";
 import ExamplesSection from "../../components/problem/ExamplesSection";
 import SubmissionsList from "../../components/problem/SubmissionsList";
 import CodeEditor from "../../components/editor/CodeEditor";
-import { getProblemById, createSubmission, getMySubmissionsForProblem } from "../../api/api";
+import { getProblemById } from "../../api/problemApi";
+import { createSubmission, getMySubmissionsForProblem } from "../../api/submissionApi";
 import { getLanguageId, getLanguageName } from "../../utils/helpers";
-import { getCache, setCache, clearCache } from "../../utils/cache";
 
 export default function ProblemSolving() {
     const { id } = useParams();
@@ -36,16 +36,7 @@ export default function ProblemSolving() {
     const fetchProblem = async () => {
         try {
             setLoading(true);
-            const cacheKey = `problem_${id}`;
-            const cached = getCache(cacheKey);
-            let data;
-
-            if (cached) {
-                data = cached;
-            } else {
-                data = await getProblemById(id);
-                setCache(cacheKey, data, 30 * 60 * 1000);
-            }
+            const data = await getProblemById(id);
 
             setProblem(data);
 
@@ -75,15 +66,8 @@ export default function ProblemSolving() {
             setLoadingSubmissions(true);
             const email = localStorage.getItem("email");
             if (email) {
-                const cacheKey = `problem_${id}_submissions`;
-                const cached = getCache(cacheKey);
-                if (cached) {
-                    setMySubmissions(cached);
-                } else {
-                    const submissions = await getMySubmissionsForProblem(id, email);
-                    setMySubmissions(submissions);
-                    setCache(cacheKey, submissions, 10 * 60 * 1000);
-                }
+                const submissions = await getMySubmissionsForProblem(id, email);
+                setMySubmissions(submissions);
             }
         } catch (err) {
             console.error("Failed to fetch submissions:", err);
@@ -134,7 +118,6 @@ export default function ProblemSolving() {
             };
 
             const result = await createSubmission(submission);
-            clearCache(`problem_${id}_submissions`);
             navigate(`/submission/${result.id}`);
         } catch (err) {
             console.error("Submission failed:", err);
@@ -152,7 +135,7 @@ export default function ProblemSolving() {
 
     if (loading) {
         return (
-            <div className="h-screen flex flex-col bg-[#0b0f14] text-slate-100">
+            <div className="h-screen flex flex-col bg-tech-bg text-tech-text">
                 <Navbar />
                 <LoadingSpinner message="Loading problem..." />
             </div>
@@ -161,7 +144,7 @@ export default function ProblemSolving() {
 
     if (error || !problem) {
         return (
-            <div className="h-screen flex flex-col bg-[#0b0f14] text-slate-100">
+            <div className="h-screen flex flex-col bg-tech-bg text-tech-text">
                 <Navbar />
                 <ErrorMessage
                     message={error || "Problem not found"}
@@ -173,12 +156,12 @@ export default function ProblemSolving() {
     }
 
     return (
-        <div className="h-screen flex flex-col bg-[#0b0f14] text-slate-100 overflow-hidden">
+        <div className="h-screen flex flex-col bg-tech-bg text-tech-text overflow-hidden">
             <Navbar />
 
             <div className="flex-1 flex flex-col md:flex-row min-h-0">
                 {/* Left Panel — Problem Description */}
-                <div className="w-full md:w-[50%] lg:w-[50%] border-r border-white/[0.06] overflow-y-auto ps-6">
+                <div className="w-full md:w-[50%] lg:w-[50%] border-r border-tech-border overflow-y-auto ps-6">
                     <div className="p-4 pb-8">
                         <ProblemHeader problem={problem} onBack={() => navigate("/problems")} />
 

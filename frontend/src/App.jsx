@@ -21,7 +21,7 @@ const Sitemap = lazy(() => import("./pages/static/Sitemap"));
 function PageLoader() {
   return (
     <div className="min-h-screen bg-[#0b0f14] flex items-center justify-center">
-      <div className="w-5 h-5 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+      <div className="w-5 h-5 border-2 border-tech-accent border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }

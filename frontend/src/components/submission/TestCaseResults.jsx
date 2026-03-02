@@ -28,24 +28,24 @@ export default function TestCaseResults({ submission, loading }) {
             {/* Overall verdict banner */}
             <div
                 className={`mb-6 p-5 rounded-xl border ${allPassed
-                        ? "border-emerald-400/20 bg-emerald-500/5"
-                        : "border-red-400/20 bg-red-500/5"
+                    ? "border-tech-accent/20 bg-tech-accent/15"
+                    : "border-red-400/20 bg-red-500/5"
                     }`}
             >
                 <div className="flex items-center gap-3">
                     {allPassed ? (
-                        <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                        <CheckCircle2 className="w-6 h-6 text-tech-accent" />
                     ) : (
                         <XCircle className="w-6 h-6 text-red-400" />
                     )}
                     <div>
                         <div
-                            className={`text-lg font-semibold ${allPassed ? "text-emerald-400" : "text-red-400"
+                            className={`text-lg font-semibold ${allPassed ? "text-tech-accent" : "text-red-400"
                                 }`}
                         >
                             {allPassed ? "Accepted" : "Wrong Answer"}
                         </div>
-                        <div className="text-xs text-slate-400 mt-0.5">
+                        <div className="text-xs text-tech-muted mt-0.5">
                             {submission?.passedTests ?? 0} / {submission?.totalTests ?? 0} test
                             cases passed
                         </div>
@@ -55,24 +55,24 @@ export default function TestCaseResults({ submission, loading }) {
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 mb-6">
-                <div className="rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
-                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">
+                <div className="rounded-lg border border-tech-border bg-tech-panel p-4">
+                    <div className="text-[10px] text-tech-muted uppercase tracking-widest mb-1">
                         Status
                     </div>
                     <div className="text-sm font-semibold text-white">
                         {submission?.status?.replace(/_/g, " ") || "Unknown"}
                     </div>
                 </div>
-                <div className="rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
-                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">
+                <div className="rounded-lg border border-tech-border bg-tech-panel p-4">
+                    <div className="text-[10px] text-tech-muted uppercase tracking-widest mb-1">
                         Tests
                     </div>
                     <div className="text-sm font-semibold text-white">
                         {submission?.passedTests ?? 0} / {submission?.totalTests ?? 0}
                     </div>
                 </div>
-                <div className="rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
-                    <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">
+                <div className="rounded-lg border border-tech-border bg-tech-panel p-4">
+                    <div className="text-[10px] text-tech-muted uppercase tracking-widest mb-1">
                         Language
                     </div>
                     <div className="text-sm font-semibold text-white">
@@ -99,10 +99,10 @@ export default function TestCaseResults({ submission, loading }) {
 
             {/* Hidden test cases summary */}
             {hiddenResults.length > 0 && (
-                <div className="mb-6 rounded-lg border border-white/[0.06] bg-[#161b22] p-4">
+                <div className="mb-6 rounded-lg border border-tech-border bg-tech-panel p-4">
                     <div className="flex items-center gap-2 mb-2">
-                        <Lock className="w-3.5 h-3.5 text-slate-500" />
-                        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                        <Lock className="w-3.5 h-3.5 text-tech-muted" />
+                        <h3 className="text-xs font-semibold text-tech-muted uppercase tracking-wider">
                             Hidden Test Cases
                         </h3>
                     </div>
@@ -113,13 +113,13 @@ export default function TestCaseResults({ submission, loading }) {
                         <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
                             <div
                                 className={`h-full rounded-full transition-all duration-500 ${hiddenPassed === hiddenResults.length
-                                        ? "bg-emerald-400"
-                                        : "bg-red-400"
+                                    ? "bg-tech-accent"
+                                    : "bg-red-400"
                                     }`}
                                 style={{
                                     width: `${hiddenResults.length > 0
-                                            ? (hiddenPassed / hiddenResults.length) * 100
-                                            : 0
+                                        ? (hiddenPassed / hiddenResults.length) * 100
+                                        : 0
                                         }%`,
                                 }}
                             />

@@ -35,78 +35,96 @@ export default function Sitemap() {
     });
 
     return (
-        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+        <div className="min-h-screen bg-tech-bg text-tech-text overflow-hidden relative font-sans">
             <Navbar />
 
-            <main className="container mx-auto max-w-5xl px-6 py-12">
+            {/* Subtle Background Grid */}
+            <div className="absolute inset-0 bg-grid-minimal pointer-events-none -z-10 [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-30"></div>
+
+            <main>
                 {/* Header */}
-                <header className="mb-12">
-                    <p className="text-[11px] font-medium uppercase tracking-widest text-slate-500 mb-3">
-                        <Map className="inline h-3 w-3 mr-1.5 -mt-px" />
-                        Navigation
-                    </p>
-                    <h1 className="text-3xl font-semibold text-white mb-2">Sitemap</h1>
-                    <p className="text-sm text-slate-400 max-w-md">
-                        A complete list of all pages on CodeQuest.
-                    </p>
-                </header>
+                <section className="relative border-b border-tech-border/30">
+                    <div className="container mx-auto max-w-5xl px-6 pt-24 pb-16 md:pt-32 md:pb-20">
+                        <div className="animate-fade-up">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-tech-accent mb-5">
+                                <Map className="inline h-3 w-3 mr-1.5 -mt-px" />
+                                Navigation
+                            </p>
+                            <h1 className="heading-display text-4xl md:text-6xl text-white mb-4">
+                                SITE<span className="text-tech-accent heading-editorial">map.</span>
+                            </h1>
+                            <p className="text-base text-tech-muted max-w-md font-light">
+                                A complete list of all pages on CodeQuest.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
                 {/* Sections */}
-                <div className="grid gap-6 md:grid-cols-3 mb-12">
-                    {sections.map((section) => (
-                        <div
-                            key={section.title}
-                            className="rounded-lg border border-white/[0.06] bg-[#0f141c] p-5"
-                        >
-                            <h2 className="text-xs font-medium uppercase tracking-widest text-slate-500 mb-4">
-                                {section.title}
-                            </h2>
-                            <ul className="space-y-3">
-                                {section.links.map((link) => (
-                                    <li key={link.to}>
-                                        <Link
-                                            to={link.to}
-                                            className="group flex items-start gap-2"
-                                        >
-                                            <ExternalLink className="h-3 w-3 text-slate-600 mt-1 shrink-0 group-hover:text-emerald-400 transition-colors" />
-                                            <div>
-                                                <p className="text-sm font-medium text-white group-hover:text-emerald-300 transition-colors">
-                                                    {link.label}
-                                                    {link.protected && (
-                                                        <span className="ml-2 text-[9px] px-1.5 py-0.5 rounded border border-white/[0.08] text-slate-500 align-middle">
-                                                            LOGIN
-                                                        </span>
-                                                    )}
-                                                </p>
-                                                <p className="text-xs text-slate-500 mt-0.5">
-                                                    {link.desc}
-                                                </p>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
+                <section className="relative border-b border-tech-border/30 bg-tech-panel">
+                    <div className="container mx-auto max-w-5xl px-6 py-section-y md:py-section-y-md">
+                        <div className="grid gap-8 md:grid-cols-3">
+                            {sections.map((section, index) => (
+                                <div
+                                    key={section.title}
+                                    className="border border-tech-border/30 bg-tech-bg p-6 animate-fade-up"
+                                    style={{ animationDelay: `${index * 150}ms` }}
+                                >
+                                    <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-tech-accent mb-5">
+                                        {section.title}
+                                    </h2>
+                                    <ul className="space-y-4">
+                                        {section.links.map((link) => (
+                                            <li key={link.to}>
+                                                <Link
+                                                    to={link.to}
+                                                    className="group flex items-start gap-2"
+                                                >
+                                                    <ExternalLink className="h-3 w-3 text-tech-muted mt-1 shrink-0 group-hover:text-tech-accent transition-colors" />
+                                                    <div>
+                                                        <p className="text-sm font-medium text-tech-text group-hover:text-tech-accent transition-colors">
+                                                            {link.label}
+                                                            {link.protected && (
+                                                                <span className="ml-2 text-[9px] px-1.5 py-0.5 border border-tech-border/30 text-tech-muted align-middle">
+                                                                    LOGIN
+                                                                </span>
+                                                            )}
+                                                        </p>
+                                                        <p className="text-xs text-tech-muted mt-0.5 font-light">
+                                                            {link.desc}
+                                                        </p>
+                                                    </div>
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </div>
+                </section>
 
                 {/* XML Sitemap reference */}
-                <section className="rounded-lg border border-white/[0.08] bg-[#0f141c] p-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <h2 className="text-sm font-semibold text-white">For search engines</h2>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                            Machine-readable XML sitemap for crawlers.
-                        </p>
+                <section className="relative bg-tech-bg">
+                    <div className="container mx-auto max-w-5xl px-6 py-section-y">
+                        <div className="animate-fade-up border border-tech-border/30 bg-tech-panel p-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <h2 className="text-sm font-semibold text-white uppercase tracking-wider">For search engines</h2>
+                                <p className="text-xs text-tech-muted mt-0.5 font-light">
+                                    Machine-readable XML sitemap for crawlers.
+                                </p>
+                            </div>
+                            <a
+                                href="/sitemap.xml"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-outline btn-sm"
+                            >
+                                <ExternalLink className="h-3 w-3" />
+                                sitemap.xml
+                            </a>
+                        </div>
                     </div>
-                    <a
-                        href="/sitemap.xml"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-md border border-white/[0.12] px-4 py-2 text-xs font-medium text-slate-300 transition hover:bg-white/[0.04]"
-                    >
-                        <ExternalLink className="h-3 w-3" />
-                        sitemap.xml
-                    </a>
                 </section>
             </main>
         </div>

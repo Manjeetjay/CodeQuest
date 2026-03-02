@@ -11,7 +11,7 @@ export default function ProblemDescription({ description }) {
                 return (
                     <code
                         key={index}
-                        className="bg-white/5 px-2 py-1 rounded text-sm font-mono text-emerald-300"
+                        className="bg-white/[0.05] px-2 py-1 rounded text-sm font-mono text-tech-accent-hover"
                     >
                         {part.slice(1, -1)}
                     </code>
@@ -22,7 +22,7 @@ export default function ProblemDescription({ description }) {
     };
 
     return (
-        <div className="px-4 text-sm text-slate-300 leading-relaxed space-y-5">
+        <div className="px-4 text-sm text-tech-text leading-relaxed space-y-5">
             {sections.map((section, index) => {
                 const trimmed = section.trim();
 
@@ -32,9 +32,9 @@ export default function ProblemDescription({ description }) {
                     return (
                         <div
                             key={index}
-                            className="bg-gradient-to-br from-emerald-500/5 to-transparent border border-emerald-500/20 rounded-xl p-5"
+                            className="bg-gradient-to-br from-tech-accent/5 to-transparent border border-tech-accent/30 p-5"
                         >
-                            <h4 className="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4">
+                            <h4 className="text-sm font-semibold text-tech-accent uppercase tracking-wider mb-4">
                                 {lines[0]}
                             </h4>
 
@@ -53,13 +53,13 @@ export default function ProblemDescription({ description }) {
                     return (
                         <div
                             key={index}
-                            className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4 space-y-3"
+                            className="bg-white/[0.03] border border-tech-border rounded-lg p-4 space-y-3"
                         >
-                            <h4 className="text-sm font-semibold text-emerald-400 tracking-wide">
+                            <h4 className="text-sm font-semibold text-tech-accent tracking-wide">
                                 {lines[0]}
                             </h4>
 
-                            <div className="bg-black/40 rounded-md p-3 text-sm font-mono text-slate-300 whitespace-pre-wrap">
+                            <div className="bg-black/40 rounded-md p-3 text-sm font-mono text-tech-text whitespace-pre-wrap">
                                 {lines.slice(1).join("\n")}
                             </div>
                         </div>

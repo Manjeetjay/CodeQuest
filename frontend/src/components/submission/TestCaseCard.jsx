@@ -4,15 +4,15 @@ export default function TestCaseCard({ result, index }) {
     return (
         <div
             className={`rounded-lg border p-4 ${result.passed
-                    ? "border-emerald-400/15 bg-emerald-500/[0.03]"
-                    : "border-red-400/15 bg-red-500/[0.03]"
+                ? "border-tech-accent/15 bg-tech-accent/[0.03]"
+                : "border-red-400/15 bg-red-500/[0.03]"
                 }`}
         >
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                     {result.passed ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                        <CheckCircle2 className="w-4 h-4 text-tech-accent" />
                     ) : (
                         <XCircle className="w-4 h-4 text-red-400" />
                     )}
@@ -21,7 +21,7 @@ export default function TestCaseCard({ result, index }) {
                     </span>
                 </div>
                 <span
-                    className={`text-[11px] font-medium ${result.passed ? "text-emerald-400" : "text-red-400"
+                    className={`text-[11px] font-medium ${result.passed ? "text-tech-accent" : "text-red-400"
                         }`}
                 >
                     {result.statusDescription || (result.passed ? "Accepted" : "Failed")}
@@ -31,10 +31,10 @@ export default function TestCaseCard({ result, index }) {
             {/* Input */}
             {result.input && (
                 <div className="mb-2.5">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] font-semibold text-tech-muted uppercase tracking-wider mb-1">
                         Input
                     </div>
-                    <pre className="bg-black/30 p-2.5 rounded text-xs font-code text-slate-300 whitespace-pre-wrap border border-white/[0.04]">
+                    <pre className="bg-black/30 p-2.5 rounded text-xs font-code text-tech-text whitespace-pre-wrap border border-tech-border">
                         {result.input}
                     </pre>
                 </div>
@@ -43,7 +43,7 @@ export default function TestCaseCard({ result, index }) {
             {/* Expected Output */}
             {result.expectedOutput && (
                 <div className="mb-2.5">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] font-semibold text-tech-muted uppercase tracking-wider mb-1">
                         Expected
                     </div>
                     <pre className="bg-black/30 p-2.5 rounded text-xs font-code text-sky-300 whitespace-pre-wrap border border-sky-500/10">
@@ -55,13 +55,13 @@ export default function TestCaseCard({ result, index }) {
             {/* Your Output */}
             {result.stdout && (
                 <div className="mb-2.5">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] font-semibold text-tech-muted uppercase tracking-wider mb-1">
                         Your Output
                     </div>
                     <pre
                         className={`bg-black/30 p-2.5 rounded text-xs font-code whitespace-pre-wrap border ${result.passed
-                                ? "text-emerald-300 border-emerald-500/10"
-                                : "text-red-300 border-red-500/10"
+                            ? "text-tech-accent-hover border-tech-accent/30"
+                            : "text-red-300 border-red-500/10"
                             }`}
                     >
                         {result.stdout}
@@ -72,7 +72,7 @@ export default function TestCaseCard({ result, index }) {
             {/* Error Output */}
             {result.stderr && (
                 <div className="mb-2.5">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] font-semibold text-tech-muted uppercase tracking-wider mb-1">
                         Error
                     </div>
                     <pre className="bg-red-500/5 p-2.5 rounded text-xs font-code text-red-300 whitespace-pre-wrap border border-red-500/10">
@@ -84,7 +84,7 @@ export default function TestCaseCard({ result, index }) {
             {/* Compilation Output */}
             {result.compileOutput && (
                 <div className="mb-2.5">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] font-semibold text-tech-muted uppercase tracking-wider mb-1">
                         Compile
                     </div>
                     <pre className="bg-purple-500/5 p-2.5 rounded text-xs font-code text-purple-300 whitespace-pre-wrap border border-purple-500/10">
@@ -95,14 +95,14 @@ export default function TestCaseCard({ result, index }) {
 
             {/* Performance */}
             {(result.time !== null || result.memory !== null) && (
-                <div className="flex gap-4 mt-2 pt-2 border-t border-white/[0.04]">
+                <div className="flex gap-4 mt-2 pt-2 border-t border-tech-border">
                     {result.time !== null && (
-                        <span className="text-[10px] text-slate-500">
+                        <span className="text-[10px] text-tech-muted">
                             <span className="font-medium">Time:</span> {result.time}s
                         </span>
                     )}
                     {result.memory !== null && (
-                        <span className="text-[10px] text-slate-500">
+                        <span className="text-[10px] text-tech-muted">
                             <span className="font-medium">Memory:</span> {result.memory}KB
                         </span>
                     )}

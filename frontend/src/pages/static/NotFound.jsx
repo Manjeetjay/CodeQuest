@@ -34,16 +34,21 @@ export default function NotFound() {
     if (loading || isAuthenticated) return null;
 
     return (
-        <div className="min-h-screen bg-[#0b0f14] text-slate-100 flex items-center justify-center px-4">
-            <div className="rounded-lg border border-white/[0.08] bg-[#0f141c] p-10 text-center max-w-sm">
-                <div className="text-5xl font-bold text-white mb-2">404</div>
-                <p className="text-sm text-slate-400 mb-1">Page not found</p>
-                <p className="text-xs text-slate-600 mb-6">
+        <div className="min-h-screen bg-tech-bg text-tech-text flex items-center justify-center px-4 overflow-hidden relative">
+            {/* Subtle Background Grid */}
+            <div className="absolute inset-0 bg-grid-minimal pointer-events-none -z-10 [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-30"></div>
+
+            <div className="text-center max-w-md animate-fade-up">
+                <div className="heading-display text-[8rem] md:text-[12rem] text-white leading-none mb-4">
+                    4<span className="text-tech-accent heading-editorial">0</span>4
+                </div>
+                <p className="text-lg text-tech-muted mb-2 font-light">Page not found</p>
+                <p className="text-sm text-tech-muted/60 mb-10">
                     Redirecting in {countdown}s
                 </p>
                 <Link
                     to="/"
-                    className="inline-flex items-center rounded-md bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-400"
+                    className="btn-primary"
                 >
                     Go home
                 </Link>

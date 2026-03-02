@@ -6,8 +6,7 @@ import ErrorMessage from "../../components/shared/ErrorMessage";
 import SubmissionHeader from "../../components/submission/SubmissionHeader";
 import TestCaseResults from "../../components/submission/TestCaseResults";
 import CodeDisplay from "../../components/submission/CodeDisplay";
-import { getSubmission } from "../../api/api";
-import { getCache, setCache } from "../../utils/cache";
+import { getSubmission } from "../../api/submissionApi";
 import { logger } from "../../utils/logger";
 
 export default function SubmissionResult() {
@@ -32,30 +31,8 @@ export default function SubmissionResult() {
     const fetchSubmission = async () => {
         try {
             setLoading(true);
-            const cacheKey = `submission_${id}`;
 
             logger.debug("Fetching submission", { submissionId: id });
-
-            // Check cache only if we don't have a submission or it's not processing
-            if (!submission || (submission.status !== "PENDING" && submission.status !== "PROCESSING")) {
-                const cached = getCache(cacheKey);
-                if (cached && cached.status !== "PENDING" && cached.status !== "PROCESSING") {
-                    logger.info("Submission loaded from cache", {
-                        submissionId: id,
-                        status: cached.status,
-                    });
-                    setSubmission(cached);
-                    setLoading(false);
-                    setError("");
-                    return;
-                }
-            }
-
-            // Fetch from API
-            logger.debug("Fetching submission from API", {
-                submissionId: id,
-                endpoint: `/api/u/submissions/${id}`,
-            });
 
             const data = await getSubmission(id);
 
@@ -69,11 +46,6 @@ export default function SubmissionResult() {
             });
             setSubmission(data);
             setError("");
-
-            // Only cache completed submissions (not pending/processing)
-            if (data.status !== "PENDING" && data.status !== "PROCESSING") {
-                setCache(cacheKey, data, 5 * 60 * 1000); // 5 minutes
-            }
         } catch (err) {
             logger.error("Failed to fetch submission", err, {
                 submissionId: id,
@@ -103,7 +75,7 @@ export default function SubmissionResult() {
 
     if (loading && !submission) {
         return (
-            <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+            <div className="min-h-screen bg-tech-bg text-tech-text">
                 <Navbar />
                 <LoadingSpinner message="Loading submission..." />
             </div>
@@ -112,7 +84,7 @@ export default function SubmissionResult() {
 
     if (error || !submission) {
         return (
-            <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+            <div className="min-h-screen bg-tech-bg text-tech-text">
                 <Navbar />
                 <ErrorMessage
                     message={error || "Submission not found"}
@@ -139,7 +111,7 @@ export default function SubmissionResult() {
             hasLanguageId: submission.languageId !== undefined,
         });
         return (
-            <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+            <div className="min-h-screen bg-tech-bg text-tech-text">
                 <Navbar />
                 <ErrorMessage
                     message="Submission data is incomplete. Please try again."
@@ -151,7 +123,7 @@ export default function SubmissionResult() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
+        <div className="min-h-screen bg-tech-bg text-tech-text">
             <Navbar />
 
             <div className="container mx-auto px-6 py-12 max-w-5xl">

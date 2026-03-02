@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
 import {
     ArrowRight,
-    Code2,
-    Filter,
-    History,
     Search,
-    ShieldCheck,
-    Sparkles,
+    Code2,
     TestTube2,
+    History,
+    Filter,
+    ShieldCheck,
     Terminal,
-    Zap,
     UserPlus,
     Target,
+    Zap,
     CheckCircle2,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -55,12 +54,12 @@ const featureCards = [
 const codeLines = [
     { text: "class Solution {", color: "text-purple-400" },
     { text: "  public int[] solve(int[] nums) {", color: "text-sky-300" },
-    { text: "    Map<Integer, Integer> map = new HashMap<>();", color: "text-slate-300" },
-    { text: "    for (int i = 0; i < nums.length; i++) {", color: "text-slate-300" },
-    { text: "      if (map.containsKey(target - nums[i]))", color: "text-emerald-300" },
-    { text: '        return new int[]{map.get(target-nums[i]), i};', color: "text-emerald-300" },
-    { text: "      map.put(nums[i], i);", color: "text-slate-400" },
-    { text: "    }", color: "text-slate-400" },
+    { text: "    Map<Integer, Integer> map = new HashMap<>();", color: "text-tech-text" },
+    { text: "    for (int i = 0; i < nums.length; i++) {", color: "text-tech-text" },
+    { text: "      if (map.containsKey(target - nums[i]))", color: "text-tech-accent-hover" },
+    { text: '        return new int[]{map.get(target-nums[i]), i};', color: "text-tech-accent-hover" },
+    { text: "      map.put(nums[i], i);", color: "text-tech-muted" },
+    { text: "    }", color: "text-tech-muted" },
     { text: "  }", color: "text-sky-300" },
     { text: "}", color: "text-purple-400" },
 ];
@@ -77,173 +76,160 @@ export default function Landing() {
     const secondaryLabel = isAuthenticated ? "How it works" : "Sign in";
 
     return (
-        <div className="min-h-screen bg-[#0b0f14] text-slate-100">
-            <Navbar />
+        <div>
+            <div className="min-h-screen bg-tech-bg text-tech-text overflow-hidden relative font-sans">
+                <Navbar />
 
-            <main>
-                {/* Hero */}
-                <section className="border-b border-white/[0.06]">
-                    <div className="container mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-32 md:pb-28">
-                        <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-                            <div className="space-y-8">
-                                <div className="flex flex-wrap items-center gap-3">
+                {/* Subtle Minimalist Background Grid */}
+                <div className="absolute inset-0 bg-grid-minimal pointer-events-none -z-10 [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-30"></div>
+
+                <main>
+                    {/* Hero */}
+                    <section className="relative min-h-[90vh] flex items-center pt-24 pb-20 border-b border-tech-border/30">
+                        <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+                            <div className="w-full max-w-5xl mx-auto space-y-12 animate-fade-up">
+                                {/* Beta Tag */}
+                                <div className="flex justify-center mb-2">
                                     <ServerStatus />
                                 </div>
-                                <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.05] tracking-tight">
-                                    Code. Submit.{" "}
-                                    <span className="text-emerald-400">Improve.</span>
+
+                                {/* Massive Editorial Headline */}
+                                <h1 className="heading-display text-[4.5rem] md:text-[7rem] lg:text-[9rem]">
+                                    ALGORITHMIC<br />
+                                    <span className="text-tech-accent heading-editorial">precision.</span>
                                 </h1>
-                                <p className="max-w-lg text-lg text-slate-400 leading-relaxed">
-                                    A focused workspace for solving coding challenges with real-time feedback.
-                                    Filter by difficulty, code in multiple languages, and track your progress.
+
+                                {/* Minimal Subtitle */}
+                                <p className="max-w-2xl mx-auto text-lg md:text-xl text-tech-muted font-light tracking-wide leading-relaxed mt-4">
+                                    The definitive workspace for logical mastery. Execute, verify, and track your progression in an environment engineered for focus.
                                 </p>
-                                <div className="flex flex-wrap items-center gap-4 pt-2">
+
+                                {/* Contrast CTA */}
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10">
                                     <Link
                                         to={primaryHref}
-                                        className="inline-flex items-center gap-2.5 rounded-lg bg-emerald-500 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20"
+                                        className="btn-primary w-full sm:w-auto"
                                     >
-                                        {primaryLabel}
+                                        <span>{primaryLabel}</span>
                                         <ArrowRight className="h-4 w-4" />
                                     </Link>
                                     <Link
                                         to={secondaryHref}
-                                        className="inline-flex items-center gap-2 rounded-lg border border-white/[0.12] px-7 py-3.5 text-sm font-medium text-slate-300 transition hover:bg-white/[0.04] hover:border-white/[0.2]"
+                                        className="inline-flex items-center gap-2 border-b border-tech-muted pb-1 text-sm font-semibold uppercase tracking-[0.1em] text-tech-muted transition-all hover:text-white hover:border-white w-full sm:w-auto justify-center mt-4 sm:mt-0"
                                     >
                                         {secondaryLabel}
                                     </Link>
                                 </div>
                             </div>
+                        </div>
+                    </section>
 
-                            {/* Code terminal */}
-                            <div className="rounded-xl border border-white/[0.08] bg-[#0d1117] overflow-hidden shadow-2xl shadow-black/40">
-                                <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-[#161b22]">
-                                    <div className="flex gap-1.5">
-                                        <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                                        <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                                        <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-                                    </div>
-                                    <span className="ml-3 text-[11px] text-slate-500 font-code">Solution.java</span>
-                                </div>
-                                <div className="p-5 font-code text-[13px] leading-relaxed">
-                                    {codeLines.map((line, i) => (
-                                        <div key={i} className="flex">
-                                            <span className="w-7 text-right mr-5 text-slate-600 select-none">{i + 1}</span>
-                                            <span className={line.color}>{line.text}</span>
+                    {/* Features (Editorial Grid) */}
+                    <section className="relative border-b border-tech-border/30 bg-tech-panel">
+                        <div className="container mx-auto px-6 py-section-y md:py-section-y-md relative z-10">
+                            <div className="max-w-3xl mb-20 animate-fade-up">
+                                <h2 className="heading-display text-4xl md:text-6xl text-white mb-8">
+                                    SYSTEMATIC<br />
+                                    <span className="text-tech-accent heading-editorial">architecture.</span>
+                                </h2>
+                                <p className="text-xl text-tech-muted leading-relaxed font-light">
+                                    An environment engineered to eliminate friction, providing you with everything necessary to analyze, construct, and verify logic.
+                                </p>
+                            </div>
+                            <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3 border-t border-tech-border/30 pt-16">
+                                {featureCards.map((f, index) => {
+                                    const Icon = f.icon;
+                                    return (
+                                        <div
+                                            key={f.title}
+                                            className="group relative animate-fade-up"
+                                            style={{ animationDelay: `${index * 150}ms` }}
+                                        >
+                                            <div className="mb-6">
+                                                <Icon className="h-8 w-8 text-white transition-transform duration-500 group-hover:scale-110 group-hover:text-tech-accent" strokeWidth={1.5} />
+                                            </div>
+                                            <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide uppercase">{f.title}</h3>
+                                            <p className="text-base text-tech-muted leading-relaxed font-light">{f.desc}</p>
                                         </div>
-                                    ))}
-                                </div>
-                                <div className="px-5 py-3 border-t border-white/[0.06] bg-[#161b22] flex items-center gap-2.5">
-                                    <Terminal className="w-3.5 h-3.5 text-emerald-400" />
-                                    <span className="text-[11px] text-emerald-400 font-code">✓ All test cases passed</span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Workflow (Editorial Steps) */}
+                    <section className="relative border-b border-tech-border/30 bg-tech-bg overflow-hidden">
+                        <div className="absolute top-0 right-0 w-[800px] h-[800px] border-[1px] border-tech-border/20 rounded-full min-h-0 pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+                        <div className="container mx-auto px-6 py-section-y md:py-section-y-md relative z-10">
+                            <div className="max-w-2xl mb-24 animate-fade-up">
+                                <h2 className="heading-display text-4xl md:text-6xl text-white mb-8">
+                                    EXECUTION<br />
+                                    <span className="text-tech-accent heading-editorial">flow.</span>
+                                </h2>
+                                <p className="text-xl text-tech-muted leading-relaxed font-light">
+                                    A systematic sequence designed for rapid iteration and continuous scaling of your technical abilities.
+                                </p>
+                            </div>
+
+                            <div className="grid gap-y-24 md:grid-cols-1 max-w-4xl mx-auto">
+                                {[
+                                    { num: "One", label: "Initialize", desc: "Instantiate your account in seconds and log in via secure protocols." },
+                                    { num: "Two", label: "Select Target", desc: "Filter algorithms by specific parameters. Target your weak points." },
+                                    { num: "Three", label: "Execute", desc: "Compile code within our zero-latency editor and transmit for validation." },
+                                    { num: "Four", label: "Analyze", desc: "Process real-time feedback data to optimize future compilation runs." },
+                                ].map((step, index) => {
+                                    return (
+                                        <div key={step.num} className="relative flex flex-col md:flex-row gap-8 md:gap-16 items-start animate-fade-up" style={{ animationDelay: `${index * 150}ms` }}>
+                                            <div className="md:w-1/3">
+                                                <span className="heading-editorial text-4xl text-tech-muted/40 transition-colors duration-500 hover:text-white">{step.num}</span>
+                                            </div>
+                                            <div className="md:w-2/3 border-t border-tech-border/30 pt-4 mt-2">
+                                                <h3 className="text-3xl font-bold text-white mb-4 uppercase tracking-wider">{step.label}</h3>
+                                                <p className="text-lg text-tech-muted leading-relaxed font-light">{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* CTA (Minimalist High-Contrast) */}
+                    <section className="relative bg-tech-bg border-b border-tech-border/30">
+                        <div className="container mx-auto px-6 py-section-y md:py-[150px]">
+                            <div className="text-center max-w-4xl mx-auto">
+                                <h3 className="heading-display text-5xl md:text-7xl lg:text-8xl text-white mb-10">
+                                    READY TO<br />
+                                    <span className="text-tech-accent heading-editorial tracking-normal">initiate?</span>
+                                </h3>
+                                <div className="flex justify-center mt-12">
+                                    <Link
+                                        to={primaryHref}
+                                        className="btn-primary"
+                                    >
+                                        {primaryLabel}
+                                    </Link>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </main>
 
-                {/* Features */}
-                <section className="border-b border-white/[0.06]">
-                    <div className="container mx-auto max-w-6xl px-6 py-24 md:py-32">
-                        <div className="max-w-xl mb-14">
-                            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-400 mb-4">
-                                <Sparkles className="inline h-3 w-3 mr-1.5 -mt-px" />
-                                Features
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4">
-                                Everything you need to practice
-                            </h2>
-                            <p className="text-base text-slate-400 leading-relaxed">
-                                Discover, code, submit, review — all in one streamlined loop designed to build real problem-solving skills.
-                            </p>
+                <footer className="border-t border-tech-border/30 py-12 md:py-20 bg-[#000000]" aria-label="Site footer">
+                    <div className="container mx-auto max-w-6xl px-6 flex flex-col items-center justify-between gap-12 md:flex-row">
+                        <div>
+                            <h4 className="heading-editorial text-2xl text-tech-accent mb-2">CodeQuest.</h4>
+                            <p className="text-sm text-tech-muted font-light">© 2026 Logical mastery workspace.</p>
                         </div>
-                        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                            {featureCards.map((f) => {
-                                const Icon = f.icon;
-                                return (
-                                    <div
-                                        key={f.title}
-                                        className="group rounded-xl border border-white/[0.06] bg-[#0f141c] p-7 transition-all hover:border-white/[0.12] hover:bg-[#111820]"
-                                    >
-                                        <div className="mb-4 inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.06] group-hover:border-emerald-400/30 group-hover:bg-emerald-400/[0.06] transition-colors">
-                                            <Icon className="h-5 w-5 text-slate-400 group-hover:text-emerald-400 transition-colors" />
-                                        </div>
-                                        <h3 className="text-base font-medium text-white mb-2">{f.title}</h3>
-                                        <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
-                                    </div>
-                                );
-                            })}
+                        <div className="flex gap-10 text-xs font-bold uppercase tracking-[0.15em] text-tech-muted">
+                            <Link to="/about" className="hover:text-white transition-colors">About</Link>
+                            <Link to="/guidelines" className="hover:text-white transition-colors">Guidelines</Link>
+                            <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
+                            <Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
                         </div>
                     </div>
-                </section>
-
-                {/* Workflow */}
-                <section className="border-b border-white/[0.06]">
-                    <div className="container mx-auto max-w-6xl px-6 py-24 md:py-32">
-                        <div className="max-w-xl mb-14">
-                            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-400 mb-4">
-                                Workflow
-                            </p>
-                            <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4">
-                                Four steps to better code
-                            </h2>
-                            <p className="text-base text-slate-400 leading-relaxed">
-                                A simple, repeatable cycle that helps you improve with every problem you solve.
-                            </p>
-                        </div>
-                        <div className="grid gap-6 md:grid-cols-4">
-                            {[
-                                { num: "01", label: "Sign up", desc: "Create your free account in seconds.", icon: UserPlus },
-                                { num: "02", label: "Pick a problem", desc: "Browse by difficulty or search by topic.", icon: Target },
-                                { num: "03", label: "Code & submit", desc: "Write your solution and submit for grading.", icon: Zap },
-                                { num: "04", label: "Review results", desc: "See per-test feedback and improve.", icon: CheckCircle2 },
-                            ].map((step) => {
-                                const StepIcon = step.icon;
-                                return (
-                                    <div key={step.num} className="rounded-xl border border-white/[0.06] bg-[#0f141c] p-7 text-center">
-                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.06] mb-5">
-                                            <StepIcon className="h-5 w-5 text-emerald-400" />
-                                        </div>
-                                        <p className="text-[10px] text-emerald-400/60 font-semibold uppercase tracking-[0.25em] mb-2">{step.num}</p>
-                                        <p className="text-base font-medium text-white mb-2">{step.label}</p>
-                                        <p className="text-sm text-slate-500 leading-relaxed">{step.desc}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                {/* CTA */}
-                <section>
-                    <div className="container mx-auto max-w-6xl px-6 py-24 md:py-32">
-                        <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#0f141c] to-[#0b1018] p-10 md:p-14 text-center">
-                            <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">Ready to start?</h3>
-                            <p className="text-base text-slate-400 max-w-md mx-auto mb-8">
-                                Solve one problem at a time. Build real momentum. Your first challenge is waiting.
-                            </p>
-                            <Link
-                                to={primaryHref}
-                                className="inline-flex items-center gap-2.5 rounded-lg bg-emerald-500 px-8 py-4 text-base font-semibold text-white transition hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20"
-                            >
-                                {primaryLabel}
-                                <ArrowRight className="h-5 w-5" />
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            <footer className="border-t border-white/[0.06] py-8" aria-label="Site footer">
-                <div className="container mx-auto max-w-6xl px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
-                    <p className="text-sm text-slate-600">© 2026 CodeQuest</p>
-                    <div className="flex gap-8 text-sm text-slate-600">
-                        <Link to="/about" className="hover:text-slate-300 transition-colors">About</Link>
-                        <Link to="/guidelines" className="hover:text-slate-300 transition-colors">Guidelines</Link>
-                        <Link to="/contact" className="hover:text-slate-300 transition-colors">Contact</Link>
-                        <Link to="/sitemap" className="hover:text-slate-300 transition-colors">Sitemap</Link>
-                    </div>
-                </div>
-            </footer>
+                </footer>
+            </div>
         </div>
     );
 }

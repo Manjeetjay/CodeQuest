@@ -2,10 +2,10 @@ import { Play } from "lucide-react";
 
 export default function EditorActions({ onSubmit, submitting, disabled }) {
     return (
-        <div className="px-4 py-3 border-t border-white/[0.06] bg-[#161b22] flex items-center justify-between">
-            <span className="text-[16px] text-slate-500 font-code">Monaco Editor</span>
+        <div className="px-4 py-3 border-t border-tech-border bg-tech-panel flex items-center justify-between">
+            <span className="text-[16px] text-tech-muted font-code">Monaco Editor</span>
             <button
-                className="inline-flex items-center gap-1.5 px-5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-semibold rounded-md transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
+                className="inline-flex items-center gap-1.5 px-5 py-1.5 bg-white hover:bg-neutral-200 text-black text-sm font-bold uppercase tracking-[0.1em] transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={onSubmit}
                 disabled={submitting || disabled}
             >
