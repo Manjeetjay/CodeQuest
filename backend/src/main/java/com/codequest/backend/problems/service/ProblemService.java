@@ -2,18 +2,18 @@ package com.codequest.backend.problems.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.codequest.backend.problems.dto.request.CreateProblemDto;
 import com.codequest.backend.problems.dto.request.UpdateProblemDto;
 import com.codequest.backend.problems.dto.response.ProblemDetailResponseDto;
 import com.codequest.backend.problems.dto.response.ProblemListResponseDto;
 import com.codequest.backend.problems.dto.response.TemplateResponseDto;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import com.codequest.backend.problems.dto.response.TestcaseResponseDto;
 import com.codequest.backend.problems.exception.DuplicateProblemException;
 import com.codequest.backend.problems.exception.ProblemNotFoundException;
@@ -21,7 +21,6 @@ import com.codequest.backend.problems.model.Problem;
 import com.codequest.backend.problems.model.Template;
 import com.codequest.backend.problems.model.Testcase;
 import com.codequest.backend.problems.repository.ProblemRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +32,7 @@ public class ProblemService {
     private final ProblemRepository problemRepository;
 
     @Transactional
+    @CacheEvict(value = { "problemsList", "problemsPage" }, allEntries = true)
     public ResponseEntity<String> createProblem(CreateProblemDto request) {
         log.info("Creating problem with title: {}", request.getTitle());
 
@@ -59,17 +59,19 @@ public class ProblemService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ProblemDetailResponseDto> getProblem(Long id) {
+    @Cacheable(value = "problemDetails", key = "#id")
+    public ProblemDetailResponseDto getProblem(Long id) {
         log.info("Fetching problem with id: {}", id);
 
         Problem problem = getProblemOrThrow(id);
         ProblemDetailResponseDto response = mapToProblemDetailResponse(problem);
 
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<List<ProblemListResponseDto>> getAllProblems() {
+    @Cacheable(value = "problemsList")
+    public List<ProblemListResponseDto> getAllProblems() {
         log.info("Fetching all problems");
 
         List<Problem> problems = problemRepository.findAll();
@@ -77,21 +79,23 @@ public class ProblemService {
                 .map(this::mapToProblemListResponse)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<Page<ProblemListResponseDto>> getAllProblemsPaginated(Pageable pageable) {
+    @Cacheable(value = "problemsPage")
+    public Page<ProblemListResponseDto> getAllProblemsPaginated(Pageable pageable) {
         log.info("Fetching problems with pagination - page: {}, size: {}",
                 pageable.getPageNumber(), pageable.getPageSize());
 
         Page<Problem> problemsPage = problemRepository.findAll(pageable);
         Page<ProblemListResponseDto> response = problemsPage.map(this::mapToProblemListResponse);
 
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     @Transactional
+    @CacheEvict(value = { "problemsList", "problemsPage", "problemDetails" }, allEntries = true)
     public void deleteProblem(Long id) {
         log.info("Deleting problem with id: {}", id);
 
@@ -102,6 +106,7 @@ public class ProblemService {
     }
 
     @Transactional
+    @CacheEvict(value = { "problemsList", "problemsPage", "problemDetails" }, allEntries = true)
     public ResponseEntity<String> updateProblem(Long id, UpdateProblemDto request) {
         log.info("Updating problem with id: {}", id);
 
@@ -181,7 +186,7 @@ public class ProblemService {
     }
 
     public ResponseEntity<String> bulkUploadProblems(List<CreateProblemDto> problems) {
-        for(CreateProblemDto problem : problems){
+        for (CreateProblemDto problem : problems) {
             createProblem(problem);
         }
         return ResponseEntity.ok("Problems uploaded successfully");

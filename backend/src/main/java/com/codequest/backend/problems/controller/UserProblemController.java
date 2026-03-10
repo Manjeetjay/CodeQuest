@@ -26,12 +26,12 @@ public class UserProblemController {
     @GetMapping("/{id}")
     public ResponseEntity<ProblemDetailResponseDto> getProblem(@PathVariable Long id) {
         log.info("User fetching problem with id: {}", id);
-        return problemService.getProblem(id);
+        return ResponseEntity.ok(problemService.getProblem(id));
     }
 
     @GetMapping
     public ResponseEntity<List<ProblemListResponseDto>> getAllProblems() {
         log.info("User fetching all problems");
-        return problemService.getAllProblems();
+        return ResponseEntity.ok(problemService.getAllProblems());
     }
 }

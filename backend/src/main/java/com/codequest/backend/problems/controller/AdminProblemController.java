@@ -44,7 +44,7 @@ public class AdminProblemController {
     @GetMapping("/{id}")
     public ResponseEntity<ProblemDetailResponseDto> getProblem(@PathVariable Long id) {
         log.info("Admin fetching problem with id: {}", id);
-        return problemService.getProblem(id);
+        return ResponseEntity.ok(problemService.getProblem(id));
     }
 
     @GetMapping
@@ -55,7 +55,7 @@ public class AdminProblemController {
 
         log.info("Admin fetching all problems - page: {}, size: {}, sortBy: {}", page, size, sortBy);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return problemService.getAllProblemsPaginated(pageable);
+        return ResponseEntity.ok(problemService.getAllProblemsPaginated(pageable));
     }
 
     @DeleteMapping("/{id}")
