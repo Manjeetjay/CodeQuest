@@ -10,7 +10,8 @@ import com.codequest.backend.auth.model.Role;
 import com.codequest.backend.auth.model.User;
 import com.codequest.backend.auth.repository.UserRepository;
 import com.codequest.backend.auth.security.JwtService;
-
+import com.codequest.backend.exception.BadRequestException;
+import com.codequest.backend.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,14 +24,11 @@ public class AuthService {
 
     @Transactional
     public AuthResponseDto register(RegisterRequestDto request) {
-
-
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email is already in use with another account");
+            throw new DuplicateResourceException("Email is already in use with another account");
         }
-
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already taken");
+            throw new DuplicateResourceException("Username is already taken");
         }
 
         User user = User.builder()
@@ -49,14 +47,11 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public AuthResponseDto login(LoginRequestDto request) {
-
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email"));
-
+                .orElseThrow(() -> new BadRequestException("Invalid email"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new BadRequestException("Invalid password");
         }
-
         return new AuthResponseDto(jwtService.generateToken(user), user.getUsername(), user.getEmail(),
                 user.getRole().toString());
 
