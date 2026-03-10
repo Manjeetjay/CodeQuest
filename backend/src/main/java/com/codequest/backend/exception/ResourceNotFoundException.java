@@ -2,10 +2,10 @@ package com.codequest.backend.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class ResourceNotFound extends ApiException {
+public class ResourceNotFoundException extends ApiException {
 
 
-    public ResourceNotFound(String message) {
+    public ResourceNotFoundException(String message) {
         super(message, HttpStatus.NOT_FOUND);
     }
 

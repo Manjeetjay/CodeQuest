@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.codequest.backend.exception.DuplicateResourceException;
+import com.codequest.backend.exception.ResourceNotFoundException;
 import com.codequest.backend.problems.dto.request.CreateProblemDto;
 import com.codequest.backend.problems.dto.request.UpdateProblemDto;
 import com.codequest.backend.problems.dto.response.ProblemDetailResponseDto;
@@ -15,8 +18,6 @@ import com.codequest.backend.problems.dto.response.TemplateResponseDto;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
 import com.codequest.backend.problems.dto.response.TestcaseResponseDto;
-import com.codequest.backend.problems.exception.DuplicateProblemException;
-import com.codequest.backend.problems.exception.ProblemNotFoundException;
 import com.codequest.backend.problems.model.Problem;
 import com.codequest.backend.problems.model.Template;
 import com.codequest.backend.problems.model.Testcase;
@@ -37,7 +38,7 @@ public class ProblemService {
         log.info("Creating problem with title: {}", request.getTitle());
 
         if (problemRepository.existsByTitle(request.getTitle())) {
-            throw new DuplicateProblemException(request.getTitle());
+            throw new DuplicateResourceException("Problem with same title already exists");
         }
 
         Problem problem = Problem.builder()
@@ -127,7 +128,7 @@ public class ProblemService {
 
     private Problem getProblemOrThrow(Long id) {
         return problemRepository.findById(id)
-                .orElseThrow(() -> new ProblemNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Problem not found with id: " + id));
     }
 
     private void setProblemId(Problem problem) {

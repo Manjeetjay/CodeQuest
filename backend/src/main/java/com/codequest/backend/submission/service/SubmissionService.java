@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.codequest.backend.exception.ResourceNotFoundException;
 import com.codequest.backend.problems.model.Problem;
 import com.codequest.backend.problems.model.Testcase;
 import com.codequest.backend.problems.repository.ProblemRepository;
@@ -99,7 +101,7 @@ public class SubmissionService {
                     .block();
 
             Submission submission = submissionRepository.findById(submissionId)
-                    .orElseThrow(() -> new RuntimeException("Submission not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Submission not found"));
 
             // Fetch problem to get test case sample flags
             Problem problem = problemRepository.getById(submission.getProblemId());
@@ -163,7 +165,7 @@ public class SubmissionService {
     @Transactional(readOnly = true)
     public SubmissionDto getSubmissionById(Long id) {
         Submission submission = submissionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Submission not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Submission not found"));
 
         SubmissionDto dto = new SubmissionDto();
         dto.setId(submission.getId());
