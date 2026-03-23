@@ -83,7 +83,7 @@ export default function Register() {
 
         const result = await register(formData.username, formData.email, formData.password);
         if (!result.success) {
-            setError(result.error || "Registration failed. Please try again.");
+            setError(result.error || "Service Unavailable. Try in few minutes.");
         }
         setLoading(false);
     };

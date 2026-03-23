@@ -40,7 +40,7 @@ export default function Login() {
 
         const result = await login(formData.email, formData.password);
         if (!result.success) {
-            setError(result.error || "Login failed. Please try again.");
+            setError(result.error || "Service Unavailable. Try in few minutes.");
         }
         setLoading(false);
     };
