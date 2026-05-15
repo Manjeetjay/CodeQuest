@@ -1,234 +1,354 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
     ArrowRight,
-    Search,
     Code2,
-    TestTube2,
-    History,
-    Filter,
-    ShieldCheck,
-    Terminal,
-    UserPlus,
-    Target,
     Zap,
+    Trophy,
+    BarChart3,
     CheckCircle2,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import ServerStatus from "./ServerStatus";
 import useDocumentHead from "../../utils/useDocumentHead";
 
-const featureCards = [
+const features = [
     {
-        title: "Smart Search",
-        desc: "Find exactly what you need. Filter problems by difficulty, search by title, and jump straight into solving.",
-        icon: Search,
-    },
-    {
-        title: "Multi-Language",
-        desc: "Write solutions in your preferred language with built-in code templates and syntax highlighting.",
         icon: Code2,
+        title: "Real-Time Feedback",
+        desc: "Instant validation as you code. Know immediately if your solution works.",
     },
     {
-        title: "Live Feedback",
-        desc: "See pass/fail results for each test case instantly. Know exactly where your solution stands.",
-        icon: TestTube2,
+        icon: BarChart3,
+        title: "Track Progress",
+        desc: "Visualize your growth across topics and difficulty levels.",
     },
     {
-        title: "Submission History",
-        desc: "Every solution you submit is saved. Revisit, compare, and track your improvement over time.",
-        icon: History,
+        icon: Zap,
+        title: "Multi-Language",
+        desc: "Code in Python, Java, JavaScript, C++, and more.",
     },
     {
-        title: "Structured Practice",
-        desc: "Organized difficulty tracks from Easy to Hard so you can build skills progressively.",
-        icon: Filter,
-    },
-    {
-        title: "Fair Play",
-        desc: "Consistent evaluation standards across all problems. No gotchas, no hidden test cases.",
-        icon: ShieldCheck,
+        icon: Trophy,
+        title: "Structured Path",
+        desc: "Curated problem sets that build from fundamentals to advanced.",
     },
 ];
 
-const codeLines = [
-    { text: "class Solution {", color: "text-purple-400" },
-    { text: "  public int[] solve(int[] nums) {", color: "text-sky-300" },
-    { text: "    Map<Integer, Integer> map = new HashMap<>();", color: "text-tech-text" },
-    { text: "    for (int i = 0; i < nums.length; i++) {", color: "text-tech-text" },
-    { text: "      if (map.containsKey(target - nums[i]))", color: "text-tech-accent-hover" },
-    { text: '        return new int[]{map.get(target-nums[i]), i};', color: "text-tech-accent-hover" },
-    { text: "      map.put(nums[i], i);", color: "text-tech-muted" },
-    { text: "    }", color: "text-tech-muted" },
-    { text: "  }", color: "text-sky-300" },
-    { text: "}", color: "text-purple-400" },
+const challenges = [
+    { name: "Two Sum", difficulty: "Easy", solved: 1247 },
+    { name: "Binary Tree Traversal", difficulty: "Medium", solved: 892 },
+    { name: "Dynamic Programming", difficulty: "Hard", solved: 423 },
 ];
 
 export default function Landing() {
     const { isAuthenticated } = useAuth();
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
     useDocumentHead({
         title: "CodeQuest – Practice Coding Challenges & Improve Skills",
-        description: "A focused workspace for solving coding challenges with real-time feedback. Filter by difficulty, code in multiple languages, and track your progress.",
+        description:
+            "A focused workspace for solving coding challenges with real-time feedback. Filter by difficulty, code in multiple languages, and track your progress.",
     });
+
     const primaryHref = isAuthenticated ? "/problems" : "/register";
-    const primaryLabel = isAuthenticated ? "Open Problems" : "Start Free";
-    const secondaryHref = isAuthenticated ? "/about" : "/login";
-    const secondaryLabel = isAuthenticated ? "How it works" : "Sign in";
+    const primaryLabel = isAuthenticated ? "Open Problems" : "Start Your Journey";
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setMousePosition({
+                x: (e.clientX / window.innerWidth) * 20 - 10,
+                y: (e.clientY / window.innerHeight) * 20 - 10,
+            });
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, []);
 
     return (
-        <div>
-            <div className="min-h-screen bg-tech-bg text-tech-text overflow-hidden relative font-sans">
+        <div className="min-h-screen bg-[#0a0a0a] text-[#e0e0e0] overflow-hidden relative">
+            {/* Animated grid background */}
+            <div
+                className="fixed inset-0 opacity-[0.03] pointer-events-none"
+                style={{
+                    backgroundImage: `
+                        linear-gradient(rgba(255, 165, 0, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 165, 0, 0.1) 1px, transparent 1px)
+                    `,
+                    backgroundSize: "50px 50px",
+                    transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+                    transition: "transform 0.5s ease-out",
+                }}
+            />
+
+            {/* Glowing orb effect */}
+            <div
+                className="fixed top-1/4 -right-48 w-96 h-96 bg-orange-500 rounded-full blur-[120px] opacity-20 pointer-events-none"
+                style={{
+                    transform: `translate(${mousePosition.x * 2}px, ${mousePosition.y * 2}px)`,
+                    transition: "transform 0.8s ease-out",
+                }}
+            />
+
+            <div className="relative z-10">
                 <Navbar />
 
-                {/* Subtle Minimalist Background Grid */}
-                <div className="absolute inset-0 bg-grid-minimal pointer-events-none -z-10 [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-30"></div>
-
                 <main>
-                    {/* Hero */}
-                    <section className="relative min-h-[90vh] flex items-center pt-24 pb-20 border-b border-tech-border/30">
-                        <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-                            <div className="w-full max-w-5xl mx-auto space-y-12 animate-fade-up">
-                                {/* Beta Tag */}
-                                <div className="flex justify-center mb-2">
+                    {/* Hero Section */}
+                    <section className="max-w-7xl mx-auto px-6 py-20 md:py-32">
+                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                            <div className="space-y-8 animate-fade-up">
+                                {/* Server status + badge */}
+                                <div className="flex items-center gap-3">
                                     <ServerStatus />
+                                    <div className="text-orange-500 text-sm font-semibold flex items-center gap-2 border border-orange-500/30 px-3 py-1 bg-orange-500/5">
+                                        <span className="animate-pulse">●</span>
+                                        <span>500+ CHALLENGES LIVE</span>
+                                    </div>
                                 </div>
 
-                                {/* Massive Editorial Headline */}
-                                <h1 className="heading-display text-[4.5rem] md:text-[7rem] lg:text-[9rem]">
-                                    ALGORITHMIC<br />
-                                    <span className="text-tech-accent heading-editorial">precision.</span>
+                                <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                                    Think.
+                                    <br />
+                                    <span className="text-orange-500">Code.</span>
+                                    <br />
+                                    Conquer.
                                 </h1>
 
-                                {/* Minimal Subtitle */}
-                                <p className="max-w-2xl mx-auto text-lg md:text-xl text-tech-muted font-light tracking-wide leading-relaxed mt-4">
-                                    The definitive workspace for logical mastery. Execute, verify, and track your progression in an environment engineered for focus.
+                                <p className="text-lg text-gray-400 leading-relaxed max-w-md">
+                                    Master algorithms and data structures through deliberate
+                                    practice. Real-time feedback. Multiple languages. Your path
+                                    from novice to expert.
                                 </p>
 
-                                {/* Contrast CTA */}
-                                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10">
+                                <div className="flex flex-wrap gap-4">
                                     <Link
                                         to={primaryHref}
-                                        className="btn-primary w-full sm:w-auto"
-                                    >
-                                        <span>{primaryLabel}</span>
-                                        <ArrowRight className="h-4 w-4" />
-                                    </Link>
-                                    <Link
-                                        to={secondaryHref}
-                                        className="inline-flex items-center gap-2 border-b border-tech-muted pb-1 text-sm font-semibold uppercase tracking-[0.1em] text-tech-muted transition-all hover:text-white hover:border-white w-full sm:w-auto justify-center mt-4 sm:mt-0"
-                                    >
-                                        {secondaryLabel}
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Features (Editorial Grid) */}
-                    <section className="relative border-b border-tech-border/30 bg-tech-panel">
-                        <div className="container mx-auto px-6 py-section-y md:py-section-y-md relative z-10">
-                            <div className="max-w-3xl mb-20 animate-fade-up">
-                                <h2 className="heading-display text-4xl md:text-6xl text-white mb-8">
-                                    SYSTEMATIC<br />
-                                    <span className="text-tech-accent heading-editorial">architecture.</span>
-                                </h2>
-                                <p className="text-xl text-tech-muted leading-relaxed font-light">
-                                    An environment engineered to eliminate friction, providing you with everything necessary to analyze, construct, and verify logic.
-                                </p>
-                            </div>
-                            <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3 border-t border-tech-border/30 pt-16">
-                                {featureCards.map((f, index) => {
-                                    const Icon = f.icon;
-                                    return (
-                                        <div
-                                            key={f.title}
-                                            className="group relative animate-fade-up"
-                                            style={{ animationDelay: `${index * 150}ms` }}
-                                        >
-                                            <div className="mb-6">
-                                                <Icon className="h-8 w-8 text-white transition-transform duration-500 group-hover:scale-110 group-hover:text-tech-accent" strokeWidth={1.5} />
-                                            </div>
-                                            <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide uppercase">{f.title}</h3>
-                                            <p className="text-base text-tech-muted leading-relaxed font-light">{f.desc}</p>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Workflow (Editorial Steps) */}
-                    <section className="relative border-b border-tech-border/30 bg-tech-bg overflow-hidden">
-                        <div className="absolute top-0 right-0 w-[800px] h-[800px] border-[1px] border-tech-border/20 rounded-full min-h-0 pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
-                        <div className="container mx-auto px-6 py-section-y md:py-section-y-md relative z-10">
-                            <div className="max-w-2xl mb-24 animate-fade-up">
-                                <h2 className="heading-display text-4xl md:text-6xl text-white mb-8">
-                                    EXECUTION<br />
-                                    <span className="text-tech-accent heading-editorial">flow.</span>
-                                </h2>
-                                <p className="text-xl text-tech-muted leading-relaxed font-light">
-                                    A systematic sequence designed for rapid iteration and continuous scaling of your technical abilities.
-                                </p>
-                            </div>
-
-                            <div className="grid gap-y-24 md:grid-cols-1 max-w-4xl mx-auto">
-                                {[
-                                    { num: "One", label: "Initialize", desc: "Instantiate your account in seconds and log in via secure protocols." },
-                                    { num: "Two", label: "Select Target", desc: "Filter algorithms by specific parameters. Target your weak points." },
-                                    { num: "Three", label: "Execute", desc: "Compile code within our zero-latency editor and transmit for validation." },
-                                    { num: "Four", label: "Analyze", desc: "Process real-time feedback data to optimize future compilation runs." },
-                                ].map((step, index) => {
-                                    return (
-                                        <div key={step.num} className="relative flex flex-col md:flex-row gap-8 md:gap-16 items-start animate-fade-up" style={{ animationDelay: `${index * 150}ms` }}>
-                                            <div className="md:w-1/3">
-                                                <span className="heading-editorial text-4xl text-tech-muted/40 transition-colors duration-500 hover:text-white">{step.num}</span>
-                                            </div>
-                                            <div className="md:w-2/3 border-t border-tech-border/30 pt-4 mt-2">
-                                                <h3 className="text-3xl font-bold text-white mb-4 uppercase tracking-wider">{step.label}</h3>
-                                                <p className="text-lg text-tech-muted leading-relaxed font-light">{step.desc}</p>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* CTA (Minimalist High-Contrast) */}
-                    <section className="relative bg-tech-bg border-b border-tech-border/30">
-                        <div className="container mx-auto px-6 py-section-y md:py-[150px]">
-                            <div className="text-center max-w-4xl mx-auto">
-                                <h3 className="heading-display text-5xl md:text-7xl lg:text-8xl text-white mb-10">
-                                    READY TO<br />
-                                    <span className="text-tech-accent heading-editorial tracking-normal">initiate?</span>
-                                </h3>
-                                <div className="flex justify-center mt-12">
-                                    <Link
-                                        to={primaryHref}
-                                        className="btn-primary"
+                                        className="group bg-orange-500 text-black px-8 py-4 text-base font-semibold hover:bg-orange-400 transition-all hover:shadow-[0_0_30px_rgba(255,165,0,0.6)] flex items-center gap-2"
                                     >
                                         {primaryLabel}
+                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    </Link>
+                                    <Link
+                                        to={isAuthenticated ? "/about" : "/login"}
+                                        className="border border-gray-700 px-8 py-4 text-base font-semibold hover:border-orange-500 hover:text-orange-500 transition-all"
+                                    >
+                                        {isAuthenticated ? "How it works" : "Sign In"}
                                     </Link>
                                 </div>
+
+                                <div className="flex items-center gap-8 pt-4 text-sm">
+                                    <div>
+                                        <div className="text-2xl font-bold text-orange-500">50K+</div>
+                                        <div className="text-gray-500">Active Users</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-bold text-orange-500">500+</div>
+                                        <div className="text-gray-500">Problems</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-bold text-orange-500">10+</div>
+                                        <div className="text-gray-500">Languages</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Code Terminal Mockup */}
+                            <div className="relative animate-fade-up" style={{ animationDelay: "200ms" }}>
+                                <div className="bg-[#111] border border-[#222] rounded-lg overflow-hidden shadow-2xl shadow-orange-500/10">
+                                    <div className="bg-[#1a1a1a] px-4 py-3 flex items-center gap-2 border-b border-[#222]">
+                                        <div className="flex gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                        </div>
+                                        <span className="text-xs text-gray-500 ml-4">solution.py</span>
+                                    </div>
+                                    <div className="p-6 space-y-3 text-sm">
+                                        <div>
+                                            <span className="text-purple-400">def</span>{" "}
+                                            <span className="text-blue-400">twoSum</span>
+                                            <span className="text-gray-400">(</span>
+                                            <span className="text-orange-400">nums</span>,{" "}
+                                            <span className="text-orange-400">target</span>
+                                            <span className="text-gray-400">)</span>:
+                                        </div>
+                                        <div className="pl-4">
+                                            <span className="text-orange-400">seen</span> ={" "}
+                                            <span className="text-gray-400">&#123;&#125;</span>
+                                        </div>
+                                        <div className="pl-4">
+                                            <span className="text-purple-400">for</span>{" "}
+                                            <span className="text-orange-400">i</span>,{" "}
+                                            <span className="text-orange-400">num</span>{" "}
+                                            <span className="text-purple-400">in</span>{" "}
+                                            <span className="text-blue-400">enumerate</span>
+                                            <span className="text-gray-400">(</span>
+                                            <span className="text-orange-400">nums</span>
+                                            <span className="text-gray-400">)</span>:
+                                        </div>
+                                        <div className="pl-8">
+                                            <span className="text-orange-400">complement</span> ={" "}
+                                            <span className="text-orange-400">target</span> -{" "}
+                                            <span className="text-orange-400">num</span>
+                                        </div>
+                                        <div className="pl-8">
+                                            <span className="text-purple-400">if</span>{" "}
+                                            <span className="text-orange-400">complement</span>{" "}
+                                            <span className="text-purple-400">in</span>{" "}
+                                            <span className="text-orange-400">seen</span>:
+                                        </div>
+                                        <div className="pl-12">
+                                            <span className="text-purple-400">return</span> [
+                                            <span className="text-orange-400">seen</span>[
+                                            <span className="text-orange-400">complement</span>],{" "}
+                                            <span className="text-orange-400">i</span>]
+                                        </div>
+                                        <div className="pl-8">
+                                            <span className="text-orange-400">seen</span>[
+                                            <span className="text-orange-400">num</span>] ={" "}
+                                            <span className="text-orange-400">i</span>
+                                        </div>
+                                        <div className="mt-4 pt-4 border-t border-[#222] text-green-400 flex items-center gap-2">
+                                            <CheckCircle2 className="w-4 h-4" />
+                                            <span>All test cases passed • Runtime: 52ms</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Floating stats */}
+                                <div className="absolute -left-4 top-1/4 bg-[#111] border border-[#222] p-4 rounded shadow-xl animate-float">
+                                    <div className="text-xs text-gray-500">Time Complexity</div>
+                                    <div className="text-lg font-bold text-green-400">O(n)</div>
+                                </div>
+                                <div className="absolute -right-4 top-2/3 bg-[#111] border border-[#222] p-4 rounded shadow-xl animate-float-slow">
+                                    <div className="text-xs text-gray-500">Space</div>
+                                    <div className="text-lg font-bold text-blue-400">O(n)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Features Grid */}
+                    <section className="max-w-7xl mx-auto px-6 py-20 border-t border-[#1a1a1a]">
+                        <div className="text-center mb-16 animate-fade-up">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                Built for <span className="text-orange-500">Serious</span> Practice
+                            </h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto">
+                                Every feature designed to accelerate your learning and track
+                                meaningful progress.
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {features.map((feature, idx) => (
+                                <div
+                                    key={idx}
+                                    className="group bg-[#111] border border-[#1a1a1a] p-6 rounded-lg hover:border-orange-500/50 transition-all hover:shadow-[0_0_20px_rgba(255,165,0,0.1)] animate-fade-up"
+                                    style={{ animationDelay: `${idx * 100}ms` }}
+                                >
+                                    <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-orange-500 transition-colors">
+                                        <feature.icon className="w-6 h-6 text-orange-500 group-hover:text-black transition-colors" />
+                                    </div>
+                                    <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                                    <p className="text-sm text-gray-400 leading-relaxed">
+                                        {feature.desc}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Popular Challenges */}
+                    <section className="max-w-7xl mx-auto px-6 py-20 border-t border-[#1a1a1a]">
+                        <div className="flex items-center justify-between mb-8 animate-fade-up">
+                            <h2 className="text-3xl font-bold">Trending Challenges</h2>
+                            <Link
+                                to={isAuthenticated ? "/problems" : "/register"}
+                                className="text-orange-500 text-sm font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                            >
+                                View All <ArrowRight className="w-4 h-4" />
+                            </Link>
+                        </div>
+
+                        <div className="space-y-3">
+                            {challenges.map((challenge, idx) => (
+                                <div
+                                    key={idx}
+                                    className="bg-[#111] border border-[#1a1a1a] p-5 rounded-lg hover:border-orange-500/50 transition-all cursor-pointer group animate-fade-up"
+                                    style={{ animationDelay: `${idx * 100}ms` }}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div className="text-gray-500 text-sm">
+                                                {String(idx + 1).padStart(2, "0")}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold group-hover:text-orange-500 transition-colors">
+                                                    {challenge.name}
+                                                </h3>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <span
+                                                        className={`text-xs px-2 py-1 rounded ${
+                                                            challenge.difficulty === "Easy"
+                                                                ? "bg-green-500/10 text-green-400"
+                                                                : challenge.difficulty === "Medium"
+                                                                ? "bg-yellow-500/10 text-yellow-400"
+                                                                : "bg-red-500/10 text-red-400"
+                                                        }`}
+                                                    >
+                                                        {challenge.difficulty}
+                                                    </span>
+                                                    <span className="text-xs text-gray-500">
+                                                        {challenge.solved.toLocaleString()} solved
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ArrowRight className="w-5 h-5 text-gray-600 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* CTA Section */}
+                    <section className="max-w-7xl mx-auto px-6 py-20">
+                        <div className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20 rounded-lg p-12 text-center relative overflow-hidden animate-fade-up">
+                            <div
+                                className="absolute inset-0 opacity-50 pointer-events-none"
+                                style={{
+                                    backgroundImage: `
+                                        linear-gradient(rgba(255, 165, 0, 0.05) 1px, transparent 1px),
+                                        linear-gradient(90deg, rgba(255, 165, 0, 0.05) 1px, transparent 1px)
+                                    `,
+                                    backgroundSize: "30px 30px",
+                                }}
+                            ></div>
+                            <div className="relative z-10">
+                                <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                                    Ready to Level Up?
+                                </h2>
+                                <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+                                    Join thousands of developers sharpening their skills. Start
+                                    solving, start growing.
+                                </p>
+                                <Link
+                                    to={primaryHref}
+                                    className="bg-orange-500 text-black px-10 py-4 text-lg font-semibold hover:bg-orange-400 transition-all hover:shadow-[0_0_40px_rgba(255,165,0,0.8)] inline-flex items-center gap-2"
+                                >
+                                    {isAuthenticated ? "Go to Problems" : "Create Free Account"}
+                                    <ArrowRight className="w-5 h-5" />
+                                </Link>
                             </div>
                         </div>
                     </section>
                 </main>
 
-                <footer className="border-t border-tech-border/30 py-12 md:py-20 bg-[#000000]" aria-label="Site footer">
-                    <div className="container mx-auto max-w-6xl px-6 flex flex-col items-center justify-between gap-12 md:flex-row">
-                        <div>
-                            <h4 className="heading-editorial text-2xl text-tech-accent mb-2">CodeQuest.</h4>
-                            <p className="text-sm text-tech-muted font-light">© 2026 Logical mastery workspace.</p>
-                        </div>
-                        <div className="flex gap-10 text-xs font-bold uppercase tracking-[0.15em] text-tech-muted">
-                            <Link to="/about" className="hover:text-white transition-colors">About</Link>
-                            <Link to="/guidelines" className="hover:text-white transition-colors">Guidelines</Link>
-                            <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
-                            <Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
-                        </div>
-                    </div>
-                </footer>
+                <Footer />
             </div>
         </div>
     );

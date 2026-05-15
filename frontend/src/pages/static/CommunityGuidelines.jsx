@@ -1,14 +1,7 @@
 import { Link } from "react-router-dom";
-import {
-    AlertTriangle,
-    BadgeCheck,
-    ChevronDown,
-    Flag,
-    Gavel,
-    MessageSquareWarning,
-    ShieldAlert,
-} from "lucide-react";
+import { AlertTriangle, BadgeCheck, ChevronDown, Flag, Gavel, MessageSquareWarning, ShieldAlert } from "lucide-react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import useDocumentHead from "../../utils/useDocumentHead";
 
 const encouraged = [
@@ -39,174 +32,126 @@ const faqs = [
 ];
 
 export default function CommunityGuidelines() {
-    useDocumentHead({
-        title: "Community Guidelines | CodeQuest",
-        description: "CodeQuest community rules. Learn what's encouraged, what's prohibited, and how enforcement works. Play fair and learn honestly.",
-    });
+    useDocumentHead({ title: "Community Guidelines | CodeQuest", description: "CodeQuest community rules. Learn what's encouraged, what's prohibited, and how enforcement works." });
+
     return (
-        <div className="min-h-screen bg-tech-bg text-tech-text overflow-hidden relative font-sans">
-            <Navbar />
-
-            {/* Subtle Background Grid */}
-            <div className="absolute inset-0 bg-grid-minimal pointer-events-none -z-10 [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-30"></div>
-
-            <main>
-                {/* Header */}
-                <section className="relative border-b border-tech-border/30">
-                    <div className="container mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-32 md:pb-24">
-                        <div className="max-w-3xl animate-fade-up">
-                            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-tech-accent mb-5">
-                                <BadgeCheck className="inline h-3 w-3 mr-1.5 -mt-px" />
-                                Community
-                            </p>
-                            <h1 className="heading-display text-4xl md:text-6xl text-white mb-6">
-                                PLAY FAIR.<br />
-                                <span className="text-tech-accent heading-editorial">learn honest.</span>
-                            </h1>
-                            <p className="text-lg text-tech-muted leading-relaxed font-light">
-                                Rules that keep problem-solving honest and collaboration constructive.
-                                We believe fair play is what makes practice meaningful.
-                            </p>
+        <div className="min-h-screen bg-[#0a0a0a] text-[#e0e0e0] overflow-hidden relative">
+            <div className="fixed inset-0 bg-grid-minimal pointer-events-none opacity-30" />
+            <div className="relative z-10">
+                <Navbar />
+                <main>
+                    <section className="border-b border-[#1a1a1a]">
+                        <div className="max-w-7xl mx-auto px-6 pt-24 pb-20 md:pt-32 md:pb-24">
+                            <div className="max-w-3xl animate-fade-up">
+                                <p className="text-sm font-semibold text-orange-500 mb-4 flex items-center gap-2 border border-orange-500/30 px-3 py-1 bg-orange-500/5 w-fit">
+                                    <BadgeCheck className="h-3.5 w-3.5" />Community
+                                </p>
+                                <h1 className="text-4xl md:text-6xl font-bold mb-6">Play Fair.<br /><span className="text-orange-500">Learn Honest.</span></h1>
+                                <p className="text-lg text-gray-400 leading-relaxed">Rules that keep problem-solving honest and collaboration constructive. We believe fair play is what makes practice meaningful.</p>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* Encouraged / Prohibited */}
-                <section className="relative border-b border-tech-border/30 bg-tech-panel">
-                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-section-y-md">
-                        <div className="grid gap-8 md:grid-cols-2 animate-fade-up">
-                            <div className="border border-tech-border/30 bg-tech-bg p-8">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="inline-flex items-center justify-center w-8 h-8 bg-tech-accent/[0.08] border border-tech-accent/20">
-                                        <BadgeCheck className="h-4 w-4 text-tech-accent" />
+                    <section className="border-b border-[#1a1a1a]">
+                        <div className="max-w-7xl mx-auto px-6 py-20">
+                            <div className="grid gap-6 md:grid-cols-2 animate-fade-up">
+                                <div className="border border-[#1a1a1a] bg-[#111] p-8 rounded-lg">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 bg-orange-500/10 border border-orange-500/30 rounded-lg flex items-center justify-center">
+                                            <BadgeCheck className="h-5 w-5 text-orange-500" />
+                                        </div>
+                                        <h2 className="text-lg font-bold text-white">Encouraged</h2>
                                     </div>
-                                    <h2 className="text-lg font-semibold text-white uppercase tracking-wider">Encouraged</h2>
+                                    <ul className="space-y-5">
+                                        {encouraged.map((item) => (
+                                            <li key={item.text} className="flex items-start gap-3">
+                                                <span className="text-orange-500 mt-1 text-xs shrink-0">✓</span>
+                                                <div>
+                                                    <p className="text-sm font-medium text-white">{item.text}</p>
+                                                    <p className="text-sm text-gray-500 mt-0.5">{item.detail}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                                <ul className="space-y-5">
-                                    {encouraged.map((item) => (
-                                        <li key={item.text} className="flex items-start gap-3">
-                                            <span className="text-tech-accent mt-1 text-xs shrink-0">✓</span>
-                                            <div>
-                                                <p className="text-sm font-medium text-white">{item.text}</p>
-                                                <p className="text-sm text-tech-muted mt-0.5 font-light">{item.detail}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="border border-tech-border/30 bg-tech-bg p-8">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="inline-flex items-center justify-center w-8 h-8 bg-red-400/[0.08] border border-red-400/20">
-                                        <ShieldAlert className="h-4 w-4 text-red-400" />
+                                <div className="border border-[#1a1a1a] bg-[#111] p-8 rounded-lg">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 bg-red-400/10 border border-red-400/20 rounded-lg flex items-center justify-center">
+                                            <ShieldAlert className="h-5 w-5 text-red-400" />
+                                        </div>
+                                        <h2 className="text-lg font-bold text-white">Not Allowed</h2>
                                     </div>
-                                    <h2 className="text-lg font-semibold text-white uppercase tracking-wider">Not Allowed</h2>
+                                    <ul className="space-y-5">
+                                        {prohibited.map((item) => (
+                                            <li key={item.text} className="flex items-start gap-3">
+                                                <span className="text-red-400 mt-1 text-xs shrink-0">✕</span>
+                                                <div>
+                                                    <p className="text-sm font-medium text-white">{item.text}</p>
+                                                    <p className="text-sm text-gray-500 mt-0.5">{item.detail}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                                <ul className="space-y-5">
-                                    {prohibited.map((item) => (
-                                        <li key={item.text} className="flex items-start gap-3">
-                                            <span className="text-red-400 mt-1 text-xs shrink-0">✕</span>
-                                            <div>
-                                                <p className="text-sm font-medium text-white">{item.text}</p>
-                                                <p className="text-sm text-tech-muted mt-0.5 font-light">{item.detail}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* Enforcement */}
-                <section className="relative border-b border-tech-border/30 bg-tech-bg">
-                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-section-y-md">
-                        <div className="mb-16 animate-fade-up">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Gavel className="h-5 w-5 text-tech-muted" />
-                                <h2 className="heading-display text-3xl md:text-5xl text-white">
-                                    ENFORCEMENT
-                                </h2>
-                            </div>
-                            <p className="text-lg text-tech-muted max-w-lg font-light">
-                                Violations are handled proportionally. We always prefer education over punishment.
-                            </p>
-                        </div>
-                        <div className="grid gap-8 md:grid-cols-3 border-t border-tech-border/30 pt-12">
-                            {enforcement.map((e, index) => (
-                                <div
-                                    key={e.level}
-                                    className={`border ${e.border} bg-tech-panel p-8 text-center animate-fade-up`}
-                                    style={{ animationDelay: `${index * 150}ms` }}
-                                >
-                                    <p className={`text-3xl font-bold ${e.color} mb-2`}>{e.level}</p>
-                                    <p className="text-base font-semibold text-white mb-2 uppercase tracking-wider">{e.title}</p>
-                                    <p className="text-sm text-tech-muted leading-relaxed font-light">{e.desc}</p>
+                    <section className="border-b border-[#1a1a1a]">
+                        <div className="max-w-7xl mx-auto px-6 py-20">
+                            <div className="mb-16 animate-fade-up">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <Gavel className="h-5 w-5 text-gray-500" />
+                                    <h2 className="text-3xl md:text-4xl font-bold">Enforcement</h2>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* FAQ */}
-                <section className="relative border-b border-tech-border/30 bg-tech-panel">
-                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-section-y-md">
-                        <div className="mb-12 animate-fade-up">
-                            <div className="flex items-center gap-3 mb-4">
-                                <MessageSquareWarning className="h-5 w-5 text-tech-muted" />
-                                <h2 className="heading-display text-3xl md:text-5xl text-white">
-                                    FREQUENTLY<br />
-                                    <span className="text-tech-accent heading-editorial">asked.</span>
-                                </h2>
+                                <p className="text-lg text-gray-400 max-w-lg">Violations are handled proportionally. We always prefer education over punishment.</p>
                             </div>
-                            <p className="text-lg text-tech-muted max-w-lg font-light">
-                                Common questions about our community policies.
-                            </p>
+                            <div className="grid gap-6 md:grid-cols-3">
+                                {enforcement.map((e, i) => (
+                                    <div key={e.level} className={`border ${e.border} bg-[#111] p-8 text-center rounded-lg animate-fade-up`} style={{ animationDelay: `${i * 100}ms` }}>
+                                        <p className={`text-3xl font-bold ${e.color} mb-2`}>{e.level}</p>
+                                        <p className="text-base font-semibold text-white mb-2">{e.title}</p>
+                                        <p className="text-sm text-gray-400 leading-relaxed">{e.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <div className="border border-tech-border/30 overflow-hidden divide-y divide-tech-border/30 animate-fade-up" style={{ animationDelay: "150ms" }}>
-                            {faqs.map((faq) => (
-                                <details key={faq.q} className="group bg-tech-bg">
-                                    <summary className="cursor-pointer list-none px-7 py-5 flex items-center justify-between text-base font-medium text-white hover:bg-tech-panel-inner transition-colors">
-                                        {faq.q}
-                                        <ChevronDown className="h-4 w-4 text-tech-muted transition-transform group-open:rotate-180" />
-                                    </summary>
-                                    <p className="px-7 pb-5 text-sm text-tech-muted leading-relaxed font-light">{faq.a}</p>
-                                </details>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* CTA */}
-                <section className="relative bg-tech-bg">
-                    <div className="container mx-auto max-w-6xl px-6 py-section-y md:py-[100px]">
-                        <div className="animate-fade-up flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-t border-tech-border/30 pt-16">
+                    <section className="border-b border-[#1a1a1a]">
+                        <div className="max-w-7xl mx-auto px-6 py-20">
+                            <div className="mb-12 animate-fade-up">
+                                <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently <span className="text-orange-500">Asked</span></h2>
+                                <p className="text-lg text-gray-400 max-w-lg">Common questions about our community policies.</p>
+                            </div>
+                            <div className="border border-[#1a1a1a] overflow-hidden divide-y divide-[#1a1a1a] rounded-lg animate-fade-up">
+                                {faqs.map((faq) => (
+                                    <details key={faq.q} className="group bg-[#111]">
+                                        <summary className="cursor-pointer list-none px-7 py-5 flex items-center justify-between text-base font-medium text-white hover:bg-[#1a1a1a] transition-colors">
+                                            {faq.q}<ChevronDown className="h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" />
+                                        </summary>
+                                        <p className="px-7 pb-5 text-sm text-gray-400 leading-relaxed">{faq.a}</p>
+                                    </details>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="max-w-7xl mx-auto px-6 py-20">
+                        <div className="animate-fade-up flex flex-col gap-6 md:flex-row md:items-center md:justify-between bg-[#111] border border-[#1a1a1a] rounded-lg p-8">
                             <div>
-                                <h2 className="heading-display text-3xl md:text-4xl text-white mb-2">
-                                    SEE AN <span className="text-tech-accent heading-editorial">issue?</span>
-                                </h2>
-                                <p className="text-base text-tech-muted font-light">Report with clear evidence so we can act fast.</p>
+                                <h2 className="text-2xl md:text-3xl font-bold mb-2">See An <span className="text-orange-500">Issue?</span></h2>
+                                <p className="text-gray-400">Report with clear evidence so we can act fast.</p>
                             </div>
                             <div className="flex gap-3">
-                                <Link
-                                    to="/contact"
-                                    className="btn-primary"
-                                >
-                                    <Flag className="h-4 w-4" />
-                                    Contact
-                                </Link>
-                                <Link
-                                    to="/about"
-                                    className="btn-outline"
-                                >
-                                    <AlertTriangle className="h-4 w-4" />
-                                    About
-                                </Link>
+                                <Link to="/contact" className="btn-primary"><Flag className="h-4 w-4" />Contact</Link>
+                                <Link to="/about" className="btn-outline"><AlertTriangle className="h-4 w-4" />About</Link>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </main>
+                    </section>
+                </main>
+                <Footer />
+            </div>
         </div>
     );
 }

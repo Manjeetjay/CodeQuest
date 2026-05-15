@@ -20,8 +20,8 @@ const Sitemap = lazy(() => import("./pages/static/Sitemap"));
 // Minimal loading fallback
 function PageLoader() {
   return (
-    <div className="min-h-screen bg-[#0b0f14] flex items-center justify-center">
-      <div className="w-5 h-5 border-2 border-tech-accent border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+      <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }

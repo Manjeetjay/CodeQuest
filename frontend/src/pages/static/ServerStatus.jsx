@@ -3,7 +3,7 @@ import { getServerStatus } from "../../api/systemApi";
 import { RefreshCw } from "lucide-react";
 
 export default function ServerStatus() {
-    const [status, setStatus] = useState("checking"); // "checking" | "live" | "down"
+    const [status, setStatus] = useState("checking");
     const [spinning, setSpinning] = useState(false);
 
     const check = useCallback(async () => {
@@ -15,57 +15,27 @@ export default function ServerStatus() {
         } catch {
             setStatus("down");
         } finally {
-            // keep the spinner spinning for at least the animation duration
             setTimeout(() => setSpinning(false), 600);
         }
     }, []);
 
-    useEffect(() => {
-        check();
-    }, [check]);
+    useEffect(() => { check(); }, [check]);
 
     const isLive = status === "live";
     const isChecking = status === "checking";
 
     return (
-        <button
-            onClick={check}
-
-            disabled={isChecking}
-            title="Check if the render service is running"
-            className="group inline-flex items-center gap-2 rounded-tech border px-3 py-1 text-[11px] font-medium tracking-wide transition-colors select-none
-                       border-tech-border bg-tech-panel/50 hover:bg-tech-panel disabled:opacity-70 disabled:cursor-wait"
-        >
+        <button onClick={check} disabled={isChecking} title="Check if the render service is running"
+            className="group inline-flex items-center gap-2 border px-3 py-1 text-xs font-medium tracking-wide transition-colors select-none
+                       border-[#222] bg-[#111]/50 hover:bg-[#111] disabled:opacity-70 disabled:cursor-wait rounded">
             <span className="relative flex h-2 w-2">
-                {isLive && (
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tech-accent opacity-75" />
-                )}
-                <span
-                    className={`relative inline-flex h-2 w-2 rounded-full ${isChecking
-                        ? "bg-amber-400"
-                        : isLive
-                            ? "bg-tech-accent"
-                            : "bg-red-500"
-                        }`}
-                />
+                {isLive && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-75" />}
+                <span className={`relative inline-flex h-2 w-2 rounded-full ${isChecking ? "bg-amber-400" : isLive ? "bg-orange-500" : "bg-red-500"}`} />
             </span>
-
-            <span
-                className={
-                    isChecking
-                        ? "text-amber-400"
-                        : isLive
-                            ? "text-tech-accent"
-                            : "text-red-400"
-                }
-            >
+            <span className={isChecking ? "text-amber-400" : isLive ? "text-orange-500" : "text-red-400"}>
                 {isChecking ? "Checking…" : isLive ? "Live" : "Down"}
             </span>
-
-            <RefreshCw
-                className={`h-3 w-3 text-tech-muted transition-transform group-hover:text-tech-text ${spinning ? "animate-spin" : ""
-                    }`}
-            />
+            <RefreshCw className={`h-3 w-3 text-gray-500 transition-transform group-hover:text-gray-300 ${spinning ? "animate-spin" : ""}`} />
         </button>
     );
 }
